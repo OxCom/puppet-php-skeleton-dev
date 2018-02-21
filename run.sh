@@ -16,6 +16,11 @@ echo "[APT]: Puppet"
 export PATH=/opt/puppetlabs/bin:$PATH
 echo "Puppet version is $(puppet --version)"
 
+echo "[PUPPET]: Control Repo"
+git clone https://github.com/OxCom/puppet-php-skeleton-dev.git
+cp -rf ./puppet-php-skeleton-dev/* /etc/puppetlabs/puppet/
+rm -rf ./puppet-php-skeleton-dev
+
 echo "[SSH]: ===="
 echo "[SSH]: Hosts"
 ssh-keygen -R bitbucket.org
