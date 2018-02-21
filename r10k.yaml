@@ -1,0 +1,6 @@
+cachedir: '/temp/cache/r10k'
+
+sources:
+  base:
+    remote: 'git@github.com:OxCom/puppet-php-skeleton-dev.git'
+    basedir: 'environments'
