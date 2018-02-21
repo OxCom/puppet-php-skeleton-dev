@@ -1,0 +1,14 @@
+zone "<%= $zone %>" {
+        type master;
+        file "/etc/bind/db.<%= $zone %>";
+        check-names ignore;
+        allow-query { any; };
+        allow-transfer { any; };
+};
+
+zone "<%= $back %>.in-addr.arpa" {
+        type master;
+        file "/etc/bind/db.<%= $back %>";
+        allow-query { any; };
+        allow-transfer { any; };
+};

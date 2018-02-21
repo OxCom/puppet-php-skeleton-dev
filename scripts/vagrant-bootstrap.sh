@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Initialize"
+echo "[PUPPET]: ===="
 # https://docs.puppet.com/puppet/5.1/install_linux.html
 # https://docs.puppet.com/puppet/5.1/puppet_platform.html
 wget --no-verbose https://apt.puppetlabs.com/puppet5-release-xenial.deb
@@ -12,7 +12,7 @@ apt-get update
 sudo apt-get upgrade -y
 apt install -o Dpkg::Options::="--force-confold" -y git puppet-agent r10k
 
-echo "[APT]: Puppet"
+echo "[PUPPET]: "
 export PATH=/opt/puppetlabs/bin:$PATH
 echo "Puppet version is $(puppet --version)"
 

@@ -1,1 +1,15 @@
+.librarian/
+.tmp/
+examples/.vagrant/
+examples/puppet/
+examples/ssh/
+
+# modules
+modules/apt/
+modules/stdlib/
+
+*.log
 *.lock
+
+etckeeper-commit-post
+etckeeper-commit-pre

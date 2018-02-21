@@ -1,0 +1,43 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/xenial64"
+  config.vm.hostname = "dev.lo"
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", 1024, "--cpus", 2]
+  end
+
+  config.ssh.forward_agent = true
+
+  config.vm.provision :shell do |shell|
+    shell.inline = "touch $1 && chmod 0440 $1 && echo $2 > $1"
+    shell.args = %q{/etc/sudoers.d/root_ssh_agent "Defaults env_keep += \"SSH_AUTH_SOCK\""}
+  end
+
+  # clean up trash
+  def clean_up
+    FileUtils.rm_rf('puppet')
+
+    Dir.glob('./*.log').each { |file| FileUtils.rm_rf(file)}
+  end
+
+  # Copy puppet configuration
+  config.trigger.before :up do
+    clean_up
+    FileUtils.copy_entry "./../puppet-ctrl", "puppet"
+  end
+
+  # clean up files on the host after the guest is destroyed
+  config.trigger.after :destroy do
+    FileUtils.rm_rf('.vagrant')
+    clean_up
+  end
+
+  # Provision
+  config.vm.synced_folder "puppet", "/etc/puppetlabs/puppet/"
+
+  config.vm.provision "shell" do |s|
+    s.path = "./../scripts/vagrant-bootstrap.sh"
+  end
+end

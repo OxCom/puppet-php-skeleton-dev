@@ -1,0 +1,19 @@
+# List of default PHP-FPM
+<% @versions.each do |version| -%>
+upstream <%= version %>-fpm {
+  server unix:/var/run/php/<%= version %>-fpm.sock;
+}
+<% end -%>
+
+# List of PHP-FPM pools per project
+<% @projects.each do |project, pools| -%>
+###### [<%= project %>] ######
+<% @versions.each do |version| %>
+<% pools.each do |pool| %>
+upstream <%= version %>-<%= project %>-<%= pool['name'] %>-fpm {
+  server unix:/var/run/php/<%= version %>-<%= project %>-<%= pool['name'] %>-fpm.sock;
+}
+
+<% end %>
+<% end %>
+<% end -%>

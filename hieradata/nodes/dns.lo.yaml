@@ -1,0 +1,8 @@
+---
+# Node with all in one
+
+classes:
+  - role::dns
+
+bind9:
+  dns: ['8.8.8.8', '8.8.4.4']

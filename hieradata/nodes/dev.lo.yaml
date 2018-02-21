@@ -1,0 +1,31 @@
+---
+# Node with all in one
+
+classes:
+  - role::all
+
+composer: true
+
+projects:
+    warface:
+        - {name: 'www', php: php7.0}
+        - {name: 'imageproxy', php: php5.6}
+
+    cryengine:
+        - {name: www, php: php7.1}
+        - {name: shop, php: php7.1}
+        - {name: forum, php: php5.6}
+
+php:
+  versions: [php5.6, php7.0, php7.1, php7.2]
+  packages: [
+      opcache, gd, bcmath, curl, intl, json, mbstring,
+      mysql, readline, soap, sqlite3, tidy, xml, zip,
+      codecoverage, codesniffer, igbinary, geoip, imagick,
+      memcache, memcached, redis, xdebug, ssh2
+  ]
+
+tools: [imagemagick]
+
+bind9:
+  dns: ['8.8.8.8', '8.8.4.4']

@@ -1,0 +1,15 @@
+options {
+    directory "/var/cache/bind";
+
+    forwarders {
+<% @dns.each do |server| -%>
+        <%= server %>;
+<% end %>
+    };
+
+    recursion yes;
+    auth-nxdomain no;
+
+    listen-on { any; };
+    listen-on-v6 { any; };
+};

@@ -1,0 +1,20 @@
+; Start a new pool.
+; the variable $pool can we used in any directive and will be replaced by the
+; pool name:
+[<%= $project %>-<%= $pool %>]
+
+user = www-data
+group = www-data
+
+listen = /run/php/<%= $version %>-$pool-fpm.sock
+
+listen.owner = www-data
+listen.group = www-data
+
+pm = dynamic
+pm.max_children = 20
+pm.start_servers = 5
+pm.min_spare_servers = 3
+pm.max_spare_servers = 7
+
+php_admin_value[xdebug.idekey] = key-$pool

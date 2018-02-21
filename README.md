@@ -1,9 +1,10 @@
 # Puppet PHP skeleton development environment
-This is CONTROL REPO for [Puppet](https://puppet.com/) configuration that allows quickly install all required software for Web-Development of PHP projects.
+This is ENVIRONMENT branch for [Puppet](https://puppet.com/) configuration that allows quickly install all required software for Web-Development of PHP projects.
 
-## Install
+## Run example
 ```bash
-./run.sh
+$ cd examples
+$ vagraunt up
 ```
 
 #### Provision result

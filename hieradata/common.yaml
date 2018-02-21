@@ -1,0 +1,35 @@
+---
+# Puppet Server Tuning
+puppet_enterprise::master::puppetserver::jruby_max_requests_per_instance: 0
+
+classes:
+  - role::default
+
+composer: true
+
+nginx:
+  domain: "%{::fqdn}"
+
+projects:
+    development:
+        - name: 'www'
+          php: 'php7.0'
+
+php:
+  versions: [php7.0]
+  packages: [
+    curl, mbstring, xml, json, intl, xdebug
+  ]
+
+tools: [mc, htop, wget, curl]
+
+db:
+  mysql:
+    root_password: root
+    remove_default_accounts: true
+    override_options: {}
+
+bind9:
+  dns: ['8.8.8.8', '8.8.4.4']
+  zone: "%{::fqdn}"
+
