@@ -1,9 +1,6 @@
 ---
 # Node with all in one
 
-classes:
-  - role::all
-
 #composer: true
 #
 #projects:
