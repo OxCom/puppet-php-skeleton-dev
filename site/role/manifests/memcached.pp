@@ -1,3 +1,3 @@
 class role::memcached inherits role::default {
-  include profile::memcached
+  # include profile::memcached
 }

@@ -1,3 +1,3 @@
 class profile::redis {
-  include services::redis
+  # include services::redis
 }

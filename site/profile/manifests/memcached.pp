@@ -1,3 +1,3 @@
 class profile::memcached {
-  include services::memcached
+  # include services::memcached
 }

@@ -3,14 +3,14 @@
 echo "[PUPPET]: ===="
 # https://docs.puppet.com/puppet/5.1/install_linux.html
 # https://docs.puppet.com/puppet/5.1/puppet_platform.html
-wget --no-verbose https://apt.puppetlabs.com/puppet5-release-xenial.deb
-dpkg -i --force-confdef puppet5-release-xenial.deb
-rm -f puppet5-release-xenial.deb
+wget --no-verbose https://apt.puppetlabs.com/puppet6-release-xenial.deb
+dpkg -i --force-confdef puppet6-release-xenial.deb
+rm -f puppet6-release-xenial.deb
 
 echo "[APT]: ===="
 apt-get update
-sudo apt-get upgrade -y
-apt install -o Dpkg::Options::="--force-confold" -y git puppet-agent r10k
+apt-get upgrade -y
+apt-get install -y git puppet-agent r10k
 
 echo "[PUPPET]: "
 export PATH=/opt/puppetlabs/bin:$PATH
@@ -29,4 +29,4 @@ cd /etc/puppetlabs/puppet
 r10k deploy environment -p -v
 
 echo "[PUPPET]: Running puppet"
-puppet apply /etc/puppetlabs/puppet/environments/production/manifests/site.pp --confdir=/etc/puppetlabs/puppet --environment=production --environmentpath=/etc/puppetlabs/puppet/environments/
+# puppet apply /etc/puppetlabs/puppet/environments/production/manifests/site.pp --confdir=/etc/puppetlabs/puppet --environment=production --environmentpath=/etc/puppetlabs/puppet/environments/
