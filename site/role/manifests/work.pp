@@ -1,4 +1,4 @@
-class role::all inherits role::default {
+class role::work inherits role::default {
   include profile::redis
   # include profile::dns
   # include profile::memcached
