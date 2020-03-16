@@ -20,9 +20,11 @@ classes:
 #  packages: [
 #    curl, mbstring, xml, json, intl, xdebug
 #  ]
-#
-#tools: [mc, htop, wget, curl]
-#
+
+# List of tools that should present on machine
+# Perform in a way like: apt-get install <package>
+tools: [mc, htop, wget, curl]
+
 #db:
 #  mysql:
 #    root_password: root
