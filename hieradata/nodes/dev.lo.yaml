@@ -21,8 +21,8 @@
 #      codecoverage, codesniffer, igbinary, geoip, imagick,
 #      memcache, memcached, redis, xdebug, ssh2
 #  ]
-#
-#tools: [imagemagick]
-#
+
+tools: [imagemagick]
+
 #bind9:
 #  dns: ['8.8.8.8', '8.8.4.4']

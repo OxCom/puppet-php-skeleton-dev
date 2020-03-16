@@ -3,7 +3,7 @@
 puppet_enterprise::master::puppetserver::jruby_max_requests_per_instance: 0
 
 classes:
-  - role::default
+    - role::default
 
 #composer: true
 
