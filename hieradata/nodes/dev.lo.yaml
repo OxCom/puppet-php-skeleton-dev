@@ -1,5 +1,6 @@
 ---
-# Node with all in one
+classes:
+    - role::work
 
 #composer: true
 #
