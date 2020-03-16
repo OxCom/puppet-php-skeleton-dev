@@ -1,9 +1,9 @@
 class services::openssl {
-  info("Initialize")
+    info("Initialize")
 
-  # https://www.openssl.org/source/
-  class { '::openssl':
-    package_ensure         => latest,
-    ca_certificates_ensure => latest,
-  }
+    # https://www.openssl.org/source/
+    class { '::openssl':
+        package_ensure         => 'present',
+        ca_certificates_ensure => 'present',
+    }
 }
