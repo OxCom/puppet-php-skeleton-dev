@@ -29,4 +29,4 @@ cd /etc/puppetlabs/puppet
 r10k deploy environment -p -v
 
 echo "[PUPPET]: Running puppet"
-# puppet apply /etc/puppetlabs/puppet/environments/production/manifests/site.pp --confdir=/etc/puppetlabs/puppet --environment=production --environmentpath=/etc/puppetlabs/puppet/environments/
+puppet apply /etc/puppetlabs/puppet/environments/production/manifests/site.pp --confdir=/etc/puppetlabs/puppet --environment=production --environmentpath=/etc/puppetlabs/puppet/environments/
