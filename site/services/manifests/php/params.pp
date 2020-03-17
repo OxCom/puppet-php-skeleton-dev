@@ -1,14 +1,11 @@
 class services::php::params {
-  if $::osfamily != 'Debian' {
-    fail('This module only works on Debian or derivatives like Ubuntu')
-  }
+  # $domain   = lookup('nginx.domain', String, 'first', $::domain)
 
-  # https://puppet.com/docs/puppet/4.10/hiera_use_function.html
-  $versions = []
-  $packages = []
+  $versions = lookup('php.versions', Array, 'first', [])
+  $packages = lookup('php.packages', Array, 'deep', [])
   $pools    = {}
-  $composer = false
+  $composer = lookup('composer', Boolean, 'first', false)
 
-  # this is a list of packages without version prefix
+  # List of packages without version prefix
   $common   = ['codesniffer', 'codecoverage', 'xdebug']
 }

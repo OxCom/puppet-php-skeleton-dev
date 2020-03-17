@@ -13,20 +13,20 @@ class services::php (
         packages => $packages,
     }
 
-    class { 'services::php::pool':
-        versions => $versions,
-        pools    => $pools,
-    }
+    # class { 'services::php::pool':
+    #     versions => $versions,
+    #     pools    => $pools,
+    # }
 
     # https://ask.puppet.com/question/2533/about-puppet-class-dependencies/
     Class['services::php::ppa']
-      -> Class['services::php::packages']
-      -> Class['services::php::pool']
-
-    if $composer {
-        include services::php::composer
-
-        Class['services::php::packages']
-          -> Class['services::php::composer']
-    }
+        -> Class['services::php::packages']
+    #   -> Class['services::php::pool']
+    #
+    # if $composer {
+    #     include services::php::composer
+    #
+    #     Class['services::php::packages']
+    #       -> Class['services::php::composer']
+    # }
 }
