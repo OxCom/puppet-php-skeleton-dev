@@ -27,27 +27,22 @@ class services::php::packages (
 
         # List of required packages
         unique($packages).each |Integer $index, String $package| {
-            # List of packages has not version prefix and should be installed as 'php-${package}'
-            if member($services::php::params::common, $package) {
-                if defined(Package["php-$package"]) {
-                    next()
+            if defined(Package["$version-$package"]) {
+                info("Installing package '$version-$package'.")
+                package { ["$version-$package"]:
+                    ensure  => present,
+                    require => Class['services::php::ppa']
                 }
-
+            } else {
                 info("Installing package 'php-$package'.")
                 package { ["php-$package"]:
                     ensure  => present,
                     require => Class['services::php::ppa']
                 }
-            } else {
-              info("Installing package '$version-$package'.")
-                if defined(Package["php-$package"]) {
-                    next()
-                }
+            }
 
-                package { ["$version-$package"]:
-                    ensure  => present,
-                    require => Class['services::php::ppa']
-                }
+            if defined(Package["php-$package"]) {
+                next()
             }
         }
     }
