@@ -8,6 +8,7 @@ class services::php::composer {
     $owner = 'root'
     $group = 'root'
 
+    info("Fetch latest stable version")
     exec { 'composer-install':
         command     => "/usr/bin/wget --no-check-certificate -O $composer_path $web_path",
         environment => [ "COMPOSER_HOME=$install_path" ],
@@ -24,6 +25,7 @@ class services::php::composer {
         require => Exec['composer-install'],
     }
 
+    info("Setup cron job for autoupdate")
     cron { 'composer-update':
         ensure  => 'present',
         command => "COMPOSER_HOME=$install_path $composer_path self-update -q",
