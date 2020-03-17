@@ -1,7 +1,9 @@
 class services::npm {
     info("Initialize")
 
-    class { '::nodejs':
-        npm_package_ensure => 'present',
-    }
+    class { 'nodejs': }
+
+    # class { '::nodejs':
+    #     npm_package_ensure => 'present',
+    # }
 }
