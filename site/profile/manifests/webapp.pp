@@ -1,5 +1,5 @@
 class profile::webapp {
-  # include services::docker::params
+  include services::docker::params
   # include services::php::params
   # include services::nginx::params
 
