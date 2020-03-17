@@ -8,7 +8,7 @@ upstream <%= version %>-fpm {
 <% @projects.each do |project, pools| -%>
 ###### [<%= project %>] ######
 <% pools.each do |pool| %>
-upstream <%= version %>-<%= project %>-<%= pool['name'] %>-fpm {
+upstream <%= pool['php'] %>-<%= project %>-<%= pool['name'] %>-fpm {
     server unix:/var/run/php/<%= pool['php'] %>-<%= project %>-<%= pool['name'] %>-fpm.sock;
 }
 <% end %>
