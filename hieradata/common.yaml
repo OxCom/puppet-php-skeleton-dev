@@ -26,10 +26,12 @@ php:
 tools: [mc, htop, wget, curl]
 
 db:
-    mysql:
+    mariadb:
         root_password: root
         remove_default_accounts: true
-        override_options: {}
+        override_options:
+            mysqld:
+                bind-address: '0.0.0.0'
 
 #bind9:
 #  dns: ['8.8.8.8', '8.8.4.4']

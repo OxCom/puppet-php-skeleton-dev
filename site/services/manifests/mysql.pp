@@ -1,14 +1,31 @@
 class services::mysql {
-  info("Initialize")
+    info("Initialize")
 
-  $password = lookup('db.mysql.root_password', String, 'first', 'root')
-  $remove = lookup('db.mysql.remove_default_accounts', Boolean, 'first', true)
-  $options = lookup('db.mysql.override_options', Hash, 'first', {})
+    $password = lookup('db.mariadb.root_password', String, 'first', 'root')
+    $remove = lookup('db.mariadb.remove_default_accounts', Boolean, 'first', true)
+    $options = lookup('db.mariadb.override_options', Hash, 'first', {})
 
-  # https://github.com/puppetlabs/puppetlabs-mysql
-  class { '::mysql::server':
-    root_password           => $password,
-    remove_default_accounts => $remove,
-    override_options        => $options
-  }
+    include apt
+    apt::source { 'mariadb':
+        location => 'http://sfo1.mirrors.digitalocean.com/mariadb/repo/10.4/ubuntu',
+        release  => $::lsbdistcodename,
+        repos    => 'main',
+        key      => {
+            id     => '177F4010FE56CA3336300305F1656F24C74CD1D8',
+            server => 'hkp://keyserver.ubuntu.com:80',
+        },
+        include  => {
+            src => false,
+            deb => true,
+        }
+    }
+
+    class { '::mysql::server':
+        package_name            => 'mariadb-server',
+        root_password           => $password,
+        remove_default_accounts => $remove,
+        override_options        => $options
+    }
+
+    Apt::Source['mariadb'] ~> Class['apt::update'] -> Class['::mysql::server']
 }
