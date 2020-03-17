@@ -14,13 +14,13 @@ projects:
 php:
     composer: true
     versions: [php7.1, php7.3, php7.4]
-
-#  packages: [
-#      opcache, gd, bcmath, curl, intl, json, mbstring,
-#      mysql, readline, soap, sqlite3, tidy, xml, zip,
-#      codecoverage, codesniffer, igbinary, geoip, imagick,
-#      memcache, memcached, redis, xdebug, ssh2
-#  ]
+    packages: [
+        opcache, gd, bcmath, curl, intl, json, mbstring,
+        mysql, readline, soap, sqlite3, tidy, xml, zip,
+        codecoverage, codesniffer, igbinary, geoip, imagick,
+        redis, xdebug, ssh2,
+        bcmath, acpu
+    ]
 
 
 tools: [imagemagick]

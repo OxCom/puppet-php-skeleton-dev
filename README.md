@@ -3,7 +3,7 @@ This is ENVIRONMENT branch for [Puppet](https://puppet.com/) configuration that 
 
 ## Run example
 ```bash
-$ cd examples
+$ vagrant plugin install vagrant-hostsupdater
 $ vagraunt up
 ```
 
