@@ -2,22 +2,18 @@
 classes:
     - role::work
 
-#projects:
-#    warface:
-#        - {name: 'www', php: php7.0}
-#        - {name: 'imageproxy', php: php5.6}
+projects:
+    cryengine:
+        - {name: www, php: php7.3}
+        - {name: forum, php: php7.1}
+        - {name: cuas, php: php7.3}
+        - {name: mage, php: php7.1}
+        - {name: gs, php: php7.4}
 
 
 php:
     composer: true
     versions: [php7.1, php7.3, php7.4]
-    pools:
-        cryengine:
-            - {name: www, php: php7.3}
-            - {name: forum, php: php7.1}
-            - {name: cuas, php: php7.3}
-            - {name: mage, php: php7.1}
-            - {name: gs, php: php7.4}
 
 #  packages: [
 #      opcache, gd, bcmath, curl, intl, json, mbstring,

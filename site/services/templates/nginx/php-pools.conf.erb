@@ -11,7 +11,7 @@ upstream <%= version %>-fpm {
 <% @versions.each do |version| %>
 <% pools.each do |pool| %>
 upstream <%= version %>-<%= project %>-<%= pool['name'] %>-fpm {
-  server unix:/var/run/php/<%= version %>-<%= project %>-<%= pool['name'] %>-fpm.sock;
+    server unix:/var/run/php/<%= pool['php'] %>-<%= project %>-<%= pool['name'] %>-fpm.sock;
 }
 
 <% end %>

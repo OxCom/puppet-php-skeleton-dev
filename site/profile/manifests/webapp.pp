@@ -7,8 +7,8 @@ class profile::webapp {
   include services::php::params
   include services::php
 
-  # include services::nginx::params
-  # include services::nginx
+  include services::nginx::params
+  include services::nginx
 
   # $versions = lookup('php.versions', Array, 'first', ['php7.0'])
   # $packages = lookup('php.packages', Array, 'deep', ['php7.0'])

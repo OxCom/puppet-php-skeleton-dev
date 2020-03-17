@@ -1,9 +1,5 @@
 class services::nginx::params {
-  if $::osfamily != 'Debian' {
-    fail('This module only works on Debian or derivatives like Ubuntu')
-  }
-
-  $projects = {}
-  $versions = []
-  $domain = 'lo'
+    $projects = lookup('projects', Hash, 'first', {})
+    $versions = lookup('php.versions', Array, 'first', ['php7ю4'])
+    $domain = $::fqdn
 }
