@@ -2,7 +2,7 @@ class services::php::composer {
     info("Initialize")
 
     # TODO: parameters
-    $web_path = 'https://getcomposer.org/download/${version}/composer.phar'
+    $web_path = 'https://getcomposer.org/composer-stable.phar'
     $install_path = '/usr/local/bin'
     $composer_path = "$install_path/composer"
     $owner = 'root'
