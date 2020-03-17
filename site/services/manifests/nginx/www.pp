@@ -20,7 +20,7 @@ class services::nginx::www (
                 ensure  => 'directory',
                 owner   => 'www-data',
                 group   => 'www-data',
-                mode    => '0755',
+                mode    => '0775',
                 require => [
                     Package['nginx-full']
                 ]
@@ -60,7 +60,7 @@ class services::nginx::www (
                 ensure  => file,
                 owner   => 'www-data',
                 group   => 'www-data',
-                mode    => '0755',
+                mode    => '0775',
                 content => epp('services/nginx/index.php.epp'),
                 require => [
                     File["/var/www/$name.$project.$domain/public"]
