@@ -19,13 +19,6 @@ Vagrant.configure("2") do |config|
     v.customize ["modifyvm", :id, "--audio", "none"]
   end
 
-  config.ssh.forward_agent = true
-
-  config.vm.provision :shell do |shell|
-    shell.inline = "touch $1 && chmod 0440 $1 && echo $2 > $1"
-    shell.args = %q{/etc/sudoers.d/root_ssh_agent "Defaults env_keep += \"SSH_AUTH_SOCK\""}
-  end
-
   # before
   config.trigger.before :up do |trigger|
     trigger.info = "Prepare box folder"

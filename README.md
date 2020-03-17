@@ -17,7 +17,7 @@ $ vagraunt up
         - PHP-FPM upstream
         - Web-Sites
     - OpenSSL
-    - MySQL
+    - MySQL (MariaDB)
     - Bind9
     - NodeJS + NPM
     - Memcached
@@ -32,24 +32,10 @@ $ vagraunt up
     - /var/log/nginx/{project}_access.log
 
 ###### Dev Notes
-- before test vagrant run SSH-AGENT:
-```bash
-$ eval $(ssh-agent -s)
-Agent pid 5984
-
-$ ssh-add ~/.ssh/id_rsa
-Identity added: /c/Users/OxCom/.ssh/id_rsa (/c/Users/OxCom/.ssh/id_rsa)
-```
-
-or
-
-On windows you have to run Putty Auth Agent
-- Install [Vagrant Triggers](https://github.com/emyl/vagrant-triggers)
- 
+Put your ssh keys to ```.ssh``` folder 
 
 #### Modules
 - [APT Module](https://github.com/puppetlabs/puppetlabs-apt)
-- [Composer Module](https://github.com/willdurand/puppet-composer)
 - [MySQL Module](https://github.com/puppetlabs/puppetlabs-mysql)
 - [OpenSSL Module](https://forge.puppet.com/camptocamp/openssl)
 - [Docker](https://forge.puppet.com/puppetlabs/docker)

@@ -2,6 +2,7 @@
 .librarian/
 .tmp/
 .vagrant/
+.ssh/
 box/
 
 # modules
