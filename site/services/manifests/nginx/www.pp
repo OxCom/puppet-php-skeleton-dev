@@ -73,7 +73,7 @@ class services::nginx::www (
             ]
         }
 
-        openssl::certificate::x509 { "/etc/nginx/ssl/$project.$domain.crt":
+        openssl::certificate::x509 { "$project.$domain.crt":
             ensure       => present,
             country      => 'CH',
             organization => "$project.$domain Inc",
