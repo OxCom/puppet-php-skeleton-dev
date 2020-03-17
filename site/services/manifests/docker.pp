@@ -1,5 +1,3 @@
-include services::docker::params
-
 class services::docker (
     String $version = $services::docker::params::version,
     Array $users    = $services::docker::params::users
