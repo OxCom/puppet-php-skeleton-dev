@@ -29,17 +29,9 @@ Vagrant.configure("2") do |config|
   # before
   config.trigger.before :up do |trigger|
     trigger.info = "Prepare box folder"
-    trigger.ignore = [:destroy, :halt]
-    FileUtils.rm_rf('./box/puppet')
-    FileUtils.mkdir_p('./box/puppet/environments/production')
     Dir.glob('./*.log').each { |file| FileUtils.rm_rf(file)}
-
+    FileUtils.rm_rf('./box/puppet')
     FileUtils.copy_entry "./puppet-ctrl", "./box/puppet"
-    FileUtils.copy_entry "./hieradata", "./box/puppet/environments/production/hieradata"
-    FileUtils.copy_entry "./manifests", "./box/puppet/environments/production/manifests"
-    FileUtils.copy_entry "./site", "./box/puppet/environments/production/site"
-    FileUtils.cp "./environment.conf", "./box/puppet/environments/production/environment.conf"
-    FileUtils.cp "./Puppetfile", "./box/puppet/environments/production/Puppetfile"
   end
 
   # Provision

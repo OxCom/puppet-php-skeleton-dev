@@ -25,5 +25,9 @@ classes:
 
 tools: [imagemagick]
 
+docker:
+    # Allow users to execute docker commands
+    users: ['vagrant']
+
 #bind9:
 #  dns: ['8.8.8.8', '8.8.4.4']
