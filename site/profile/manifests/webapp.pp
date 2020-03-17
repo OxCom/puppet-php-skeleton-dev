@@ -7,7 +7,6 @@ class profile::webapp {
   include services::php::params
   include services::php
 
-
   # include services::nginx::params
 
   # $versions = lookup('php.versions', Array, 'first', ['php7.0'])

@@ -20,6 +20,7 @@ php:
     packages: [
         curl, mbstring, xml, json, intl, xdebug
     ]
+    pools: {}
 
 # List of tools that should present on machine
 # Perform in a way like: apt-get install <package>
