@@ -39,11 +39,11 @@ class services::php::packages (
                     require => Class['services::php::ppa']
                 }
             } else {
-                info("Installing package '$version-$package'.")
                 if defined(Package["php-$package"]) {
                     next()
                 }
 
+                info("Installing package '$version-$package'.")
                 package { ["$version-$package"]:
                     ensure  => present,
                     require => Class['services::php::ppa']
