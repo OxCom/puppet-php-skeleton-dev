@@ -58,6 +58,34 @@ class services::nginx::www (
                 ip      => '127.0.0.1',
                 comment => "/var/www/$name.$project.$domain/",
             }
+
+            info("[$project:$name] add host to /etc/hosts")
+        }
+
+        info("[$project] Generate self signed certificate")
+        file { "/etn/nginx/ssl/$project.$domain":
+            ensure  => 'directory',
+            owner   => 'www-data',
+            group   => 'www-data',
+            mode    => '0775',
+            require => [
+                Package['nginx-full']
+            ]
+        }
+
+        ssl_pkey { "/etn/nginx/ssl/$project.$domain/private.key":
+            require => [
+                File["/etn/nginx/ssl/$project.$domain"]
+            ]
+        }
+
+        x509_cert { "/etn/nginx/ssl/$project.$domain/certificate.crt":
+            ensure      => 'present',
+            private_key => "/etn/nginx/ssl/$project.$domain/private.key",
+            days        => 4536,
+            require => [
+                ssl_pkey["/etn/nginx/ssl/$project.$domain/private.key"]
+            ],
         }
     }
 }
