@@ -2,8 +2,6 @@
 classes:
     - role::work
 
-#composer: true
-#
 #projects:
 #    warface:
 #        - {name: 'www', php: php7.0}
