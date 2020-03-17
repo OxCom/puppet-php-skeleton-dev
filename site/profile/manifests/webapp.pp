@@ -5,7 +5,7 @@ class profile::webapp {
 
   class { 'services::docker':
       version  => lookup('docker.version', String, 'first', 'latest'),
-      packages => lookup('docker.users', Array, 'deep', []),
+      users => lookup('docker.users', Array, 'deep', []),
   }
 
   # $versions = lookup('php.versions', Array, 'first', ['php7.0'])
