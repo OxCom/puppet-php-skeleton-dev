@@ -9,7 +9,6 @@ mod 'puppetlabs-mysql', '10.4.0'
 mod 'camptocamp-openssl', '1.14.0'
 mod 'puppet-redis', '5.0.0'
 mod 'puppet-nodejs', '8.0.0'
-mod 'willdurand-composer', '1.2.7'
 
 # mod 'puppetlabs-translate', '1.1.0'
 # mod 'stahnma-epel', '1.3.0'
