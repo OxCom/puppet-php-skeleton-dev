@@ -4,7 +4,7 @@ class services::docker (
 ) inherits services::php::params {
     info("Initialize")
 
-    class { 'docker':
+    class { '::docker':
         version                    => $version,
         docker_users               => $users,
         ensure                     => present,
