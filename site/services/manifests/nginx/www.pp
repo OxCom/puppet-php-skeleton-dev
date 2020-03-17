@@ -52,6 +52,12 @@ class services::nginx::www (
                     File["/etc/nginx/sites-available/$name.$project.conf"]
                 ]
             }
+
+            info("[$project:$name] add host to /etc/hosts")
+            host { "$name.$project.$domain":
+                ip      => '127.0.0.1',
+                comment => "/var/www/$name.$project.$domain/",
+            }
         }
     }
 }
