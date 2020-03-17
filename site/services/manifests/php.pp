@@ -21,8 +21,8 @@ class services::php (
     # https://ask.puppet.com/question/2533/about-puppet-class-dependencies/
     Class['services::php::ppa']
         -> Class['services::php::packages']
-    #   -> Class['services::php::pool']
-    #
+        -> Class['services::php::pool']
+
     # if $composer {
     #     include services::php::composer
     #
