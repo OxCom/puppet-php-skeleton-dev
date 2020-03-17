@@ -87,5 +87,14 @@ class services::nginx::www (
             owner        => 'www-data',
             group        => 'www-data',
         }
+
+        file { '/etc/nginx/snippets/ssl.conf':
+            ensure  => file,
+            content => template('services/nginx/snippet-ssl.erb'),
+            notify  => Service["nginx"],
+            require => [
+                File["/etc/nginx/conf.d/"]
+            ]
+        }
     }
 }
