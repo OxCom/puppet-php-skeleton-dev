@@ -1,9 +1,9 @@
 class profile::webapp {
-  include services::docker::params
+  include services::docker
+
   # include services::php::params
   # include services::nginx::params
 
-  include services::docker
 
   # $versions = lookup('php.versions', Array, 'first', ['php7.0'])
   # $packages = lookup('php.packages', Array, 'deep', ['php7.0'])
