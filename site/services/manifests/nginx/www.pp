@@ -52,20 +52,6 @@ class services::nginx::www (
                     File["/etc/nginx/sites-available/$name.$project.conf"]
                 ]
             }
-
-            # At this point we can extend project installation like git clone, build and e.t.c
-            # by default it will be index.php with php info.
-            info("[$project:$name] dummy index.php")
-            file { "/var/www/$name.$project.$domain/public/index.php":
-                ensure  => file,
-                owner   => 'www-data',
-                group   => 'www-data',
-                mode    => '0775',
-                content => epp('services/nginx/index.php.epp'),
-                require => [
-                    File["/var/www/$name.$project.$domain/public"]
-                ]
-            }
         }
     }
 }
