@@ -19,7 +19,7 @@ class profile::webapp {
   #   domain   => $domain
   # }
   #
-  Class['services::php'] -> Class['services::nginx']
+  # Class['services::php'] -> Class['services::nginx']
 
 
   # include services::docker
