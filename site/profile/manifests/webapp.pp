@@ -4,8 +4,8 @@ class profile::webapp {
   # include services::nginx::params
 
   class { 'services::docker':
-      version  => lookup('docker.version', String, 'first', 'latest'),
-      users => lookup('docker.users', Array, 'deep', []),
+      version  => lookup('docker.version', String, 'first'),
+      users => lookup('docker.users', Array, 'deep'),
   }
 
   # $versions = lookup('php.versions', Array, 'first', ['php7.0'])
