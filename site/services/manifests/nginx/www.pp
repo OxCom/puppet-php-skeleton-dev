@@ -63,7 +63,7 @@ class services::nginx::www (
         }
 
         info("[$project] Generate self signed certificate")
-        file { "/etn/nginx/ssl":
+        file { "/etc/nginx/ssl":
             ensure  => 'directory',
             owner   => 'www-data',
             group   => 'www-data',
@@ -73,24 +73,19 @@ class services::nginx::www (
             ]
         }
 
-        # openssl::certificate::x509 { "/etn/nginx/ssl/$project.$domain.crt":
-        #     ensure       => present,
-        #     country      => 'CH',
-        #     organization => 'Example.com',
-        #     commonname   => $fqdn,
-        #     state        => 'Here',
-        #     locality     => 'Myplace',
-        #     unit         => 'MyUnit',
-        #     altnames     => ['a.com', 'b.com', 'c.com'],
-        #     extkeyusage  => ['serverAuth', 'clientAuth', 'any_other_option_per_openssl'],
-        #     email        => 'contact@foo.com',
-        #     days         => 3456,
-        #     base_dir     => '/var/www/ssl',
-        #     owner        => 'www-data',
-        #     group        => 'www-data',
-        #     password     => 'j(D$',
-        #     force        => false,
-        #     cnf_tpl      => 'my_module/cert.cnf.erb'
-        # }
+        openssl::certificate::x509 { "/etc/nginx/ssl/$project.$domain.crt":
+            ensure       => present,
+            country      => 'CH',
+            organization => "$project.$domain Inc",
+            commonname   => "*.$project.$domain",
+            state        => 'Dummy',
+            locality     => 'VM',
+            unit         => 'Developer instance',
+            email        => "admin@$project.$domain",
+            days         => 3650,
+            base_dir     => '/etc/nginx/ssl',
+            owner        => 'www-data',
+            group        => 'www-data',
+        }
     }
 }
