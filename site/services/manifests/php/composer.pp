@@ -1,7 +1,7 @@
 class services::php::composer {
-  info("Initialize")
+    info("Initialize")
 
-  class { 'composer':
-    build_deps => false,
-  }
+    class { 'composer':
+        build_deps => false,
+    }
 }

@@ -16,6 +16,7 @@ classes:
 #          php: 'php7.0'
 
 php:
+    composer: false
     versions: [php7.4]
     packages: [
         curl, mbstring, xml, json, intl, xdebug

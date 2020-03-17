@@ -11,6 +11,7 @@ classes:
 
 
 php:
+    composer: true
     versions: [php7.1, php7.3, php7.4]
     pools:
         cryengine:

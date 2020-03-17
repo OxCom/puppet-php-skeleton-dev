@@ -23,10 +23,10 @@ class services::php (
         -> Class['services::php::packages']
         -> Class['services::php::pool']
 
-    # if $composer {
-    #     include services::php::composer
-    #
-    #     Class['services::php::packages']
-    #       -> Class['services::php::composer']
-    # }
+    if $composer {
+        include services::php::composer
+
+        Class['services::php::packages']
+            -> Class['services::php::composer']
+    }
 }
