@@ -1,4 +1,4 @@
 class services::docker::params {
-    $version = 'latest'
-    $users = []
+    $version = lookup('docker.version', String, 'first', 'latest')
+    $users = lookup('docker.users', Array, 'deep', [])
 }
