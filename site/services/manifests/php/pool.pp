@@ -47,7 +47,7 @@ class services::php::pool (
                 }
 
                 $file = "/etc/php/$phpN/fpm/pool.d/$project.d/$name.conf"
-                info("[$phpV] Prepare '$name' pool spec in $file")
+                info("[$phpV]: Set '$name' pool spec in $file")
 
                 file { $file:
                     ensure  => file,
