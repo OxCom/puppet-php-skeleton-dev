@@ -21,4 +21,10 @@ class services::nginx::package {
         enable  => "true",
         require => Package["nginx-full"],
     }
+
+    user { 'vagrant':
+        ensure  => present,
+        groups  => ['www-data'],
+        require => Package["nginx-full"],
+    }
 }
