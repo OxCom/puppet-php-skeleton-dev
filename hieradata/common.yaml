@@ -9,28 +9,28 @@ classes:
 
 #nginx:
 #  domain: "%{::fqdn}"
-#
+
 #projects:
 #    development:
 #        - name: 'www'
 #          php: 'php7.0'
-#
-#php:
-#  versions: [php7.0]
-#  packages: [
-#    curl, mbstring, xml, json, intl, xdebug
-#  ]
+
+php:
+    versions: [php7.4]
+    packages: [
+        curl, mbstring, xml, json, intl, xdebug
+    ]
 
 # List of tools that should present on machine
 # Perform in a way like: apt-get install <package>
 tools: [mc, htop, wget, curl]
 
-#db:
-#  mysql:
-#    root_password: root
-#    remove_default_accounts: true
-#    override_options: {}
-#
+db:
+    mysql:
+        root_password: root
+        remove_default_accounts: true
+        override_options: {}
+
 #bind9:
 #  dns: ['8.8.8.8', '8.8.4.4']
 #  zone: "%{::fqdn}"
