@@ -6,6 +6,7 @@ echo "[PUPPET]: ===="
 wget --no-verbose https://apt.puppetlabs.com/puppet6-release-xenial.deb
 dpkg -i --force-confdef puppet6-release-xenial.deb
 rm -f puppet6-release-xenial.deb
+ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 
 echo "[APT]: ===="
 apt-get update
