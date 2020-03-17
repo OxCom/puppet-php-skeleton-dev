@@ -35,6 +35,7 @@ db:
 
 docker:
     # Allow users to execute docker commands
+    version: 'latest'
     users: []
 
 #bind9:

@@ -2,9 +2,10 @@ class profile::webapp {
   include services::docker::params
   include services::docker
 
+  include services::npm
+
   # include services::php::params
   # include services::nginx::params
-
 
   # $versions = lookup('php.versions', Array, 'first', ['php7.0'])
   # $packages = lookup('php.packages', Array, 'deep', ['php7.0'])
@@ -18,8 +19,8 @@ class profile::webapp {
   #   domain   => $domain
   # }
   #
-  # Class['services::php'] -> Class['services::nginx']
+  Class['services::php'] -> Class['services::nginx']
 
-  # include services::npm
+
   # include services::docker
 }
