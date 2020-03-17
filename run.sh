@@ -3,14 +3,15 @@
 echo "Initialize"
 # https://docs.puppet.com/puppet/5.1/install_linux.html
 # https://docs.puppet.com/puppet/5.1/puppet_platform.html
-wget --no-verbose https://apt.puppetlabs.com/puppet5-release-xenial.deb
-dpkg -i --force-confdef puppet5-release-xenial.deb
-rm -f puppet5-release-xenial.deb
+wget --no-verbose https://apt.puppetlabs.com/puppet6-release-xenial.deb
+dpkg -i --force-confdef puppet6-release-xenial.deb
+rm -f puppet6-release-xenial.deb
 
 echo "[APT]: ===="
 apt-get update
 sudo apt-get upgrade -y
-apt install -o Dpkg::Options::="--force-confold" -y git puppet-agent r10k
+apt install -y git puppet-agent r10k
+ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 
 echo "[APT]: Puppet"
 export PATH=/opt/puppetlabs/bin:$PATH
