@@ -1,8 +1,10 @@
 # Puppet PHP skeleton development environment
 This is CONTROL REPO for [Puppet](https://puppet.com/) configuration that allows quickly install all required software for Web-Development of PHP projects.
 
-## Install
+## Install (Ubuntu only)
 ```bash
+wget https://raw.githubusercontent.com/OxCom/puppet-php-skeleton-dev/master/run.sh
+chmod +x run.sh
 ./run.sh
 ```
 
@@ -17,9 +19,7 @@ This is CONTROL REPO for [Puppet](https://puppet.com/) configuration that allows
         - Web-Sites
     - OpenSSL
     - MySQL
-    - Bind9
     - NodeJS + NPM
-    - Memcached
     - Redis
     - Docker
 
@@ -30,25 +30,8 @@ This is CONTROL REPO for [Puppet](https://puppet.com/) configuration that allows
     - /var/log/nginx/{project}_error.log
     - /var/log/nginx/{project}_access.log
 
-###### Dev Notes
-- before test vagrant run SSH-AGENT:
-```bash
-$ eval $(ssh-agent -s)
-Agent pid 5984
-
-$ ssh-add ~/.ssh/id_rsa
-Identity added: /c/Users/OxCom/.ssh/id_rsa (/c/Users/OxCom/.ssh/id_rsa)
-```
-
-or
-
-On windows you have to run Putty Auth Agent
-- Install [Vagrant Triggers](https://github.com/emyl/vagrant-triggers)
- 
-
 #### Modules
 - [APT Module](https://github.com/puppetlabs/puppetlabs-apt)
-- [Composer Module](https://github.com/willdurand/puppet-composer)
 - [MySQL Module](https://github.com/puppetlabs/puppetlabs-mysql)
 - [OpenSSL Module](https://forge.puppet.com/camptocamp/openssl)
 - [Docker](https://forge.puppet.com/puppetlabs/docker)
