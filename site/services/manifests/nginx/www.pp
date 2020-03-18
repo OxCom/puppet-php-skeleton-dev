@@ -9,8 +9,8 @@ class services::nginx::www (
         info("Initialize project $project")
         file { "/etc/nginx/$project.d":
             ensure  => 'directory',
-            owner   => 'www-data',
-            group   => 'www-data',
+            owner   => 'root',
+            group   => 'root',
             mode    => '0775',
             require => [
                 Package['nginx-full']
@@ -28,7 +28,7 @@ class services::nginx::www (
                 ensure  => 'directory',
                 owner   => 'www-data',
                 group   => 'www-data',
-                mode    => '0775',
+                mode    => '0777',
                 require => [
                     Package['nginx-full']
                 ]
@@ -38,8 +38,8 @@ class services::nginx::www (
             file { "/etc/nginx/sites-available/$name.$project.conf":
                 notify  => Service["nginx"],
                 ensure  => file,
-                owner   => 'www-data',
-                group   => 'www-data',
+                owner   => 'root',
+                group   => 'root',
                 mode    => '0755',
                 content => epp('services/nginx/vhost.conf.epp', {
                     'name'    => $name,
@@ -56,8 +56,8 @@ class services::nginx::www (
             file { "/etc/nginx/$project.d/$name.conf":
                 notify  => Service["nginx"],
                 ensure  => file,
-                owner   => 'www-data',
-                group   => 'www-data',
+                owner   => 'root',
+                group   => 'root',
                 mode    => '0755',
                 content => epp('services/nginx/php-server.conf.epp', {
                     'name'    => $name,
@@ -89,9 +89,9 @@ class services::nginx::www (
         info("[$project] Generate self signed certificate")
         file { "/etc/nginx/ssl":
             ensure  => 'directory',
-            owner   => 'www-data',
-            group   => 'www-data',
-            mode    => '0775',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
             require => [
                 Package['nginx-full']
             ]
@@ -108,14 +108,16 @@ class services::nginx::www (
             email        => "admin@$project.$domain",
             days         => 3650,
             base_dir     => '/etc/nginx/ssl',
-            owner        => 'www-data',
-            group        => 'www-data',
+            owner        => 'root',
+            group        => 'root',
         }
 
         file { "/etc/nginx/$project.d/ssl.conf":
             ensure  => file,
             content => template('services/nginx/ssl.conf.erb'),
             notify  => Service["nginx"],
+            owner   => 'root',
+            group   => 'root',
             require => [
                 File["/etc/nginx/$project.d"]
             ]
@@ -125,9 +127,9 @@ class services::nginx::www (
     info("Generate snippets")
     file { '/etc/nginx/snippets':
         ensure  => 'directory',
-        owner   => 'www-data',
-        group   => 'www-data',
-        mode    => '0775',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
         require => [
             Package['nginx-full']
         ]
@@ -138,6 +140,8 @@ class services::nginx::www (
         ensure  => file,
         content => template('services/nginx/snippet/ssl.conf.erb'),
         notify  => Service["nginx"],
+        owner   => 'root',
+        group   => 'root',
         require => [
             File['/etc/nginx/snippets']
         ]
@@ -148,6 +152,8 @@ class services::nginx::www (
         ensure  => file,
         content => template('services/nginx/snippet/gzip.conf.erb'),
         notify  => Service["nginx"],
+        owner   => 'root',
+        group   => 'root',
         require => [
             File['/etc/nginx/snippets']
         ]
@@ -158,6 +164,8 @@ class services::nginx::www (
         ensure  => file,
         content => template('services/nginx/snippet/static.conf.erb'),
         notify  => Service["nginx"],
+        owner   => 'root',
+        group   => 'root',
         require => [
             File['/etc/nginx/snippets']
         ]
