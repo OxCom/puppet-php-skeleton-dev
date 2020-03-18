@@ -10,4 +10,6 @@ server {
 
     include <%= $project %>.d/<%= $name %>.conf;
     include <%= $project %>.d/ssl.conf;
+    include snippets/gzip.conf;
+    include snippets/static.conf;
 }
