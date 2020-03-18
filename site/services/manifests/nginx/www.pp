@@ -11,7 +11,7 @@ class services::nginx::www (
             ensure  => 'directory',
             owner   => 'root',
             group   => 'root',
-            mode    => '0775',
+            mode    => '0644',
             require => [
                 Package['nginx-full']
             ]
@@ -40,7 +40,7 @@ class services::nginx::www (
                 ensure  => file,
                 owner   => 'root',
                 group   => 'root',
-                mode    => '0755',
+                mode    => '0644',
                 content => epp('services/nginx/vhost.conf.epp', {
                     'name'    => $name,
                     'php'     => $sub['php'],
@@ -58,7 +58,7 @@ class services::nginx::www (
                 ensure  => file,
                 owner   => 'root',
                 group   => 'root',
-                mode    => '0755',
+                mode    => '0644',
                 content => epp('services/nginx/php-server.conf.epp', {
                     'name'    => $name,
                     'php'     => $sub['php'],
@@ -91,7 +91,7 @@ class services::nginx::www (
             ensure  => 'directory',
             owner   => 'root',
             group   => 'root',
-            mode    => '0755',
+            mode    => '0644',
             require => [
                 Package['nginx-full']
             ]
@@ -118,6 +118,7 @@ class services::nginx::www (
             notify  => Service["nginx"],
             owner   => 'root',
             group   => 'root',
+            mode    => '0644',
             require => [
                 File["/etc/nginx/$project.d"]
             ]
@@ -129,7 +130,7 @@ class services::nginx::www (
         ensure  => 'directory',
         owner   => 'root',
         group   => 'root',
-        mode    => '0755',
+        mode    => '0644',
         require => [
             Package['nginx-full']
         ]
