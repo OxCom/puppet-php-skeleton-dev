@@ -58,8 +58,6 @@ class services::nginx::www (
                 ip      => '127.0.0.1',
                 comment => "/var/www/$name.$project.$domain/",
             }
-
-            info("[$project:$name] add host to /etc/hosts")
         }
 
         info("[$project] Generate self signed certificate")
