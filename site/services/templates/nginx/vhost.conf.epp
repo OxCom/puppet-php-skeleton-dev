@@ -8,6 +8,6 @@ server {
     error_log  /var/log/nginx/<%= $name %>.<%= $project %>.<%= $domain %>_error.log error;
     access_log /var/log/nginx/<%= $name %>.<%= $project %>.<%= $domain %>_access.log;
 
-    include cryengine.d/<%= $name %>.conf;
-    include cryengine.d/ssl.conf;
+    include <%= $project %>.d/<%= $name %>.conf;
+    include <%= $project %>.d/ssl.conf;
 }
