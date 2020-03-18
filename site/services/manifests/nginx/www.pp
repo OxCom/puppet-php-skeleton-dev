@@ -7,9 +7,17 @@ class services::nginx::www (
 
     $projects.each |String $project, Array $list| {
         info("Initialize project $project")
+        file { "/etc/nginx/$project.d":
+            ensure  => 'directory',
+            owner   => 'www-data',
+            group   => 'www-data',
+            mode    => '0775',
+            require => [
+                Package['nginx-full']
+            ]
+        }
 
         $list.each |Integer $index, Hash $sub| {
-            # Create folder for each project
             $name = $sub['name'];
             info("[$project:$name] Sub porject directories /var/www/$name.$project.$domain")
 
@@ -26,14 +34,14 @@ class services::nginx::www (
                 ]
             }
 
-            info("[$project:$name] add vHost /etc/nginx/sites-available/$name.$project.conf")
+            info("[$project:$name] set vHost config in /etc/nginx/sites-available/$name.$project.conf")
             file { "/etc/nginx/sites-available/$name.$project.conf":
                 notify  => Service["nginx"],
                 ensure  => file,
                 owner   => 'www-data',
                 group   => 'www-data',
                 mode    => '0755',
-                content => epp('services/nginx/dummy.conf.epp', {
+                content => epp('services/nginx/vhost.conf.epp', {
                     'name'    => $name,
                     'php'     => $sub['php'],
                     'project' => $project,
@@ -41,6 +49,24 @@ class services::nginx::www (
                 }),
                 require => [
                     File["/var/www/$name.$project.$domain/public"]
+                ]
+            }
+
+            info("[$project:$name] set host config in /etc/nginx/$project.d/$name.conf")
+            file { "/etc/nginx/$project.d/$name.conf":
+                notify  => Service["nginx"],
+                ensure  => file,
+                owner   => 'www-data',
+                group   => 'www-data',
+                mode    => '0755',
+                content => epp('services/nginx/php-server.conf.epp', {
+                    'name'    => $name,
+                    'php'     => $sub['php'],
+                    'project' => $project,
+                    'domain'  => $domain
+                }),
+                require => [
+                    File["/etc/nginx/$project.d"]
                 ]
             }
 
@@ -86,13 +112,54 @@ class services::nginx::www (
             group        => 'www-data',
         }
 
-        file { '/etc/nginx/snippets/ssl.conf':
+        file { "/etc/nginx/$project.d/ssl.conf":
             ensure  => file,
-            content => template('services/nginx/snippet-ssl.erb'),
+            content => template('services/nginx/ssl.conf.erb'),
             notify  => Service["nginx"],
             require => [
-                File["/etc/nginx/conf.d/"]
+                File["/etc/nginx/$project.d"]
             ]
         }
+    }
+
+    info("Generate snippets")
+    file { '/etc/nginx/snippets':
+        ensure  => 'directory',
+        owner   => 'www-data',
+        group   => 'www-data',
+        mode    => '0775',
+        require => [
+            Package['nginx-full']
+        ]
+    }
+
+    info("[Snippet]: SSL")
+    file { '/etc/nginx/snippets/ssl.conf':
+        ensure  => file,
+        content => template('services/nginx/snippet/ssl.conf.erb'),
+        notify  => Service["nginx"],
+        require => [
+            File['/etc/nginx/snippets']
+        ]
+    }
+
+    info("[Snippet]: GZip")
+    file { '/etc/nginx/snippets/gzip.conf':
+        ensure  => file,
+        content => template('services/nginx/snippet/gzip.conf.erb'),
+        notify  => Service["nginx"],
+        require => [
+            File['/etc/nginx/snippets']
+        ]
+    }
+
+    info("[Snippet]: Static")
+    file { '/etc/nginx/snippets/static.conf':
+        ensure  => file,
+        content => template('services/nginx/snippet/static.conf.erb'),
+        notify  => Service["nginx"],
+        require => [
+            File['/etc/nginx/snippets']
+        ]
     }
 }
