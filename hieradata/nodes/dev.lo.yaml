@@ -9,7 +9,7 @@ projects:
         - {name: cuas, php: php7.3}
         - {name: mage, php: php7.1}
         - {name: gs, php: php7.4}
-
+        - {name: styleguide, php: php7.4}
 
 php:
     composer: true
@@ -23,7 +23,7 @@ php:
     ]
 
 
-tools: [imagemagick]
+tools: [imagemagick, webp]
 
 docker:
     # Allow users to execute docker commands
