@@ -19,7 +19,7 @@ php:
         mysql, readline, soap, sqlite3, tidy, xml, zip,
         codecoverage, codesniffer, igbinary, geoip, imagick,
         redis, xdebug, ssh2,
-        bcmath, apcu
+        bcmath, apcu, mcrypt
     ]
 
 
