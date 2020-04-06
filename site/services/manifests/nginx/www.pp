@@ -46,7 +46,7 @@ class services::nginx::www (
             }
 
             info("[$project:$name] add root directory: $root")
-            file { root :
+            file { $root :
                 ensure  => 'directory',
                 owner   => 'www-data',
                 group   => 'www-data',
