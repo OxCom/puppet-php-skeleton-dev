@@ -19,11 +19,11 @@ php:
         mysql, readline, soap, sqlite3, tidy, xml, zip,
         codecoverage, codesniffer, igbinary, geoip, imagick,
         redis, xdebug, ssh2,
-        bcmath, apcu, mcrypt
+        bcmath, apcu
     ]
 
 
-tools: [imagemagick, webp]
+tools: [imagemagick, webp, php7.1-mcrypt]
 
 docker:
     # Allow users to execute docker commands
