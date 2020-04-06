@@ -17,6 +17,23 @@ class services::nginx::www (
             ]
         }
 
+        info("[$project:$name] add CORS for subdomains in /etc/nginx/$project.d/00-cors.conf")
+        file { "/etc/nginx/$project.d/00-cors.conf":
+            notify  => Service["nginx"],
+            ensure  => file,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            content => epp("services/nginx/cors.conf.epp", {
+                'name'    => $name,
+                'project' => $project,
+                'domain'  => $domain
+            }),
+            require => [
+                File["/etc/nginx/$project.d"]
+            ]
+        }
+
         $list.each |Integer $index, Hash $sub| {
             $name = $sub['name'];
             $configTpl = $sub['tpl'];

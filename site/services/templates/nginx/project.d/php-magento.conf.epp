@@ -137,8 +137,8 @@ location ~ cron\.php {
 }
 
 location ~ (index|get|static|report|404|503)\.php$ {
-    add_header "Access-Control-Allow-Origin"      $ce_cors_orig;
-    add_header "Access-Control-Allow-Credentials" $ce_cors_cred;
+    add_header "Access-Control-Allow-Origin"      <%= $project %>_cors_orig;
+    add_header "Access-Control-Allow-Credentials" <%= $project %>_cors_cred;
 
     try_files $uri =404;
     fastcgi_pass   <%= $php %>-<%= $project %>-<%= $name %>-fpm;
