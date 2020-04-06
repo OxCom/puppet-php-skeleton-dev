@@ -25,7 +25,7 @@ php:
 
 # List of tools that should present on machine
 # Perform in a way like: apt-get install <package>
-tools: [mc, htop, wget, curl]
+tools: [mc, htop, wget, curl, tree]
 
 db:
     mariadb:

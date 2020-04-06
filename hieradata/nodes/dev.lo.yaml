@@ -4,12 +4,12 @@ classes:
 
 projects:
     cryengine:
-        - {name: www, php: php7.3}
-        - {name: forum, php: php7.1}
-        - {name: cuas, php: php7.3}
-        - {name: mage, php: php7.1}
-        - {name: gs, php: php7.4}
-        - {name: styleguide, php: php7.4}
+        - {name: www, php: php7.3, tpl: 'symfony'}
+        - {name: forum, php: php7.1, tpl: 'phpbb'}
+        - {name: cuas, php: php7.3, tpl: 'symfony'}
+        - {name: mage, php: php7.1, tpl: 'magento'}
+        - {name: gs, php: php7.4, , tpl: 'symfony'}
+        - {name: styleguide, php: php7.4, tpl: 'default'}
 
 php:
     composer: true

@@ -2,9 +2,6 @@ server {
     listen 443 ssl;
     server_name <%= $name %>.<%= $project %>.<%= $domain %>;
 
-    root /var/www/<%= $name %>.<%= $project %>.<%= $domain %>/public;
-    index index.php;
-
     error_log  /var/log/nginx/<%= $name %>.<%= $project %>.<%= $domain %>_error.log error;
     access_log /var/log/nginx/<%= $name %>.<%= $project %>.<%= $domain %>_access.log;
 

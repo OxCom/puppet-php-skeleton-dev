@@ -19,18 +19,40 @@ class services::nginx::www (
 
         $list.each |Integer $index, Hash $sub| {
             $name = $sub['name'];
-            info("[$project:$name] Sub porject directories /var/www/$name.$project.$domain")
+            $configTpl = $sub['tpl'];
 
-            file { [
-                "/var/www/$name.$project.$domain",
-                "/var/www/$name.$project.$domain/public"
-            ]:
+            info("[$project:$name] Sub porject directories /var/www/$name.$project.$domain")
+            if $configTpl == 'magento' {
+                $root = "/var/www/$name.$project.$domain/pub"
+            }
+            elsif $configTpl == 'symfony' {
+                $root = "/var/www/$name.$project.$domain/public"
+            }
+            elsif $configTpl == 'phpbb' {
+                $root = "/var/www/$name.$project.$domain"
+            }
+            else {
+                $root = "/var/www/$name.$project.$domain/public"
+            }
+
+            file { "/var/www/$name.$project.$domain" :
                 ensure  => 'directory',
                 owner   => 'www-data',
                 group   => 'www-data',
                 mode    => '0777',
                 require => [
                     Package['nginx-full']
+                ]
+            }
+
+            info("[$project:$name] add root directory: $root")
+            file { root :
+                ensure  => 'directory',
+                owner   => 'www-data',
+                group   => 'www-data',
+                mode    => '0777',
+                require => [
+                    File["/var/www/$name.$project.$domain"]
                 ]
             }
 
@@ -48,7 +70,7 @@ class services::nginx::www (
                     'domain'  => $domain
                 }),
                 require => [
-                    File["/var/www/$name.$project.$domain/public"]
+                    File["/var/www/$name.$project.$domain"]
                 ]
             }
 
@@ -59,7 +81,7 @@ class services::nginx::www (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                content => epp('services/nginx/php-server.conf.epp', {
+                content => epp("services/nginx/project.d/php-$configTpl.conf.epp", {
                     'name'    => $name,
                     'php'     => $sub['php'],
                     'project' => $project,

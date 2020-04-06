@@ -1,3 +1,6 @@
+root /var/www/<%= $name %>.<%= $project %>.<%= $domain %>/public;
+index index.php;
+
 location / {
     try_files $uri /index.php$is_args$args;
 }
