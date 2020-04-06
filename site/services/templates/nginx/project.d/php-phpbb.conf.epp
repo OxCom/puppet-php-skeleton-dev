@@ -24,7 +24,7 @@ location ~ \.php(/|$) {
     fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
     fastcgi_param DOCUMENT_ROOT $realpath_root;
     try_files $uri $uri/ /app.php$is_args$args;
-    fastcgi_pass php7.1-cryengine-forum-fpm;
+    fastcgi_pass <%= $php %>-<%= $project %>-<%= $name %>-fpm;
 }
 
 # Correctly pass scripts for installer
@@ -41,7 +41,7 @@ location /install/ {
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         fastcgi_param DOCUMENT_ROOT $realpath_root;
         try_files $uri $uri/ /install/app.php$is_args$args =404;
-        fastcgi_pass php7.1-cryengine-forum-fpm;
+        fastcgi_pass <%= $php %>-<%= $project %>-<%= $name %>-fpm;
     }
 }
 

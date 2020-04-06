@@ -14,7 +14,7 @@ add_header 'mode' 'block';
 location /setup {
     root $MAGE_ROOT;
     location ~ ^/setup/index.php {
-        fastcgi_pass   php71-cryengine-magento;
+        fastcgi_pass   <%= $php %>-<%= $project %>-<%= $name %>-fpm;
         fastcgi_index  index.php;
         fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
         include        fastcgi_params;
@@ -34,7 +34,7 @@ location /update {
 
     location ~ ^/update/index.php {
         fastcgi_split_path_info ^(/update/index.php)(/.+)$;
-        fastcgi_pass   php71-cryengine-magento;
+        fastcgi_pass   <%= $php %>-<%= $project %>-<%= $name %>-fpm;
         fastcgi_index  index.php;
         fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
         fastcgi_param  PATH_INFO        $fastcgi_path_info;
@@ -141,7 +141,7 @@ location ~ (index|get|static|report|404|503)\.php$ {
     add_header "Access-Control-Allow-Credentials" $ce_cors_cred;
 
     try_files $uri =404;
-    fastcgi_pass   php71-cryengine-magento;
+    fastcgi_pass   <%= $php %>-<%= $project %>-<%= $name %>-fpm;
 
     fastcgi_param  PHP_FLAG  "session.auto_start=off \n suhosin.session.cryptua=off";
     fastcgi_param  PHP_VALUE "memory_limit=512M \n max_execution_time=600";
