@@ -45,15 +45,17 @@ class services::nginx::www (
                 ]
             }
 
-            info("[$project:$name] add root directory: $root")
-            file { "$root" :
-                ensure  => 'directory',
-                owner   => 'www-data',
-                group   => 'www-data',
-                mode    => '0777',
-                require => [
-                    File["/var/www/$name.$project.$domain"]
-                ]
+            if $root != "/var/www/$name.$project.$domain" {
+                info("[$project:$name] add root directory: $root")
+                file { "$root" :
+                    ensure  => 'directory',
+                    owner   => 'www-data',
+                    group   => 'www-data',
+                    mode    => '0777',
+                    require => [
+                        File["/var/www/$name.$project.$domain"]
+                    ]
+                }
             }
 
             info("[$project:$name] set vHost config in /etc/nginx/sites-available/$name.$project.conf")
