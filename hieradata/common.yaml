@@ -5,9 +5,6 @@ puppet_enterprise::master::puppetserver::jruby_max_requests_per_instance: 0
 classes:
     - role::default
 
-#nginx:
-#  domain: "%{::fqdn}"
-
 projects: []
 
 php:
@@ -31,8 +28,3 @@ docker:
     # Allow users to execute docker commands
     version: 'latest'
     users: []
-
-#bind9:
-#  dns: ['8.8.8.8', '8.8.4.4']
-#  zone: "%{::fqdn}"
-
