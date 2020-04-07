@@ -15,7 +15,7 @@ php:
     composer: true
     versions: [php7.1, php7.3, php7.4]
     packages: [
-        opcache, gd, curl, intl, json, mbstring, cli,
+        opcache, gd, curl, intl, json, mbstring,
         mysql, readline, soap, sqlite3, tidy, xml, zip,
         codecoverage, codesniffer, igbinary, geoip, imagick,
         redis, xdebug, ssh2,

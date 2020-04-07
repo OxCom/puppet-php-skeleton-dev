@@ -13,7 +13,7 @@ projects: []
 php:
     composer: true
     versions: [php7.4]
-    packages: [curl, cli]
+    packages: [curl]
 
 # List of tools that should present on machine
 # Perform in a way like: apt-get install <package>
