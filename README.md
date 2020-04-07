@@ -18,9 +18,7 @@ $ vagraunt up
         - Web-Sites
     - OpenSSL
     - MySQL (MariaDB)
-    - Bind9
     - NodeJS + NPM
-    - Memcached
     - Redis
     - Docker
 
@@ -31,7 +29,7 @@ $ vagraunt up
     - /var/log/nginx/{project}_error.log
     - /var/log/nginx/{project}_access.log
 
-###### Dev Notes
+###### Dev Notes [WIP]
 Put your ssh keys to ```.ssh``` folder 
 
 #### Modules
