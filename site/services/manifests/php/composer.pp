@@ -35,6 +35,8 @@ class services::php::composer {
         require => File[$composer_path],
     }
 
+    $homes = Dir.entries(root).select { |entry| File.directory? File.join(root, entry) and not entry.in? %w[. ..]}
+
     info("Install global plugin: hirak/prestissimo")
     exec { 'composer-parallel':
         command     => "$composer_path global require -n hirak/prestissimo",
