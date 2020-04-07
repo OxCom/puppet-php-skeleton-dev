@@ -40,7 +40,6 @@ class services::php::composer {
         command     => "$composer_path global install hirak/prestissimo",
         environment => [ "COMPOSER_HOME=$install_path" ],
         user        => $owner,
-        unless      => "/usr/bin/test $($composer_path global show -n 2>&1 | grep hirak/prestissimo)",
         require => Cron['composer-update'],
     }
 }
