@@ -5,24 +5,15 @@ puppet_enterprise::master::puppetserver::jruby_max_requests_per_instance: 0
 classes:
     - role::default
 
-#composer: true
-
 #nginx:
 #  domain: "%{::fqdn}"
 
-#projects:
-#    development:
-#        - name: 'www'
-#          php: 'php7.0'
-#          tpl: 'default'
+projects: []
 
 php:
-    composer: false
+    composer: true
     versions: [php7.4]
-    packages: [
-        curl, mbstring, xml, json, intl, xdebug
-    ]
-    pools: {}
+    packages: [curl, cli]
 
 # List of tools that should present on machine
 # Perform in a way like: apt-get install <package>

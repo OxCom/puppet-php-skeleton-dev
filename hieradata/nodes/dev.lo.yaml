@@ -15,19 +15,15 @@ php:
     composer: true
     versions: [php7.1, php7.3, php7.4]
     packages: [
-        opcache, gd, bcmath, curl, intl, json, mbstring,
+        opcache, gd, curl, intl, json, mbstring, cli,
         mysql, readline, soap, sqlite3, tidy, xml, zip,
         codecoverage, codesniffer, igbinary, geoip, imagick,
         redis, xdebug, ssh2,
         bcmath, apcu
     ]
 
-
 tools: [imagemagick, webp, php7.1-mcrypt]
 
 docker:
     # Allow users to execute docker commands
     users: ['vagrant']
-
-#bind9:
-#  dns: ['8.8.8.8', '8.8.4.4']
