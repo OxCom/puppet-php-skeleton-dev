@@ -36,8 +36,8 @@ class services::php::composer {
     }
 
     $homes = $facts['user_home_dirs']
-    $homes.each |String $user, String $home| {
-        warning("home dir $user : $home")
+    $homes.each |String $home| {
+        warning("home dir /home/$home")
     }
 
     info("Install global plugin: hirak/prestissimo")
