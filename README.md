@@ -8,7 +8,7 @@ All environment settings and puppet confirugration located in [production](https
 ```bash
 wget https://raw.githubusercontent.com/OxCom/puppet-php-skeleton-dev/master/run.sh
 chmod +x run.sh
-./run.sh
+sudo ./run.sh
 ```
 
 #### Provision result
