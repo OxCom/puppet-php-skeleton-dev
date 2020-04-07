@@ -37,10 +37,10 @@ class services::php::composer {
 
     info("Install global plugin: hirak/prestissimo")
     exec { 'composer-parallel':
-        command     => "COMPOSER_HOME=$install_path $composer_path global remove hirak/prestissimo",
+        command     => "$composer_path global install hirak/prestissimo",
         environment => [ "COMPOSER_HOME=$install_path" ],
         user        => $owner,
-        unless      => "COMPOSER_HOME=$install_path $composer_path global show -n 2>&1 | grep hirak/prestissimo",
+        unless      => "$composer_path global show -n 2>&1 | grep hirak/prestissimo",
         require => Cron['composer-update'],
     }
 }
