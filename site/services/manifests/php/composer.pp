@@ -42,7 +42,7 @@ class services::php::composer {
             command     => "$composer_path global require -n hirak/prestissimo",
             environment => [ "COMPOSER_HOME=$home/.composer" ],
             user        => $user,
-            # unless      => "$composer_path global show -n 2>&1 | grep hirak/prestissimo",
+            unless      => "$composer_path global show -n 2>&1 | grep hirak/prestissimo",
             require => Cron['composer-update'],
         }
     }
