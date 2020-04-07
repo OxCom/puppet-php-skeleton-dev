@@ -1,6 +1,10 @@
 Facter.add(:user_home_dirs) do
-  setcode do
-    value = Dir.entries(root).select { |entry| File.directory? File.join(root, entry) and not entry.in? %w[. ..]}
-    value
-  end
+    confine kernel: 'Linux'
+    setcode do
+        home_dirs = {}
+        Etc.passwd do |user|
+          home_dirs[user.name] = user.dir
+        end
+        home_dirs
+    end
 end
