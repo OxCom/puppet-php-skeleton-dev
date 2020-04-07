@@ -35,7 +35,7 @@ class services::php::composer {
         require => File[$composer_path],
     }
 
-    $homes = $::user_home_dirs
+    $homes = $facts['user_home_dirs']
 
     info("Install global plugin: hirak/prestissimo")
     exec { 'composer-parallel':
