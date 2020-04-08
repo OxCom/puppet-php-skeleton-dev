@@ -164,6 +164,8 @@ class services::nginx::www (
                 File["/etc/nginx/$project.d"]
             ]
         }
+
+        # copy cert here /usr/local/share/ca-certificates
     }
 
     info("Generate snippets")
