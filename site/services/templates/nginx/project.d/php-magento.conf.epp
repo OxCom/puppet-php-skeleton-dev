@@ -1,5 +1,5 @@
 set $MAGE_MODE developer;
-set $MAGE_ROOT /var/www/magento.cryengine.com;
+set $MAGE_ROOT /var/www/<%= $name %>.<%= $project %>.<%= $domain %>;
 
 root $MAGE_ROOT/pub;
 
