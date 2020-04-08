@@ -1,4 +1,4 @@
-root /var/www/<%= $name %>.<%= $project %>.<%= $domain %>;
+root /var/www/<%= $name %>.<%= $project %>.<%= $domain %>/web;
 index index.php;
 
 location / {
