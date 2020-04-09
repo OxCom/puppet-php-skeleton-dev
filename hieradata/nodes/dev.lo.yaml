@@ -10,6 +10,10 @@ projects:
         - {name: mage, php: php7.1, tpl: 'magento'}
         - {name: gs, php: php7.4, tpl: 'symfony'}
         - {name: styleguide, php: php7.4, tpl: 'default'}
+    oxcom:
+        - {name: www, php: php7.4, tpl: 'symfony'}
+        - {name: pg, php: php7.4, tpl: 'symfony'}
+        - {name: auto, php: php7.4, tpl: 'symfony'}
 
 php:
     composer: true
