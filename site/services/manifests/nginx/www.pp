@@ -5,6 +5,16 @@ class services::nginx::www (
 ) {
     info("Initialize")
 
+    file { "/etc/nginx/ssl":
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => [
+            Package['nginx-full']
+        ]
+    }
+
     $projects.each |String $project, Array $list| {
         info("Initialize project $project")
         file { "/etc/nginx/$project.d":
@@ -128,16 +138,6 @@ class services::nginx::www (
         }
 
         info("[$project] Generate self signed certificate")
-        file { "/etc/nginx/ssl":
-            ensure  => 'directory',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            require => [
-                Package['nginx-full']
-            ]
-        }
-
         openssl::certificate::x509 { "$project.$domain":
             ensure       => present,
             country      => 'CH',
