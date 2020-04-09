@@ -17,4 +17,7 @@ pm.start_servers = 5
 pm.min_spare_servers = 3
 pm.max_spare_servers = 7
 
+php_admin_value[upload_max_filesize] = 5124M
+php_admin_value[post_max_size] = 512M
+
 php_admin_value[xdebug.idekey] = key-$pool
