@@ -26,7 +26,10 @@ php:
         bcmath, apcu
     ]
 
-tools: [imagemagick, webp, php7.1-mcrypt]
+tools: [
+    imagemagick, webp, php7.1-mcrypt,
+    chromium-codecs-ffmpeg-extra, chromium-browser
+]
 
 docker:
     # Allow users to execute docker commands
