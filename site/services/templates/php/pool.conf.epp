@@ -12,12 +12,24 @@ listen.owner = www-data
 listen.group = www-data
 
 pm = dynamic
-pm.max_children = 20
+pm.max_children = 800
 pm.start_servers = 5
 pm.min_spare_servers = 3
-pm.max_spare_servers = 7
+pm.max_spare_servers = 35
 
 php_admin_value[upload_max_filesize] = 5124M
 php_admin_value[post_max_size] = 512M
+php_admin_value[memory_limit] = 512M
+
+; XDebug config
+; Allow remote hosts to enable debugging, in this case connecting back to the automatically maintained DNS
+; name referencing our workstation (it should be provided by --add-host option): host.docker.internal
+php_admin_flag[xdebug.remote_enable] = on
+php_admin_flag[xdebug.remote_autostart] = on
 
 php_admin_value[xdebug.idekey] = key-$pool
+php_admin_value[xdebug.remote_host] = localhost
+php_admin_value[xdebug.var_display_max_depth] = 256
+php_admin_value[xdebug.var_display_max_children] = 256
+php_admin_value[xdebug.var_display_max_data] = 256
+
