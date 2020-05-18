@@ -22,8 +22,7 @@ php:
         opcache, gd, curl, intl, json, mbstring,
         mysql, readline, soap, sqlite3, tidy, xml, zip,
         codecoverage, codesniffer, igbinary, geoip, imagick,
-        redis, xdebug, ssh2,
-        bcmath, apcu
+        redis, xdebug, ssh2, bcmath, apcu, amqp
     ]
 
 tools: [

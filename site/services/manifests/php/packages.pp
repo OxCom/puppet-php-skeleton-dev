@@ -14,7 +14,7 @@ class services::php::packages (
         info("STEP #${index}: Initialize PHP: ${version}")
 
         # Global packages that will be installed for each version
-        ['cli', 'fpm', 'common', 'dev'].each |Integer $index, String $postfix| {
+        ['cli', 'fpm', 'common', 'dev', 'amqp'].each |Integer $index, String $postfix| {
             if defined(Package["$version-$postfix"]) {
                 next()
             }
