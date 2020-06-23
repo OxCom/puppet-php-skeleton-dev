@@ -15,7 +15,7 @@ class profile::default {
             tidy { 'webp-fix':
                 path    => '/usr/lib/',
                 recurse => true,
-                age => 0,
+                age => '0',
                 matches => ['webp.so', 'webp.la'],
                 require => Package[$tool]
             }
