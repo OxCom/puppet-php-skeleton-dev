@@ -26,8 +26,8 @@ php:
     ]
 
 tools: [
-    imagemagick, webp, php7.1-mcrypt,
-    chromium-codecs-ffmpeg-extra, chromium-browser
+    imagemagick, webp, libwebp-dev,
+    php7.1-mcrypt
 ]
 
 docker:
