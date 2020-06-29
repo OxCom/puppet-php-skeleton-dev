@@ -4,7 +4,7 @@ classes:
 
 projects:
     cryengine:
-        - {name: www, php: php7.3, tpl: 'symfony'}
+        - {name: www, php: php7.4, tpl: 'symfony'}
         - {name: forum, php: php7.4, tpl: 'phpbb'}
         - {name: cuas, php: php7.4, tpl: 'symfony'}
         - {name: mage, php: php7.1, tpl: 'magento'}
