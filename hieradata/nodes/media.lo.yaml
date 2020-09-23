@@ -1,0 +1,9 @@
+---
+classes:
+    - role::media-server
+
+tools: []
+
+docker:
+    # Allow users to execute docker commands
+    users: ['vagrant']

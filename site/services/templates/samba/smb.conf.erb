@@ -1,0 +1,33 @@
+[global]
+workgroup = <%= workgroup %>
+server string = %h server (Samba, Ubuntu)
+dns proxy = no
+
+# few changes to speed up smbd
+strict allocate = Yes
+read raw = Yes
+write raw = Yes
+strict locking = No
+socket options = TCP_NODELAY IPTOS_LOWDELAY SO_RCVBUF=131072 SO_SNDBUF=131072
+min receivefile size = 16384
+use sendfile = true
+aio read size = 16384
+aio write size = 16384
+
+max log size = 1000
+syslog only = no
+syslog = 0
+server role = standalone server
+
+usershare allow guests = <%= allow_guests %>
+
+<% shared.each do |folder| %>
+[<%= pool['name'] %>]
+    path = <%= pool['path'] %>
+    available = yes
+    valid users = <%= pool['users'] %>
+    browsable = yes
+    public = yes
+    writable = <%= pool['writable'] %>
+    executable = yes
+<% end %>
