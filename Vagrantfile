@@ -4,12 +4,13 @@
 require 'fileutils'
 
 VM_BOX_IMAGE = "ubuntu/bionic64"
-VM_BOX_VERSION = "20200311.0.0"
+VM_BOX_VERSION = "20200918.0.0"
 
 Vagrant.configure("2") do |config|
   config.vm.box = VM_BOX_IMAGE
   config.vm.box_version = VM_BOX_VERSION
-  config.vm.hostname = "dev.lo"
+  #config.vm.hostname = "dev.lo"
+  config.vm.hostname = "media.lo"
 
   config.vm.provider :virtualbox do |v|
     v.name = "ubuntu-work"
@@ -23,7 +24,12 @@ Vagrant.configure("2") do |config|
   config.trigger.before :up do |trigger|
     trigger.info = "Prepare box folder"
     Dir.glob('./*.log').each { |file| FileUtils.rm_rf(file)}
-    FileUtils.rm_rf('./box/puppet')
+
+    if (File.directory?('./box/puppet'))
+      FileUtils.rm_rf('./box/puppet')
+    end
+
+    FileUtils.mkdir_p './box/puppet'
     FileUtils.copy_entry "./puppet-ctrl", "./box/puppet"
   end
 
