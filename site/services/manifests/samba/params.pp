@@ -1,3 +1,3 @@
 class services::samba::params {
-    $workgroup = lookup('samba.workgroup', String, 'first', [])
+    $workgroup = lookup('samba.workgroup', String, 'first', 'WORKGROUP')
 }
