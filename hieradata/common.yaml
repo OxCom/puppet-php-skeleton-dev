@@ -15,8 +15,7 @@ php:
 # List of tools that should present on machine
 # Perform in a way like: apt-get install <package>
 tools: [
-    mc, htop, wget, curl, tree, terminator,
-    firefox, chromium-codecs-ffmpeg-extra, chromium-browser
+    mc, htop, wget, curl, tree
 ]
 
 db:
