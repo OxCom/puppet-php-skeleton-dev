@@ -14,6 +14,12 @@ class services::samba (
         require => Package['samba'],
     }
 
+    smb_user { 'smbo':                          # * user name
+        ensure         => present,              # * absent | present
+        password       => 'smbo',               # * user password (default: random)
+        force_password => true,                 # * force password value, if false
+    }
+
     $shared = [
         {
             name => 'storage',
