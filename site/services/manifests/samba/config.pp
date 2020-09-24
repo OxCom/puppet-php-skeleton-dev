@@ -17,9 +17,10 @@ class services::samba::config (
     file { '/etc/samba/smb.conf':
         ensure  => file,
         content => template('services/samba/smb.conf.erb'),
-        notify  => Service['samba'],
+        notify  => Service['smbd'],
         require => [
-            Package['samba']
+            Package['samba'],
+            File['/var/storage']
         ]
     }
 }

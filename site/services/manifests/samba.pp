@@ -8,7 +8,7 @@ class services::samba (
         ensure => present,
     }
 
-    service { 'samba':
+    service { 'smbd':
         ensure  => 'running',
         enable  => 'true',
         require => Package['samba'],
