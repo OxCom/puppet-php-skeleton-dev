@@ -3,16 +3,6 @@ class services::samba::config (
     String $allow_guests,
     Array $shared
 ) inherits services::samba::params {
-    file { '/var/storage':
-        ensure  => 'directory',
-        owner   => 'smbo',
-        group   => 'smbo',
-        mode    => '0777',
-        recurse => true,
-        require => [
-            Package['samba']
-        ]
-    }
 
     user { 'smbo':
         ensure => present,
@@ -21,7 +11,18 @@ class services::samba::config (
         managehome => true,
         require => [
             Package['samba'],
-            File['/var/storage']
+        ]
+    }
+
+    file { '/var/storage':
+        ensure  => 'directory',
+        owner   => 'smbo',
+        group   => 'smbo',
+        mode    => '0777',
+        recurse => true,
+        require => [
+            Package['samba'],
+            User['smbo']
         ]
     }
 
