@@ -5,9 +5,9 @@ class services::samba::config (
 ) inherits services::samba::params {
     file { '/var/storage':
         ensure  => 'directory',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
+        owner   => 'smbo',
+        group   => 'smbo',
+        mode    => '0777',
         recurse => true,
         require => [
             Package['samba']
