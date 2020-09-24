@@ -25,7 +25,7 @@ class services::samba::config (
         ]
     }
 
-    exec { 'echo -ne "smbo\nsmbo\n" | smbpasswd -s -a smbo':
+    exec { 'yes smbo|head -n 2| sudo smbpasswd -a -s smbo':
         user    => 'root',
         path    => ['/usr/bin', '/usr/sbin', '/bin'],
         notify  => Service['smbd'],
