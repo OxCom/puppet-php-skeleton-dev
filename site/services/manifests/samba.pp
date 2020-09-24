@@ -1,6 +1,6 @@
 class services::samba (
-    String $workgroup = $services::samba::workgroup,
-    String $allow_guests = $services::samba::allow_guests,
+    String $workgroup = $services::samba::params::workgroup,
+    String $allow_guests = $services::samba::params::allow_guests,
 ) inherits services::samba::params {
     info("Initialize")
 
