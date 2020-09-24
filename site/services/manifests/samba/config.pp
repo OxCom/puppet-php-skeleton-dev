@@ -25,11 +25,9 @@ class services::samba::config (
         ]
     }
 
-    $echo = '/bin/echo';
-    $smbpasswd = '/usr/bin/smbpasswd';
-
-    exec { "($echo smbo; $echo msbo) | $smbpasswd -s -a smbo":
-        notify => Service['smbd'],
+    exec { "(echo smbo; echo msbo) | smbpasswd -s -a smbo":
+        path    => ['/usr/bin', '/usr/sbin', '/bin'],
+        notify  => Service['smbd'],
         require => [
             User['smbo']
         ],
