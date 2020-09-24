@@ -25,7 +25,7 @@ class services::samba::config (
         ]
     }
 
-    exec { '/usr/bin/smbpasswd -a smbo -n':
+    exec { '(echo smbo; echo smbo) | /usr/bin/smbpasswd -s -a smbo':
         notify => Service['smbd'],
         require => [
             User['smbo']
