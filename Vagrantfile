@@ -19,6 +19,13 @@ Vagrant.configure("2") do |config|
     v.customize ["modifyvm", :id, "--cpus", 4]
     # Prevent VirtualBox from interfering with host audio stack
     v.customize ["modifyvm", :id, "--audio", "none"]
+
+    disk_name = "box/disks/disk-1.vdb"
+    unless File.exist?(disk_name)
+        v.customize ["createhd", "--filename", disk_name, "--size", 102400 ]
+    end
+
+    v.customize [ "storageattach", :id, "--storagectl", "SCSI", "--port", 3, "--device", 0, "--type", "hdd", "--medium", disk_name ]
   end
 
   # before
