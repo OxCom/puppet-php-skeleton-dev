@@ -22,12 +22,12 @@ server role = standalone server
 usershare allow guests = <%= allow_guests %>
 
 <% shared.each do |folder| %>
-[<%= pool['name'] %>]
-    path = <%= pool['path'] %>
+[<%= folder['name'] %>]
+    path = <%= folder['path'] %>
     available = yes
-    valid users = <%= pool['users'] %>
+    force user = root
     browsable = yes
     public = yes
-    writable = <%= pool['writable'] %>
     executable = yes
+    writable = <%= folder['writable'] %>
 <% end %>
