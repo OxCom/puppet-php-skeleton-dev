@@ -8,10 +8,21 @@ class services::samba (
         ensure => present,
     }
 
-    service { "samba":
+    service { 'samba':
         ensure  => 'running',
         enable  => 'true',
         require => Package['samba'],
+    }
+
+    file { '/var/storage':
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        recurse => true,
+        require => [
+            Package['samba']
+        ]
     }
 
     $shared = [
@@ -27,7 +38,8 @@ class services::samba (
         content => template('services/samba/smb.conf.erb'),
         notify  => Service['samba'],
         require => [
-            Package['samba']
+            Package['samba'],
+            File['/var/storage']
         ]
     }
 }
