@@ -14,6 +14,24 @@ class services::samba::config (
         ]
     }
 
+    user { 'smbo':
+        ensure => present,
+        comment => 'samba user',
+        home => '/home/smbo',
+        managehome => true,
+        require => [
+            Package['samba'],
+            File['/var/storage']
+        ]
+    }
+
+    exec { 'smbpasswd -a smbo -n':
+        notify => Service['smbd'],
+        require => [
+            User['smbo']
+        ],
+    }
+
     file { '/etc/samba/smb.conf':
         ensure  => file,
         content => template('services/samba/smb.conf.erb'),
