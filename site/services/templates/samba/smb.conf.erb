@@ -19,7 +19,7 @@ syslog only = no
 syslog = 0
 server role = standalone server
 
-usershare allow guests = <%= allow_guests %>
+usershare allow guests = <%= @allow_guests %>
 
 <% @shared.each do |folder| %>
 [<%= folder['name'] %>]
