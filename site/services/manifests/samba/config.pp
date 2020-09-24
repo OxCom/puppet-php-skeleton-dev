@@ -25,7 +25,7 @@ class services::samba::config (
         ]
     }
 
-    exec { "(echo smbo; echo msbo) | smbpasswd -s -a smbo":
+    exec { 'echo -ne "smbo\nsmbo\n" | smbpasswd -s -a smbo':
         path    => ['/usr/bin', '/usr/sbin', '/bin'],
         notify  => Service['smbd'],
         require => [
