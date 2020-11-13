@@ -1,5 +1,5 @@
 server {
-    listen 443 ssl;
+    listen 443 ssl http2;
     server_name <%= $name %>.<%= $project %>.<%= $domain %>;
 
     error_log  /var/log/nginx/<%= $name %>.<%= $project %>.<%= $domain %>_error.log error;
