@@ -7,7 +7,7 @@ class services::mysql {
 
     include apt
     apt::source { 'mariadb':
-        location => 'http://sfo1.mirrors.digitalocean.com/mariadb/repo/10.4/ubuntu',
+        location => 'http://ams2.mirrors.digitalocean.com/mariadb/repo/10.5/ubuntu',
         release  => $::lsbdistcodename,
         repos    => 'main',
         key      => {
