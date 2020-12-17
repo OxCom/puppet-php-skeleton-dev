@@ -10,6 +10,7 @@ class services::mysql {
         location => 'http://ams2.mirrors.digitalocean.com/mariadb/repo/10.5/ubuntu',
         release  => $::lsbdistcodename,
         repos    => 'main',
+        architecture => 'amd64'
         key      => {
             id     => '177F4010FE56CA3336300305F1656F24C74CD1D8',
             server => 'hkp://keyserver.ubuntu.com:80',
