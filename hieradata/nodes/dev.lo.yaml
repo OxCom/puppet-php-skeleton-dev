@@ -7,7 +7,7 @@ projects:
         - {name: www, php: php7.4, tpl: 'symfony'}
         - {name: forum, php: php7.4, tpl: 'phpbb'}
         - {name: cuas, php: php7.4, tpl: 'symfony'}
-        - {name: mage, php: php7.4, tpl: 'magento'}
+        - {name: mage, php: php7.3, tpl: 'magento'}
         - {name: gs, php: php7.4, tpl: 'symfony'}
         - {name: styleguide, php: php7.4, tpl: 'default'}
     oxcom:
