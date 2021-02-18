@@ -20,6 +20,7 @@ location /setup {
         fastcgi_pass   <%= $php %>-<%= $project %>-<%= $name %>-fpm;
         fastcgi_index  index.php;
         fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        fastcgi_buffers 1024 4k;
         include        fastcgi_params;
     }
 
@@ -41,6 +42,7 @@ location /update {
         fastcgi_index  index.php;
         fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
         fastcgi_param  PATH_INFO        $fastcgi_path_info;
+        fastcgi_buffers 1024 4k;
         include        fastcgi_params;
     }
 
