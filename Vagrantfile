@@ -9,8 +9,7 @@ VM_BOX_VERSION = "20200918.0.0"
 Vagrant.configure("2") do |config|
   config.vm.box = VM_BOX_IMAGE
   config.vm.box_version = VM_BOX_VERSION
-  #config.vm.hostname = "dev.lo"
-  config.vm.hostname = "media.lo"
+  config.vm.hostname = "dev.lo"
   config.vm.network :private_network, ip: "100.77.42.102"
 
   config.vm.provider :virtualbox do |v|
