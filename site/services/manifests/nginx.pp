@@ -51,23 +51,23 @@ class services::nginx (
         require => File['/etc/nginx/snippets']
     }
 
-    info("[conf.d]: GZip")
-    file { '/etc/nginx/conf.d/01-gzip.conf':
-        ensure  => file,
-        content => template('services/nginx/conf.d/gzip.conf.erb'),
-        notify  => Service["nginx"],
-        owner   => 'root',
-        group   => 'root',
-        require => File['/etc/nginx/conf.d']
-    }
-
-    info("[conf.d]: performance")
-    file { '/etc/nginx/conf.d/01-perf.conf':
-        ensure  => file,
-        content => template('services/nginx/conf.d/perf.conf.erb'),
-        notify  => Service["nginx"],
-        owner   => 'root',
-        group   => 'root',
-        require => File['/etc/nginx/conf.d']
-    }
+    # info("[conf.d]: GZip")
+    # file { '/etc/nginx/conf.d/01-gzip.conf':
+    #     ensure  => file,
+    #     content => template('services/nginx/conf.d/gzip.conf.erb'),
+    #     notify  => Service["nginx"],
+    #     owner   => 'root',
+    #     group   => 'root',
+    #     require => File['/etc/nginx/conf.d']
+    # }
+    #
+    # info("[conf.d]: performance")
+    # file { '/etc/nginx/conf.d/01-perf.conf':
+    #     ensure  => file,
+    #     content => template('services/nginx/conf.d/perf.conf.erb'),
+    #     notify  => Service["nginx"],
+    #     owner   => 'root',
+    #     group   => 'root',
+    #     require => File['/etc/nginx/conf.d']
+    # }
 }
