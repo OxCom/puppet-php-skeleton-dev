@@ -5,5 +5,5 @@ class services::php::params {
     $composer = lookup('php.composer', Boolean, 'first', false)
 
     # List of packages without version prefix
-    $common = ['codesniffer', 'codecoverage', 'xdebug', 'apcu', 'amqp']
+    $common = ['codesniffer', 'codecoverage']
 }
