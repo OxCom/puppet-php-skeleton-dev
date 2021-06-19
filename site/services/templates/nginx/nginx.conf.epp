@@ -41,9 +41,6 @@ http {
 	access_log /var/log/nginx/access.log main;
 	error_log /var/log/nginx/error.log error;
 
-    fastcgi_buffers  32 128k;
-    fastcgi_buffer_size  256k;
-
 	include /etc/nginx/conf.d/*.conf;
 	include /etc/nginx/sites-enabled/*;
 }
