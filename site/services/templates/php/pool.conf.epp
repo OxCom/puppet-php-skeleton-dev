@@ -24,8 +24,8 @@ php_admin_value[memory_limit] = 512M
 ; XDebug config
 ; Allow remote hosts to enable debugging, in this case connecting back to the automatically maintained DNS
 ; name referencing our workstation (it should be provided by --add-host option): host.docker.internal
-php_admin_flag[xdebug.remote_enable] = on
-php_admin_flag[xdebug.remote_autostart] = on
+php_admin_value[xdebug.mode] = debug
+php_admin_value[xdebug.start_with_request] = yes
 
 php_admin_value[xdebug.idekey] = key-$pool
 php_admin_value[xdebug.remote_host] = localhost

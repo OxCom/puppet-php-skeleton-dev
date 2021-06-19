@@ -34,7 +34,7 @@ class services::nginx::www (
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            content => epp("services/nginx/cors.conf.epp", {
+            content => epp("services/nginx/project.d/00-cors.conf.epp", {
                 'name'    => $name,
                 'project' => $project,
                 'domain'  => $domain
@@ -166,52 +166,5 @@ class services::nginx::www (
         }
 
         # copy cert here /usr/local/share/ca-certificates
-    }
-
-    info("Generate snippets")
-    file { '/etc/nginx/snippets':
-        ensure  => 'directory',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        require => [
-            Package['nginx-full']
-        ]
-    }
-
-    info("[Snippet]: SSL")
-    file { '/etc/nginx/snippets/ssl.conf':
-        ensure  => file,
-        content => template('services/nginx/snippet/ssl.conf.erb'),
-        notify  => Service["nginx"],
-        owner   => 'root',
-        group   => 'root',
-        require => [
-            File['/etc/nginx/snippets']
-        ]
-    }
-
-    info("[Snippet]: GZip")
-    file { '/etc/nginx/snippets/gzip.conf':
-        ensure  => file,
-        content => template('services/nginx/snippet/gzip.conf.erb'),
-        notify  => Service["nginx"],
-        owner   => 'root',
-        group   => 'root',
-        require => [
-            File['/etc/nginx/snippets']
-        ]
-    }
-
-    info("[Snippet]: Static")
-    file { '/etc/nginx/snippets/static.conf':
-        ensure  => file,
-        content => template('services/nginx/snippet/static.conf.erb'),
-        notify  => Service["nginx"],
-        owner   => 'root',
-        group   => 'root',
-        require => [
-            File['/etc/nginx/snippets']
-        ]
     }
 }
