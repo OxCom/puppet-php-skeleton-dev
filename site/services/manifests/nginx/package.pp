@@ -44,13 +44,11 @@ class services::nginx::package {
         require => Package['nginx-full']
     }
 
-    file { "/etc/nginx/nginx.conf":
-        notify  => Service["nginx"],
-        ensure  => file,
+    file { "/etc/nginx/ssl":
+        ensure  => 'directory',
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        content => epp("services/nginx/nginx.conf.epp"),
         require => Package['nginx-full']
     }
 }

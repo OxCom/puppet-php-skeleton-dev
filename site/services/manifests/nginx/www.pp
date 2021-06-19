@@ -5,16 +5,6 @@ class services::nginx::www (
 ) {
     info("Initialize")
 
-    file { "/etc/nginx/ssl":
-        ensure  => 'directory',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        require => [
-            Package['nginx-full']
-        ]
-    }
-
     $projects.each |String $project, Array $list| {
         info("Initialize project $project")
         file { "/etc/nginx/$project.d":

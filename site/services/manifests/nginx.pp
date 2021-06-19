@@ -18,6 +18,16 @@ class services::nginx (
         domain   => $domain,
     }
 
+    file { "/etc/nginx/nginx.conf":
+        notify  => Service["nginx"],
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => epp("services/nginx/nginx.conf.epp"),
+        require => Package['nginx-full']
+    }
+
     info("Generate snippets")
     info("[Snippet]: SSL")
     file { '/etc/nginx/snippets/ssl.conf':
@@ -38,12 +48,9 @@ class services::nginx (
         notify  => Service["nginx"],
         owner   => 'root',
         group   => 'root',
-        require => [
-            File['/etc/nginx/snippets']
-        ]
+        require => File['/etc/nginx/snippets']
     }
 
-    info("Generate conf.d")
     info("[conf.d]: GZip")
     file { '/etc/nginx/conf.d/01-gzip.conf':
         ensure  => file,
@@ -51,9 +58,7 @@ class services::nginx (
         notify  => Service["nginx"],
         owner   => 'root',
         group   => 'root',
-        require => [
-            File['/etc/nginx/conf.d']
-        ]
+        require => File['/etc/nginx/conf.d']
     }
 
     info("[conf.d]: performance")
@@ -63,8 +68,6 @@ class services::nginx (
         notify  => Service["nginx"],
         owner   => 'root',
         group   => 'root',
-        require => [
-            File['/etc/nginx/conf.d']
-        ]
+        require => File['/etc/nginx/conf.d']
     }
 }
