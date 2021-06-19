@@ -27,4 +27,30 @@ class services::nginx::package {
         groups  => ['www-data'],
         require => Package["nginx-full"],
     }
+
+    file { '/etc/nginx/snippets':
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['nginx-full']
+    }
+
+    file { '/etc/nginx/conf.d':
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['nginx-full']
+    }
+
+    file { "/etc/nginx/nginx.conf":
+        notify  => Service["nginx"],
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => epp("services/nginx/nginx.conf.epp"),
+        require => Package['nginx-full']
+    }
 }

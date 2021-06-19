@@ -7,22 +7,6 @@ class services::nginx (
 
     require services::nginx::package
 
-    file { '/etc/nginx/snippets':
-        ensure  => 'directory',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        require => Package['nginx-full']
-    }
-
-    file { '/etc/nginx/conf.d':
-        ensure  => 'directory',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        require => Package['nginx-full']
-    }
-
     class { 'services::nginx::php_fpm':
         versions => $versions,
         projects => $projects,
@@ -32,16 +16,6 @@ class services::nginx (
         versions => $versions,
         projects => $projects,
         domain   => $domain,
-    }
-
-    file { "/etc/nginx/nginx.conf":
-        notify  => Service["nginx"],
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => epp("services/nginx/nginx.conf.epp"),
-        require => Service["nginx"]
     }
 
     info("Generate snippets")
