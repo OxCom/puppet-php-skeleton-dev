@@ -7,9 +7,25 @@ class services::nginx (
 
     require services::nginx::package
 
+    file { '/etc/nginx/snippets':
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['nginx-full']
+    }
+
+    file { '/etc/nginx/conf.d':
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['nginx-full']
+    }
+
     class { 'services::nginx::php_fpm':
         versions => $versions,
-        projects => $projects
+        projects => $projects,
     }
 
     class { 'services::nginx::www':
@@ -29,14 +45,6 @@ class services::nginx (
     }
 
     info("Generate snippets")
-    file { '/etc/nginx/snippets':
-        ensure  => 'directory',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        require => Package['nginx-full']
-    }
-
     info("[Snippet]: SSL")
     file { '/etc/nginx/snippets/ssl.conf':
         ensure  => file,
@@ -62,14 +70,6 @@ class services::nginx (
     }
 
     info("Generate conf.d")
-    file { '/etc/nginx/conf.d':
-        ensure  => 'directory',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        require => Package['nginx-full']
-    }
-
     info("[conf.d]: GZip")
     file { '/etc/nginx/conf.d/01-gzip.conf':
         ensure  => file,
