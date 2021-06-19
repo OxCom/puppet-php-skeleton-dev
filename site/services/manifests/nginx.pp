@@ -40,7 +40,7 @@ class services::nginx (
     info("[Snippet]: SSL")
     file { '/etc/nginx/snippets/ssl.conf':
         ensure  => file,
-        content => template('services/nginx/snippet/vhost/ssl.conf.erb'),
+        content => template('services/nginx/snippet/ssl.conf.erb'),
         notify  => Service["nginx"],
         owner   => 'root',
         group   => 'root',

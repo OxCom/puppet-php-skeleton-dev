@@ -155,7 +155,7 @@ class services::nginx::www (
 
         file { "/etc/nginx/$project.d/ssl.conf":
             ensure  => file,
-            content => template('services/nginx/ssl.conf.erb'),
+            content => template('services/nginx/vhost/ssl.conf.erb'),
             notify  => Service["nginx"],
             owner   => 'root',
             group   => 'root',
