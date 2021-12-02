@@ -9,6 +9,7 @@ projects:
         - {name: cuas, php: php7.4, tpl: 'symfony'}
         - {name: mage, php: php7.3, tpl: 'magento'}
         - {name: gs, php: php8.0, tpl: 'symfony'}
+        - {name: image-proxy, php: php8.1, tpl: 'symfony'}
         - {name: styleguide, php: php7.4, tpl: 'default'}
     oxcom:
         - {name: www, php: php7.4, tpl: 'symfony'}
@@ -17,7 +18,7 @@ projects:
 
 php:
     composer: true
-    versions: [php7.1, php7.3, php7.4, php8.0]
+    versions: [php7.1, php7.3, php7.4, php8.0. php8.1]
     packages: [
         opcache, gd, curl, intl, mbstring,
         mysql, readline, soap, sqlite3, tidy, xml, zip,
