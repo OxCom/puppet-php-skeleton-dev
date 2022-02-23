@@ -149,7 +149,7 @@ class services::nginx::www (
             state        => 'Localhost',
             locality     => 'VM',
             unit         => 'Developer instance',
-            altnames     => ["https.$project.$domain", "*.https.$project.$domain", "*.$project.$domain", "$project.$domain", "www.$domain" "$domain"],
+            altnames     => ["$project.$domain", "www.$domain", "$domain"],
             email        => "admin@$project.$domain",
             days         => 3650,
             base_dir     => '/etc/nginx/ssl',
