@@ -125,23 +125,7 @@ class services::nginx::www (
                 ip      => '127.0.0.1',
                 comment => "/var/www/$name.$project.$domain/",
             }
-        }
-
-        info("[$project] Generate self signed certificate")
-        openssl::certificate::x509 { "$project.$domain":
-            ensure       => present,
-            country      => 'CH',
-            organization => "$project.$domain Inc",
-            commonname   => "*.$project.$domain",
-            state        => 'Dummy',
-            locality     => 'VM',
-            unit         => 'Developer instance',
-            email        => "admin@$project.$domain",
-            days         => 3650,
-            base_dir     => '/etc/nginx/ssl',
-            owner        => 'root',
-            group        => 'root',
-        }
+        }      
 
         file { "/etc/nginx/$project.d/ssl.conf":
             ensure  => file,
@@ -154,7 +138,23 @@ class services::nginx::www (
                 File["/etc/nginx/$project.d"]
             ]
         }
-
-        # copy cert here /usr/local/share/ca-certificates
+    }
+    
+    # TODO: copy cert here /usr/local/share/ca-certificates
+    info("[domain] Generate self signed certificate")
+    openssl::certificate::x509 { "*.$domain":
+        ensure       => present,
+        country      => 'DE',
+        organization => "*.$domain Inc",
+        commonname   => "*.$domain",
+        state        => 'Localhost',
+        locality     => 'VM',
+        unit         => 'Developer instance',
+        altnames     => ["DNS:$*.$domain"],
+        email        => "admin@$domain",
+        days         => 3650,
+        base_dir     => '/etc/nginx/ssl',
+        owner        => 'root',
+        group        => 'root',
     }
 }
