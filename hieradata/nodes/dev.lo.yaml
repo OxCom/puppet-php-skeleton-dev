@@ -20,7 +20,7 @@ php:
     composer: true
     versions: [php7.1, php7.3, php7.4, php8.0, php8.1]
     packages: [
-        opcache, gd, curl, intl, mbstring,
+        opcache, gd, intl, mbstring,
         mysql, readline, soap, sqlite3, tidy, xml, zip,
         codecoverage, codesniffer, igbinary, imagick,
         redis, xdebug, ssh2, bcmath, apcu, amqp
