@@ -28,5 +28,15 @@ class services::mysql {
         override_options        => $options
     }
 
-    Apt::Source['mariadb'] ~> Class['apt::update'] -> Class['::mysql::server']
+    Apt::Source['mariadb'] 
+        ~> Class['apt::update'] 
+        -> Class['::mysql::server']
+        -> file { '/etc/mysql/mariadb.conf.d/50-server.cnf':
+            ensure => present,
+        } 
+        -> file_line { 'Expose mariadb on all interfaces':
+            path => '/etc/mysql/mariadb.conf.d/50-server.cnf',  
+            line => '# bind-address            = 127.0.0.1',
+            match   => "^bind-address.*$",
+        }
 }
