@@ -1,0 +1,23 @@
+---
+classes:
+    - role::work
+
+projects:
+    oxcom:
+        - { name: www, php: php7.4, tpl: 'symfony' }
+        - { name: sev-auto, php: php7.4, tpl: 'symfony' }
+
+php:
+    composer: true
+    versions: [ php7.1, php7.4, php8.1 ]
+    packages: [
+        opcache, gd, intl, mbstring,
+        mysql, readline, soap, sqlite3, tidy, xml, zip,
+        codecoverage, codesniffer, igbinary, imagick,
+        redis, xdebug, ssh2, bcmath, apcu, amqp
+    ]
+
+tools: [
+    imagemagick, webp, libwebp-dev,
+    php7.1-mcrypt, php-json
+]
