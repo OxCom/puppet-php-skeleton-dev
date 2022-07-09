@@ -26,7 +26,7 @@ if [ "" == "$PKG_OK" ]; then
 fi
 
 echo "Checking for: git"
-PKG_OK=$(dpkg-query -W --showformat='${Status}\n' puppet-agent|grep "install ok installed")
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' git|grep "install ok installed")
 if [ "" == "$PKG_OK" ]; then
     echo "Installing git"
     apt-get update
@@ -34,7 +34,7 @@ if [ "" == "$PKG_OK" ]; then
 fi
 
 echo "Checking for: r10k"
-PKG_OK=$(dpkg-query -W --showformat='${Status}\n' puppet-agent|grep "install ok installed")
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' r10k|grep "install ok installed")
 if [ "" == "$PKG_OK" ]; then
     echo "Installing r10k"
     apt-get update
