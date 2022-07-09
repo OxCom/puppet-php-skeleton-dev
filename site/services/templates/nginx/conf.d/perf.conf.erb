@@ -13,7 +13,8 @@ fastcgi_buffer_size 32k;
 # "Content-Length" request header field. If the size in a request exceeds the
 # configured value, the 413 (Request Entity Too Large) error is returned to the
 # client
-client_max_body_size 0;
+# client_max_body_size 0;
+
 # cache that can store open file descriptors, their sizes and modification
 # times, information on existence of directories, file lookup errors
 open_file_cache max=2000 inactive=20s;
