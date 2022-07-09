@@ -34,20 +34,4 @@ class services::php::composer {
         user    => $owner,
         require => File[$composer_path],
     }
-
-    $homes = $facts['user_home_dirs']
-    $homes.each |String $user, String $home| {
-        if ($user == 'nobody') {
-            next()
-        }
-
-        info("Install global plugin: hirak/prestissimo for $user in $home")
-        exec { "composer-parallel-$user":
-            command     => "$composer_path global require -n hirak/prestissimo",
-            environment => [ "COMPOSER_HOME=$home/.composer" ],
-            user        => $user,
-            unless      => "$composer_path global show -n 2>&1 | grep hirak/prestissimo",
-            require => Cron['composer-update'],
-        }
-    }
 }
