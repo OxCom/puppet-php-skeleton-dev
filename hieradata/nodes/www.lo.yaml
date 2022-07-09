@@ -18,6 +18,5 @@ php:
     ]
 
 tools: [
-    imagemagick, webp, libwebp-dev,
-    php7.1-mcrypt, php-json
+    imagemagick, webp, libwebp-dev
 ]
