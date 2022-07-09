@@ -7,6 +7,7 @@ server {
 
     include <%= $project %>.d/<%= $name %>.conf;
     include <%= $project %>.d/ssl.conf;
-    include snippets/gzip.conf;
+    include conf.d/01-gzip.conf;
+    include conf.d/01-perf.conf;
     include snippets/static.conf;
 }
