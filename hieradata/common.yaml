@@ -7,11 +7,6 @@ classes:
 
 projects: []
 
-php:
-    composer: true
-    versions: [php7.4]
-    packages: [curl]
-
 # List of tools that should present on machine
 # Perform in a way like: apt-get install <package>
 tools: [
@@ -27,6 +22,4 @@ db:
                 bind-address: '0.0.0.0'
 
 docker:
-    # Allow users to execute docker commands
     version: 'latest'
-    users: []
