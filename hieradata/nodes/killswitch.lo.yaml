@@ -3,5 +3,5 @@ classes:
     - role::default
 
 tools: [
-    mc, htop, wget, tree, curl, vim
+    mc, htop, wget, tree, curl, vim, terminator
 ]
