@@ -13,13 +13,5 @@ tools: [
     mc, htop, wget, tree
 ]
 
-db:
-    mariadb:
-        root_password: root
-        remove_default_accounts: true
-        override_options:
-            mysqld:
-                bind-address: '0.0.0.0'
-
 docker:
     version: 'latest'

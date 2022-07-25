@@ -32,6 +32,14 @@ tools: [
     php7.1-mcrypt, php-geoip, php-json
 ]
 
+db:
+    mariadb:
+        root_password: root
+        remove_default_accounts: true
+        override_options:
+            mysqld:
+                bind-address: '0.0.0.0'
+
 docker:
     # Allow users to execute docker commands
     users: [ 'vagrant' ]
