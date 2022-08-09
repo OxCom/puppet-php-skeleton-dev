@@ -8,7 +8,7 @@ class services::mysql {
 
     include apt
     apt::source { 'mariadb':
-        location => 'http://sfo1.mirrors.digitalocean.com/mariadb/repo/10.9/ubuntu',
+        location => "http://sfo1.mirrors.digitalocean.com/mariadb/repo/$version/ubuntu",
         # release  => 'impish',
         repos    => 'main',
         architecture => 'amd64',
