@@ -4,11 +4,12 @@ class services::mysql {
     $password = lookup('db.mariadb.root_password', String, 'first', 'root')
     $remove = lookup('db.mariadb.remove_default_accounts', Boolean, 'first', true)
     $options = lookup('db.mariadb.override_options', Hash, 'first', {})
+    $version = lookup('db.mariadb.mariadb_version', String, 'first', '10.9')
 
     include apt
     apt::source { 'mariadb':
-        location => 'http://sfo1.mirrors.digitalocean.com/mariadb/repo/10.6/ubuntu',
-        release  => 'impish',
+        location => 'http://sfo1.mirrors.digitalocean.com/mariadb/repo/10.9/ubuntu',
+        # release  => 'impish',
         repos    => 'main',
         architecture => 'amd64',
         key      => {
