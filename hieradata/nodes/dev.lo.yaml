@@ -4,9 +4,9 @@ classes:
 
 projects:
     cryengine:
-        - { name: www, php: php7.4, tpl: 'symfony' }
+        - { name: www, php: php8.1, tpl: 'symfony' }
         - { name: forum, php: php7.4, tpl: 'phpbb' }
-        - { name: cuas, php: php7.4, tpl: 'symfony' }
+        - { name: cuas, php: php8.1, tpl: 'symfony' }
         - { name: mage, php: php7.4, tpl: 'magento' }
         - { name: gs, php: php8.1, tpl: 'symfony' }
         - { name: image-proxy, php: php8.1, tpl: 'symfony' }
