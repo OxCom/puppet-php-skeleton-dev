@@ -5,7 +5,7 @@ forge "http://forge.puppetlabs.com"
 mod 'puppetlabs-stdlib', '8.1.0'
 mod 'puppet-systemd', '3.8.0'
 mod 'puppetlabs-apt', '8.3.0'
-mod 'puppetlabs-docker', '4.2.1'
+mod 'puppetlabs-docker', '9.0.1'
 mod 'puppetlabs-mysql', '12.0.2'
 mod 'camptocamp-openssl', '2.0.0'
 mod 'puppetlabs-ntp', '8.4.0'
