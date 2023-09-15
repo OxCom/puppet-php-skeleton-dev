@@ -8,6 +8,9 @@ location / {
     try_files $uri /index.php$is_args$args;
 }
 
+add_header "Access-Control-Allow-Origin"      <%= $project %>_cors_orig;
+add_header "Access-Control-Allow-Credentials" <%= $project %>_cors_cred;
+
 location ~ ^/index\.php(/|$) {
     fastcgi_pass <%= $php %>-<%= $project %>-<%= $name %>-fpm;
     fastcgi_split_path_info ^(.+\.php)(/.*)$;
