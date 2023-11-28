@@ -3,13 +3,15 @@ classes:
     - role::work
 
 projects:
+    cem:
+        - { name: www, php: php8.1, tpl: 'symfony' }
+        - { name: styleguide, php: ph8.1, tpl: 'default' }
     cryengine:
         - { name: www, php: php8.1, tpl: 'symfony' }
         - { name: forum, php: php8.1, tpl: 'phpbb' }
         - { name: cuas, php: php8.1, tpl: 'symfony' }
         - { name: mage, php: php8.1, tpl: 'magento' }
         - { name: gs, php: php8.1, tpl: 'symfony' }
-        - { name: image-proxy, php: php8.1, tpl: 'symfony' }
         - { name: styleguide, php: ph8.1, tpl: 'default' }
     oxcom:
         - { name: www, php: php7.4, tpl: 'symfony' }
