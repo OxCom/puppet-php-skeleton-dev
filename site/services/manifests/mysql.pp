@@ -4,7 +4,7 @@ class services::mysql {
     $password = lookup('db.mariadb.root_password', String, 'first', 'root')
     $remove = lookup('db.mariadb.remove_default_accounts', Boolean, 'first', true)
     $options = lookup('db.mariadb.override_options', Hash, 'first', {})
-    $version = lookup('db.mariadb.mariadb_version', String, 'first', '11.3')
+    $version = lookup('db.mariadb.mariadb_version', String, 'first', '10.6')
 
     include apt
     apt::source { 'mariadb':
