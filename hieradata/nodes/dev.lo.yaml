@@ -24,7 +24,7 @@ php:
     composer: true
     versions: [ php7.3, php7.4, php8.1, php8.3 ]
     packages: [
-        opcache, gd, intl, mbstring,
+        opcache, gd, intl, mbstring, curl,
         mysql, readline, soap, sqlite3, tidy, xml, zip,
         codecoverage, codesniffer, igbinary, imagick,
         redis, xdebug, ssh2, bcmath, apcu, amqp
@@ -32,8 +32,7 @@ php:
 
 tools: [
     terminator, firefox, chromium-codecs-ffmpeg-extra, chromium-browser,
-    imagemagick, webp, libwebp-dev,
-    php7.1-mcrypt, php-geoip, php-json
+    imagemagick, webp, libwebp-dev, php-geoip, php-json
 ]
 
 db:
