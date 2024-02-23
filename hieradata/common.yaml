@@ -10,7 +10,7 @@ projects: []
 # List of tools that should present on machine
 # Perform in a way like: apt-get install <package>
 tools: [
-    mc, htop, wget, tree
+    mc, htop, wget, tree, curl
 ]
 
 docker:
