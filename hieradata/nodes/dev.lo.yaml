@@ -4,9 +4,9 @@ classes:
 
 projects:
     cem:
-        - { name: www, php: php8.1, tpl: 'symfony' }
-        - { name: styleguide, php: php8.1, tpl: 'default' }
-        - { name: floor, php: php8.1, tpl: 'default' }
+        - { name: www, php: php8.3, tpl: 'symfony' }
+        - { name: styleguide, php: php8.3, tpl: 'default' }
+        - { name: floor, php: php8.3, tpl: 'default' }
     cryengine:
         - { name: www, php: php8.1, tpl: 'symfony' }
         - { name: forum, php: php8.1, tpl: 'phpbb' }
@@ -22,7 +22,7 @@ projects:
 
 php:
     composer: true
-    versions: [ php7.1, php7.3, php7.4, php8.0, php8.1 ]
+    versions: [ php7.3, php7.4, php8.1, php8.3 ]
     packages: [
         opcache, gd, intl, mbstring,
         mysql, readline, soap, sqlite3, tidy, xml, zip,
