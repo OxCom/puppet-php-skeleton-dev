@@ -29,7 +29,7 @@ php_admin_value[xdebug.start_with_request] = yes
 
 php_admin_value[xdebug.idekey] = key-$pool
 php_admin_value[xdebug.remote_host] = localhost
-php_admin_value[xdebug.var_display_max_depth] = 256
-php_admin_value[xdebug.var_display_max_children] = 256
-php_admin_value[xdebug.var_display_max_data] = 256
+php_admin_value[xdebug.var_display_max_depth] = 5
+php_admin_value[xdebug.var_display_max_children] = 128
+php_admin_value[xdebug.var_display_max_data] = 512
 
