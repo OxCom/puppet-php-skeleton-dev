@@ -37,8 +37,8 @@ class services::php::pool (
                 ]
             }
 
-            $list.each |Integer $index, Hash $phpV| {
-                if !$phpV or !defined($pool['php']) {
+            $list.each |Integer $index, Hash $pool| {
+                if !defined($pool['php']) {
                     next()
                 }
 
@@ -46,7 +46,7 @@ class services::php::pool (
                 $phpV = $pool['php'];
                 $phpN = regsubst($pool['php'], 'php', '');
 
-                if $phpN != $num or $phpV {
+                if $phpN != $num {
                     next()
                 }
 
