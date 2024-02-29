@@ -32,6 +32,19 @@ $ vagraunt up
 ###### Dev Notes [WIP]
 Put your ssh keys to ```.ssh``` folder 
 
+## Self-Signed Certs
+On widows we have to add self-signed certs to the system:
+
+On Linux move required certs to CA certificates 
+```bash
+cp /etc/nginx/ssl/awesome.crt /usr/local/share/ca-certificates/awesome.crt
+```
+
+On Windows import to CA certificates
+```bash
+cat /etc/nginx/ssl/awesome.crt
+```
+
 #### Modules
 - [APT Module](https://github.com/puppetlabs/puppetlabs-apt)
 - [MySQL Module](https://github.com/puppetlabs/puppetlabs-mysql)

@@ -168,7 +168,7 @@ class services::nginx::www (
         }
         
         # TODO: copy cert here /usr/local/share/ca-certificates
-        info("[domain] Generate self signed certificate")
+        info("[domain] Generate self signed certificate - $project.$domain")
         openssl::certificate::x509 { "$project.$domain":
             ensure       => present,
             country      => 'DE',
@@ -183,6 +183,17 @@ class services::nginx::www (
             base_dir     => '/etc/nginx/ssl',
             owner        => 'root',
             group        => 'root',
+        }
+
+        file { "/usr/local/share/ca-certificates/$project.$domain.crt":
+          ensure  => present,
+          source  => "/etc/nginx/ssl/$project.$domain.crt",
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0644',
+          require => [
+              Openssl::Certificate::X509["$project.$domain"]
+          ]
         }
     }
 }
