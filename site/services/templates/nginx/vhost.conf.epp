@@ -7,7 +7,16 @@ server {
 
     include <%= $project %>.d/<%= $name %>.conf;
     include <%= $project %>.d/ssl.conf;
+
+    <% if $gzip == true { -%>
     include conf.d/01-gzip.conf;
+    <% } -%>
+
+    <% if $perf == true { -%>
     include conf.d/01-perf.conf;
+    <% } -%>
+
+    <% if $static == true { -%>
     include snippets/static.conf;
+    <% } -%>
 }

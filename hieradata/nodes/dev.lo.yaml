@@ -4,9 +4,11 @@ classes:
 
 projects:
     cem:
-        - { name: www, php: php8.3, tpl: 'symfony' }
-        - { name: styleguide, php: php8.3, tpl: 'default' }
-        - { name: floor, php: php8.3, tpl: 'default' }
+        - { name: www, tpl: 'docker', port: 8900 }
+        - { name: s3, tpl: 'proxy', port: 8901 }
+        - { name: s3-cli, tpl: 'proxy', port: 8902 }
+        - { name: styleguide, tpl: 'docker', port: 8903 }
+        - { name: floor, tpl: 'docker', port: 8904 }
     cryengine:
         - { name: www, php: php8.1, tpl: 'symfony' }
         - { name: forum, php: php8.1, tpl: 'phpbb' }

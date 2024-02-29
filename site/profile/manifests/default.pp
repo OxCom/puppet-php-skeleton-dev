@@ -23,4 +23,10 @@ class profile::default {
     }
 
     include services::openssl
+
+    # extend FS watch limit with max_user_watches
+    sysctl { "fs.inotify.max_user_watches":
+      ensure => present,
+      value  => "524288",
+    }
 }

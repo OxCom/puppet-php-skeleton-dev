@@ -62,16 +62,21 @@ class services::nginx::www (
                 ]
             }
 
-            if $root != "/var/www/$name.$project.$domain" {
-                info("[$project:$name] add root directory: $root")
-                file { "$root" :
-                    ensure  => 'directory',
-                    owner   => 'www-data',
-                    group   => 'www-data',
-                    mode    => '0777',
-                    require => [
-                        File["/var/www/$name.$project.$domain"]
-                    ]
+            if $configTpl == 'proxy' {
+                info("[$project:$name] configured as proxy (no project directory required")
+            }
+            else {
+                if $root != "/var/www/$name.$project.$domain" {
+                    info("[$project:$name] add root directory: $root")
+                    file { "$root":
+                      ensure  => 'directory',
+                      owner   => 'www-data',
+                      group   => 'www-data',
+                      mode    => '0777',
+                      require => [
+                          File["/var/www/$name.$project.$domain"]
+                      ]
+                    }
                 }
             }
 
@@ -84,9 +89,11 @@ class services::nginx::www (
                 mode    => '0644',
                 content => epp('services/nginx/vhost.conf.epp', {
                     'name'    => $name,
-                    'php'     => $sub['php'],
                     'project' => $project,
-                    'domain'  => $domain
+                    'domain'  => $domain,
+                    'gzip'    => $configTpl != 'proxy' and $configTpl != 'docker',
+                    'perf'    => $configTpl != 'proxy' and $configTpl != 'docker',
+                    'static'  => $configTpl != 'proxy' and $configTpl != 'docker',
                 }),
                 require => [
                     File["/var/www/$name.$project.$domain"]
@@ -94,21 +101,41 @@ class services::nginx::www (
             }
 
             info("[$project:$name] set host config in /etc/nginx/$project.d/$name.conf")
-            file { "/etc/nginx/$project.d/$name.conf":
+            if $configTpl == 'proxy' or $configTpl == 'docker' {
+              file { "/etc/nginx/$project.d/$name.conf":
                 notify  => Service["nginx"],
                 ensure  => file,
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                content => epp("services/nginx/project.d/php-$configTpl.conf.epp", {
-                    'name'    => $name,
-                    'php'     => $sub['php'],
-                    'project' => $project,
-                    'domain'  => $domain
+                content => epp("services/nginx/project.d/$configTpl.conf.epp", {
+                  'name'    => $name,
+                  'port'    => $sub['port'],
+                  'project' => $project,
+                  'domain'  => $domain
                 }),
                 require => [
-                    File["/etc/nginx/$project.d"]
+                  File["/etc/nginx/$project.d"]
                 ]
+              }
+            }
+            else {
+                file { "/etc/nginx/$project.d/$name.conf":
+                  notify  => Service["nginx"],
+                  ensure  => file,
+                  owner   => 'root',
+                  group   => 'root',
+                  mode    => '0644',
+                  content => epp("services/nginx/project.d/php-$configTpl.conf.epp", {
+                      'name'    => $name,
+                      'php'     => $sub['php'],
+                      'project' => $project,
+                      'domain'  => $domain
+                  }),
+                  require => [
+                      File["/etc/nginx/$project.d"]
+                  ]
+                }
             }
 
             info("[$project:$name] enable vHost")
