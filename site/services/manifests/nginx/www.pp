@@ -34,6 +34,34 @@ class services::nginx::www (
             ]
         }
 
+        info("[domain] Generate self signed certificate - $project.$domain")
+        openssl::certificate::x509 { "$project.$domain":
+          ensure       => present,
+          country      => 'DE',
+          organization => "*.$project.$domain Inc",
+          commonname   => "*.$project.$domain",
+          state        => 'Localhost',
+          locality     => 'VM',
+          unit         => 'Developer instance',
+          altnames     => ["*.$project.$domain", "$project.$domain", "www.$domain", "$domain"],
+          email        => "admin@$project.$domain",
+          days         => 3650,
+          base_dir     => '/etc/nginx/ssl',
+          owner        => 'root',
+          group        => 'root',
+        }
+
+        file { "/usr/local/share/ca-certificates/$project.$domain.crt":
+          ensure  => present,
+          source  => "/etc/nginx/ssl/$project.$domain.crt",
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0644',
+          require => [
+              Openssl::Certificate::X509["$project.$domain"]
+          ]
+        }
+
         $list.each |Integer $index, Hash $sub| {
             $name = $sub['name'];
             $configTpl = $sub['tpl'];
@@ -116,7 +144,7 @@ class services::nginx::www (
                   'domain'  => $domain
                 }),
                 require => [
-                  File["/etc/nginx/$project.d"]
+                  File["/etc/nginx/$project.d"],
                 ]
               }
             }
@@ -134,7 +162,7 @@ class services::nginx::www (
                       'domain'  => $domain
                   }),
                   require => [
-                      File["/etc/nginx/$project.d"]
+                      File["/etc/nginx/$project.d"],
                   ]
                 }
             }
@@ -144,7 +172,7 @@ class services::nginx::www (
                 ensure  => 'link',
                 target  => "/etc/nginx/sites-available/$name.$project.conf",
                 require => [
-                    File["/etc/nginx/sites-available/$name.$project.conf"]
+                    File["/etc/nginx/sites-available/$name.$project.conf"],
                 ]
             }
 
@@ -153,7 +181,7 @@ class services::nginx::www (
                 ip      => '127.0.0.1',
                 comment => "/var/www/$name.$project.$domain/",
             }
-        }      
+        }
 
         file { "/etc/nginx/$project.d/ssl.conf":
             ensure  => file,
@@ -163,37 +191,9 @@ class services::nginx::www (
             group   => 'root',
             mode    => '0644',
             require => [
-                File["/etc/nginx/$project.d"]
+                File["/etc/nginx/$project.d"],
+                Openssl::Certificate::X509["$project.$domain"]
             ]
-        }
-        
-        # TODO: copy cert here /usr/local/share/ca-certificates
-        info("[domain] Generate self signed certificate - $project.$domain")
-        openssl::certificate::x509 { "$project.$domain":
-            ensure       => present,
-            country      => 'DE',
-            organization => "*.$project.$domain Inc",
-            commonname   => "*.$project.$domain",
-            state        => 'Localhost',
-            locality     => 'VM',
-            unit         => 'Developer instance',
-            altnames     => ["*.$project.$domain", "$project.$domain", "www.$domain", "$domain"],
-            email        => "admin@$project.$domain",
-            days         => 3650,
-            base_dir     => '/etc/nginx/ssl',
-            owner        => 'root',
-            group        => 'root',
-        }
-
-        file { "/usr/local/share/ca-certificates/$project.$domain.crt":
-          ensure  => present,
-          source  => "/etc/nginx/ssl/$project.$domain.crt",
-          owner   => 'root',
-          group   => 'root',
-          mode    => '0644',
-          require => [
-              Openssl::Certificate::X509["$project.$domain"]
-          ]
         }
     }
 }
