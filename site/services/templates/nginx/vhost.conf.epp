@@ -1,6 +1,6 @@
 server {
     listen 443 ssl;
-    server_name <%= $name %>.<%= $project %>.<%= $domain %>;
+    server_name <%= $name %>.<%= $project %>.<%= $domain %> <% if $name == 'www' { -%><%= $project %>.<%= $domain %><% } -%>;
 
     error_log  /var/log/nginx/<%= $name %>.<%= $project %>.<%= $domain %>_error.log error;
     access_log /var/log/nginx/<%= $name %>.<%= $project %>.<%= $domain %>_access.log;
