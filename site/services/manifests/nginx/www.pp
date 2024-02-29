@@ -108,9 +108,10 @@ class services::nginx::www (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                content => epp("services/nginx/project.d/$configTpl.conf.epp", {
+                content => epp("services/nginx/project.d/proxy.conf.epp", {
                   'name'    => $name,
                   'port'    => $sub['port'],
+                  'docker'  => $configTpl == 'docker',
                   'project' => $project,
                   'domain'  => $domain
                 }),

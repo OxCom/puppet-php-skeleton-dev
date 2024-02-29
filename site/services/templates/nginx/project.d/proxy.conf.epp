@@ -1,6 +1,10 @@
 # only for DEV
 client_max_body_size 0;
 
+<% if $docker == true { -%>
+root /var/www/<%= $name %>.<%= $project %>.<%= $domain %>/public;
+<% } -%>
+
 location / {
     proxy_set_header Host $http_host;
     proxy_set_header X-Real-IP $remote_addr;
