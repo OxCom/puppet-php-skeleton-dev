@@ -7,6 +7,7 @@ projects:
         - { name: www, tpl: 'docker', port: 8900 }
         - { name: s3, tpl: 'proxy', port: 8900 }
         - { name: s3-cli, tpl: 'proxy', port: 8900 }
+        - { name: conv, tpl: 'proxy', port: 8900 }
         - { name: styleguide, tpl: 'docker', port: 8903 }
         - { name: floor, tpl: 'docker', port: 8904 }
     cryengine:
