@@ -37,12 +37,17 @@ class services::php::pool (
                 ]
             }
 
-            $list.each |Integer $index, Hash $pool| {
+            $list.each |Integer $index, Hash $phpV| {
                 $name = $pool['name'];
+
+                if $phpV.key('php') == false {
+                    next()
+                }
+
                 $phpV = $pool['php'];
                 $phpN = regsubst($pool['php'], 'php', '');
 
-                if $phpN != $num {
+                if $phpN != $num or $phpV {
                     next()
                 }
 
