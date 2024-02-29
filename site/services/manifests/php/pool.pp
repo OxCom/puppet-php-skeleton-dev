@@ -38,7 +38,7 @@ class services::php::pool (
             }
 
             $list.each |Integer $index, Hash $phpV| {
-                if !$phpV or !$pool['php'] {
+                if !$phpV or !defined($pool['php']) {
                     next()
                 }
 
