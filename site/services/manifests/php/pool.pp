@@ -38,12 +38,11 @@ class services::php::pool (
             }
 
             $list.each |Integer $index, Hash $phpV| {
-                $name = $pool['name'];
-
                 if $phpV.key('php') == false {
                     next()
                 }
 
+                $name = $pool['name'];
                 $phpV = $pool['php'];
                 $phpN = regsubst($pool['php'], 'php', '');
 
