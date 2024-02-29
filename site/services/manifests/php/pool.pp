@@ -38,7 +38,7 @@ class services::php::pool (
             }
 
             $list.each |Integer $index, Hash $phpV| {
-                if $phpV.key('php') == false {
+                if !$pool['php'] {
                     next()
                 }
 
