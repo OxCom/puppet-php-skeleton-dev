@@ -1,0 +1,46 @@
+---
+classes:
+    - role::work
+
+projects:
+    cem:
+        - { name: www, tpl: 'docker', port: 8900 }
+        - { name: s3, tpl: 'proxy', port: 8900 }
+        - { name: s3-cli, tpl: 'proxy', port: 8900 }
+        - { name: conv, tpl: 'proxy', port: 8900 }
+        - { name: styleguide, tpl: 'docker', port: 8903 }
+        - { name: floor, tpl: 'docker', port: 8904 }
+    cryengine:
+        - { name: www, php: php8.1, tpl: 'symfony' }
+        - { name: forum, php: php8.1, tpl: 'phpbb' }
+        - { name: cuas, php: php8.1, tpl: 'symfony' }
+        - { name: mage, php: php8.1, tpl: 'magento' }
+        - { name: gs, php: php8.1, tpl: 'symfony' }
+        - { name: docs, php: php8.1, tpl: 'symfony' }
+        - { name: styleguide, php: ph8.1, tpl: 'default' }
+
+php:
+    composer: true
+    versions: [ php7.3, php7.4, php8.1, php8.3 ]
+    packages: [
+        opcache, gd, intl, mbstring, curl,
+        mysql, readline, soap, sqlite3, tidy, xml, zip,
+        codecoverage, codesniffer, igbinary, imagick,
+        redis, xdebug, ssh2, bcmath, apcu, amqp
+    ]
+
+tools: [
+    imagemagick, webp, libwebp-dev, php-geoip, php-json
+]
+
+db:
+    mariadb:
+        root_password: root
+        remove_default_accounts: true
+        override_options:
+            mysqld:
+                bind-address: '0.0.0.0'
+
+docker:
+    # Allow users to execute docker commands
+    users: [ 'vagrant' ]
