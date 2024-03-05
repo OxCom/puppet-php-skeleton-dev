@@ -18,16 +18,6 @@ projects:
         - { name: gs, php: php8.1, tpl: 'symfony' }
         - { name: docs, php: php8.1, tpl: 'symfony' }
         - { name: styleguide, php: ph8.1, tpl: 'default' }
-    oxcom:
-        - { name: www, php: php7.4, tpl: 'symfony' }
-        - { name: pg, php: php7.4, tpl: 'symfony' }
-        - { name: auto, php: php7.4, tpl: 'symfony' }
-    arthustle:
-        - { name: www, tpl: 'docker', port: 3000 }
-        - { name: api, tpl: 'proxy', port: 3000 }
-        - { name: s3, tpl: 'proxy', port: 3000 }
-        - { name: s3-cli, tpl: 'proxy', port: 3000 }
-        - { name: conv, tpl: 'proxy', port: 3000 }
 
 php:
     composer: true
@@ -40,7 +30,6 @@ php:
     ]
 
 tools: [
-    terminator, firefox, chromium-codecs-ffmpeg-extra, chromium-browser,
     imagemagick, webp, libwebp-dev, php-geoip, php-json
 ]
 
