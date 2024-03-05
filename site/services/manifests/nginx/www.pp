@@ -5,6 +5,23 @@ class services::nginx::www (
 ) {
     info("Initialize")
 
+    info("[domain] Generate self signed certificate - $domain")
+    openssl::certificate::x509 { "$domain":
+      ensure       => present,
+      country      => 'DE',
+      organization => "*.$domain Inc",
+      commonname   => "*.$domain",
+      state        => 'Localhost',
+      locality     => 'VM',
+      unit         => 'Developer instance',
+      altnames     => ["*.$domain", "www.$domain", "$domain"],
+      email        => "admin@$domain",
+      days         => 3650,
+      base_dir     => '/etc/nginx/ssl',
+      owner        => 'root',
+      group        => 'root',
+    }
+
     $projects.each |String $project, Array $list| {
         info("Initialize project $project")
         file { "/etc/nginx/$project.d":
