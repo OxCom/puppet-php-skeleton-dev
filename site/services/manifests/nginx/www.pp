@@ -147,6 +147,8 @@ class services::nginx::www (
 
             info("[$project:$name] set host config in /etc/nginx/$project.d/$name.conf")
             if $configTpl == 'proxy' or $configTpl == 'docker' {
+              $wss = pick($sub['ws'], [])
+
               file { "/etc/nginx/$project.d/$name.conf":
                 notify  => Service["nginx"],
                 ensure  => file,
@@ -158,7 +160,8 @@ class services::nginx::www (
                   'port'    => $sub['port'],
                   'docker'  => $configTpl == 'docker',
                   'project' => $project,
-                  'domain'  => $domain
+                  'domain'  => $domain,
+                  'wss'     => $wss,
                 }),
                 require => [
                   File["/etc/nginx/$project.d"],
