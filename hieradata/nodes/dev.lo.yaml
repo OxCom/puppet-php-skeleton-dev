@@ -16,7 +16,7 @@ projects:
         - { name: cuas, php: php8.1, tpl: 'symfony' }
         - { name: mage, php: php8.1, tpl: 'magento' }
         - { name: gs, php: php8.1, tpl: 'symfony' }
-        - { name: docs, php: php8.1, tpl: 'symfony' }
+        - { name: docs, php: php8.3, tpl: 'symfony' }
         - { name: styleguide, php: ph8.1, tpl: 'default' }
     oxcom:
         - { name: www, php: php7.4, tpl: 'symfony' }
