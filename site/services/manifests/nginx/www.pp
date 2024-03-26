@@ -197,15 +197,10 @@ class services::nginx::www (
             }
 
             info("[$project:$name] add host to /etc/hosts")
-            
-            class { 'hosts':
-                hosts => {
-                  "$name.$project.$domain" => {
-                    ensure       => present,
-                    host_aliases => ["$name.$project.$domain"],
-                    ip           => '127.0.0.1',
-                  },
-                }
+            host { "$name.$project.$domain":
+                ensure  => 'present',
+                ip      => '127.0.0.1',
+                comment => "/var/www/$name.$project.$domain/",
             }
         }
 
