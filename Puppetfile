@@ -4,6 +4,7 @@ forge "http://forge.puppetlabs.com"
 # Versions should be updated to be the latest at the time you start
 mod 'puppetlabs-stdlib', '9.2.0'
 mod 'puppet-systemd', '3.8.0'
+mod 'puppet-cron', '4.1.0'
 mod 'puppetlabs-apt', '8.3.0'
 mod 'puppetlabs-docker', '9.0.1'
 mod 'puppetlabs-mysql', '15.0.0'
