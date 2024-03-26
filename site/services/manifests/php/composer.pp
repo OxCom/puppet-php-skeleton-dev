@@ -26,12 +26,15 @@ class services::php::composer {
     }
 
     info("Setup cron job for autoupdate")
-    cron { 'composer-update':
-        ensure  => 'present',
-        command => "COMPOSER_HOME=$install_path $composer_path self-update -q",
-        hour    => 0,
-        minute  => fqdn_rand(60),
-        user    => $owner,
-        require => File[$composer_path],
+    cron::job { 'composer-update':
+        minute      => '0',
+        hour        => '*',
+        date        => '*',
+        month       => '*',
+        weekday     => '*',
+        user        => $owner,        
+        command     => "COMPOSER_HOME=$install_path $composer_path self-update -q",
+        description => 'Composer auto-update',
+        require     => File[$composer_path],
     }
 }
