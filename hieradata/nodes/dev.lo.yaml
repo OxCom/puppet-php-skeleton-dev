@@ -41,7 +41,7 @@ php:
 
 tools: [
     terminator, firefox, chromium-codecs-ffmpeg-extra, chromium-browser,
-    imagemagick, webp, libwebp-dev, php-geoip, php-json
+    imagemagick, webp, libwebp-dev, php-json
 ]
 
 db:
