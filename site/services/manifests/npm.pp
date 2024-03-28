@@ -2,8 +2,7 @@ class services::npm {
     info("Initialize")
 
     class { 'nodejs':
-      repo_release => 'impish',
-      repo_url_suffix => '14.x',
+      repo_url_suffix => '21.7',
     }
     
     class { 'yarn': }
