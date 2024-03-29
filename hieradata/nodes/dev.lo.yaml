@@ -49,8 +49,11 @@ db:
         root_password: root
         remove_default_accounts: true
         override_options:
+            client:
+              ssl: false
             mysqld:
                 bind-address: '0.0.0.0'
+                skip_ssl: 1
                 ssl-disable: true
 
 docker:
