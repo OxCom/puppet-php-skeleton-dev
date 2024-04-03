@@ -29,4 +29,10 @@ class profile::default {
       ensure => present,
       value  => "524288",
     }
+
+    # update max open files (ulimit -n)
+    sysctl { "fs.file-max":
+      ensure => present,
+      value  => "65535",
+    }
 }
