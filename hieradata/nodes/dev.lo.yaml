@@ -10,6 +10,7 @@ projects:
         - { name: conv, tpl: 'proxy', port: 8900 }
         - { name: styleguide, tpl: 'docker', port: 8903, ws: ['/ws', '/storybook-server-channel'] }
         - { name: floor, tpl: 'docker', port: 8904, ws: [ '/ws', '/storybook-server-channel' ] }
+        - { name: emails, tpl: 'docker', port: 8905 }
     cryengine:
         - { name: www, php: php8.1, tpl: 'symfony' }
         - { name: forum, php: php8.1, tpl: 'phpbb' }
