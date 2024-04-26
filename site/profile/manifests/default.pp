@@ -33,7 +33,7 @@ class profile::default {
     # This file contains the maximum number of memory map areas a process may have.
     sysctl { "vm.max_map_count":
       ensure => present,
-      value  => "1048576",
+      value  => "262144",
     }
 
     # update max open files (ulimit -n)
