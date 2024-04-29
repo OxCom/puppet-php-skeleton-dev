@@ -56,6 +56,9 @@ db:
                 bind-address: '0.0.0.0'
                 skip_ssl: 1
                 ssl-disable: true
+                wait_timeout: 28800
+                interactive_timeout: 28800
+                max_allowed_packet: 1024M
 
 docker:
     # Allow users to execute docker commands
