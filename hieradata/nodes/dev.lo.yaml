@@ -59,6 +59,16 @@ db:
                 wait_timeout: 28800
                 interactive_timeout: 28800
                 max_allowed_packet: 1024M
+                # will cache frequently read data
+                innodb_buffer_pool_size: 4G
+                # larger buffer reduces write I/O to Transaction Logs
+                innodb_log_buffer_size: 256M
+                # larger log file reduces checkpointing and write I/O
+                innodb_log_file_size: 1G
+                # service write operations to .ibd files. 
+                innodb_write_io_threads: 8
+                # flushes the InnoDB Log Buffer to the Transaction Logs (ib_logfile0, ib_logfile1) once per second
+                innodb_flush_log_at_trx_commit: 0
 
 docker:
     # Allow users to execute docker commands
