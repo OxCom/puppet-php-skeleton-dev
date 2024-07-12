@@ -4,8 +4,8 @@ classes:
 
 projects:
     cem:
-        - { name: www, tpl: 'docker', port: 8900 }
-        - { name: s3, tpl: 'proxy', port: 8900 }
+        - { name: www, tpl: 'docker', port: 8900, ws: [ '/ws' ] }
+        - { name: s3, tpl: 'proxy', port: 8900, ws: [ '/ws' ] }
         - { name: s3-cli, tpl: 'proxy', port: 8900, ws: [ '/ws' ] }
         - { name: conv, tpl: 'proxy', port: 8900 }
         - { name: styleguide, tpl: 'docker', port: 8903, ws: ['/ws', '/storybook-server-channel'] }
@@ -30,7 +30,7 @@ projects:
         - { name: s3-cli, tpl: 'proxy', port: 3000, ws: [ '/ws', '/storybook-server-channel' ] }
         - { name: conv, tpl: 'proxy', port: 3000 }
     sushi:
-        - { name: www, tpl: 'docker', port: 8940 }
+        - { name: www, tpl: 'docker', port: 8940, ws: [ '/ws' ] }
         - { name: s3, tpl: 'proxy', port: 8940 }
         - { name: s3-cli, tpl: 'proxy', port: 8940, ws: [ '/ws' ] }
         - { name: conv, tpl: 'proxy', port: 8940 }
