@@ -19,6 +19,9 @@ projects:
         - { name: gs, php: php8.1, tpl: 'symfony' }
         - { name: docs, php: php8.3, tpl: 'symfony' }
         - { name: styleguide, php: ph8.1, tpl: 'default' }
+        - { name: conv, tpl: 'proxy', port: 9400 }
+        - { name: s3, tpl: 'proxy', port: 8080, ws: [ '/ws' ] }
+        - { name: s3-cli, tpl: 'proxy', port: 8081, ws: [ '/ws' ] }
     oxcom:
         - { name: www, php: php7.4, tpl: 'symfony' }
         - { name: pg, php: php7.4, tpl: 'symfony' }
