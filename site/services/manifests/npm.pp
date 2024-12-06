@@ -2,7 +2,7 @@ class services::npm {
     info("Initialize")
 
     class { 'nodejs':
-      repo_url_suffix => '23.x',
+      repo_version => '23',
     }
     
     class { 'yarn': }
