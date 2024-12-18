@@ -9,8 +9,8 @@ projects:
         - { name: s3-cli, tpl: 'proxy', port: 8900, ws: [ '/ws' ] }
         - { name: conv, tpl: 'proxy', port: 8900 }
         - { name: styleguide, tpl: 'docker', port: 8903, ws: ['/ws', '/storybook-server-channel'] }
-        - { name: floor, tpl: 'docker', port: 8904, ws: [ '/ws', '/storybook-server-channel' ] }
         - { name: emails, tpl: 'docker', port: 8905 }
+        - { name: holidays, tpl: 'docker', port: 8906 }
     cryengine:
         - { name: www, php: php8.1, tpl: 'symfony' }
         - { name: forum, php: php8.1, tpl: 'phpbb' }
