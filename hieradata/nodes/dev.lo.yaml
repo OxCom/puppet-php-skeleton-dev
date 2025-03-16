@@ -38,6 +38,11 @@ projects:
         - { name: s3, tpl: 'proxy', port: 8940 }
         - { name: s3-cli, tpl: 'proxy', port: 8940, ws: [ '/ws' ] }
         - { name: conv, tpl: 'proxy', port: 8940 }
+    space42:
+        - {name: www, tpl: 'docker', port: 8950, ws: [ '/ws' ]}
+        - { name: s3, tpl: 'proxy', port: 8940 }
+        - { name: s3-cli, tpl: 'proxy', port: 8940, ws: [ '/ws' ] }
+        - { name: conv, tpl: 'proxy', port: 8940 }
 
 php:
     composer: true
