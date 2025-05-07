@@ -46,7 +46,7 @@ projects:
 
 php:
     composer: true
-    versions: [ php7.3, php7.4, php8.1, php8.3 ]
+    versions: [ php7.3, php7.4, php8.1, php8.3, php8.4 ]
     packages: [
         opcache, gd, intl, mbstring, curl,
         mysql, readline, soap, sqlite3, tidy, xml, zip,
