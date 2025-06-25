@@ -9,7 +9,7 @@ class services::nginx::ppa {
     timeout => 0
   }
 
-  apt::ppa { 'ppa:ondrej/nginx-mainline':
+  apt::ppa { 'ppa:ondrej/nginx':
     before => Exec['apt-update-nginx']
   }
 }
