@@ -196,6 +196,7 @@ class services::nginx::www (
                   'stream' => $sub['stream'],
                 }),
                 require => [
+                  File["/etc/nginx/streams"],
                   File["/etc/nginx/$project.d"],
                 ]
               }
