@@ -220,20 +220,22 @@ class services::nginx::www (
                 }
             }
 
-            info("[$project:$name] enable vHost")
-            file { "/etc/nginx/sites-enabled/$name.$project.conf":
-                ensure  => 'link',
-                target  => "/etc/nginx/sites-available/$name.$project.conf",
-                require => [
+            if $configTpl != 'stream' {
+                info("[$project:$name] enable vHost")
+                file { "/etc/nginx/sites-enabled/$name.$project.conf":
+                  ensure  => 'link',
+                  target  => "/etc/nginx/sites-available/$name.$project.conf",
+                  require => [
                     File["/etc/nginx/sites-available/$name.$project.conf"],
-                ]
-            }
+                  ]
+                }
 
-            info("[$project:$name] add host to /etc/hosts")
-            host { "$name.$project.$domain":
-                ensure  => 'present',
-                ip      => '127.0.0.1',
-                comment => "/var/www/$name.$project.$domain/",
+                info("[$project:$name] add host to /etc/hosts")
+                host { "$name.$project.$domain":
+                  ensure  => 'present',
+                  ip      => '127.0.0.1',
+                  comment => "/var/www/$name.$project.$domain/",
+                }
             }
         }
 
