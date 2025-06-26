@@ -1,6 +1,4 @@
-stream {
-    server {
-        listen <%= $stream %>;
-        proxy_pass 127.0.0.1:<%= $port %>;
-    }
+server {
+    listen <%= $stream %>;
+    proxy_pass 127.0.0.1:<%= $port %>;
 }
