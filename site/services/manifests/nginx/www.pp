@@ -184,21 +184,29 @@ class services::nginx::www (
             info("[$project:$name] configured as stream (no project directory required)")
 
             info("[$project:$name] set stream config in /etc/nginx/streams/$project.$name.conf")
-            file { "/etc/nginx/streams/$project.$name.conf":
-              notify  => Service["nginx"],
-              ensure  => file,
-              owner   => 'root',
-              group   => 'root',
-              mode    => '0644',
-              content => epp("services/nginx/project.d/stream.conf.epp", {
-                'name'   => $name,
-                'port'   => $sub['port'],
-                'stream' => $sub['stream'],
-              }),
-              require => [
-                File["/etc/nginx/streams"],
-                File["/etc/nginx/$project.d"],
-              ]
+
+            if empty($sub['stream']) {
+              file { "/etc/nginx/streams/$project.$name.conf":
+                notify  => Service["nginx"],
+                ensure  => absent,
+              }
+            } else {
+              file { "/etc/nginx/streams/$project.$name.conf":
+                notify  => Service["nginx"],
+                ensure  => file,
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0644',
+                content => epp("services/nginx/project.d/stream.conf.epp", {
+                  'name'   => $name,
+                  'port'   => $sub['port'],
+                  'stream' => $sub['stream'],
+                }),
+                require => [
+                  File["/etc/nginx/streams"],
+                  File["/etc/nginx/$project.d"],
+                ]
+              }
             }
         }
 
@@ -207,7 +215,6 @@ class services::nginx::www (
             $configTpl = $sub['tpl'];
 
             info("[$project:$name] Sub porject directories /var/www/$name.$project.$domain")
-            # Determine root directory based on template type
             if $configTpl == 'magento' {
                 $root = "/var/www/$name.$project.$domain/pub"
             }
