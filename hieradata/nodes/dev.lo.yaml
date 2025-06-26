@@ -13,7 +13,7 @@ projects:
         - { name: emails, tpl: 'docker', port: 8902 }
         - { name: styleguide, tpl: 'docker', port: 8903, ws: ['/ws', '/storybook-server-channel'] }        
         - { name: reports, tpl: 'docker', port: 8904 }
-        - { name: amqp, tpl: 'proxy', port: 8901, streams: [{port: 56720, target: 5672}] }
+        - { name: amqp, tpl: 'proxy', port: 8901 }
     cryengine:
         - { name: www, php: php8.1, tpl: 'symfony' }
         - { name: forum, php: php8.1, tpl: 'phpbb' }
