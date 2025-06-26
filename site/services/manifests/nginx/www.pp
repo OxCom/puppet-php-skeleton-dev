@@ -90,11 +90,124 @@ class services::nginx::www (
           ]
         }
 
-        $list.each |Integer $index, Hash $sub| {
+        # Handle proxy and docker templates
+        $list.filter |$item| { $item['tpl'] == 'proxy' or $item['tpl'] == 'docker' }.each |Integer $index, Hash $sub| {
             $name = $sub['name'];
             $configTpl = $sub['tpl'];
 
             info("[$project:$name] Sub porject directories /var/www/$name.$project.$domain")
+            info("[$project:$name] configured as $configTpl (no project directory required)")
+
+            info("[$project:$name] set vHost config in /etc/nginx/sites-available/$name.$project.conf")
+            file { "/etc/nginx/sites-available/$name.$project.conf":
+                notify  => Service["nginx"],
+                ensure  => file,
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0644',
+                content => epp('services/nginx/vhost.conf.epp', {
+                    'name'    => $name,
+                    'project' => $project,
+                    'domain'  => $domain,
+                    'gzip'    => false,
+                    'perf'    => false,
+                    'static'  => false,
+                }),
+                require => [
+                    Package['nginx-full']
+                ]
+            }
+
+            info("[$project:$name] set host config in /etc/nginx/$project.d/$name.conf")
+            $wss = pick($sub['ws'], [])
+
+            file { "/etc/nginx/$project.d/$name.conf":
+                notify  => Service["nginx"],
+                ensure  => file,
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0644',
+                content => epp("services/nginx/project.d/proxy.conf.epp", {
+                  'name'    => $name,
+                  'port'    => $sub['port'],
+                  'docker'  => $configTpl == 'docker',
+                  'project' => $project,
+                  'domain'  => $domain,
+                  'wss'     => $wss,
+                }),
+                require => [
+                  File["/etc/nginx/$project.d"],
+                ]
+            }
+
+            $streams = pick($sub['streams'], [])
+
+            info("[$project:$name] set streams config in /etc/nginx/streams/$project.$name.conf")
+            file { "/etc/nginx/streams/$project.$name.conf":
+              notify  => Service["nginx"],
+              ensure  => file,
+              owner   => 'root',
+              group   => 'root',
+              mode    => '0644',
+              content => epp("services/nginx/project.d/streams.conf.epp", {
+                'name'    => $name,
+                'streams' => $streams,
+              }),
+              require => [
+                File["/etc/nginx/streams"],
+                File["/etc/nginx/$project.d"],
+              ]
+            }
+
+            info("[$project:$name] enable vHost")
+            file { "/etc/nginx/sites-enabled/$name.$project.conf":
+              ensure  => 'link',
+              target  => "/etc/nginx/sites-available/$name.$project.conf",
+              require => [
+                File["/etc/nginx/sites-available/$name.$project.conf"],
+              ]
+            }
+
+            info("[$project:$name] add host to /etc/hosts")
+            host { "$name.$project.$domain":
+              ensure  => 'present',
+              ip      => '127.0.0.1',
+              comment => "/var/www/$name.$project.$domain/",
+            }
+        }
+
+        $list.filter |$item| { $item['tpl'] == 'stream' }.each |Integer $index, Hash $sub| {
+            $name = $sub['name'];
+            $configTpl = 'stream';
+
+            info("[$project:$name] Sub porject directories /var/www/$name.$project.$domain")
+            info("[$project:$name] configured as stream (no project directory required)")
+
+            info("[$project:$name] set stream config in /etc/nginx/streams/$project.$name.conf")
+            file { "/etc/nginx/streams/$project.$name.conf":
+              notify  => Service["nginx"],
+              ensure  => file,
+              owner   => 'root',
+              group   => 'root',
+              mode    => '0644',
+              content => epp("services/nginx/project.d/stream.conf.epp", {
+                'name'   => $name,
+                'port'   => $sub['port'],
+                'stream' => $sub['stream'],
+              }),
+              require => [
+                File["/etc/nginx/streams"],
+                File["/etc/nginx/$project.d"],
+              ]
+            }
+        }
+
+        $list.filter |$item| { $item['tpl'] != 'proxy' and $item['tpl'] != 'docker' and $item['tpl'] != 'stream' }.each |Integer $index, Hash $sub| {
+            $name = $sub['name'];
+            $configTpl = $sub['tpl'];
+
+            info("[$project:$name] Sub porject directories /var/www/$name.$project.$domain")
+            # Determine root directory based on template type
             if $configTpl == 'magento' {
                 $root = "/var/www/$name.$project.$domain/pub"
             }
@@ -118,24 +231,16 @@ class services::nginx::www (
                 ]
             }
 
-            if $configTpl == 'proxy' {
-                info("[$project:$name] configured as proxy (no project directory required")
-            }
-            elsif $configTpl == 'stream' {
-                info("[$project:$name] configured as stream (no project directory required")
-            }
-            else {
-                if $root != "/var/www/$name.$project.$domain" {
-                    info("[$project:$name] add root directory: $root")
-                    file { "$root":
-                      ensure  => 'directory',
-                      owner   => 'www-data',
-                      group   => 'www-data',
-                      mode    => '0777',
-                      require => [
-                          File["/var/www/$name.$project.$domain"]
-                      ]
-                    }
+            if $root != "/var/www/$name.$project.$domain" {
+                info("[$project:$name] add root directory: $root")
+                file { "$root":
+                  ensure  => 'directory',
+                  owner   => 'www-data',
+                  group   => 'www-data',
+                  mode    => '0777',
+                  require => [
+                      File["/var/www/$name.$project.$domain"]
+                  ]
                 }
             }
 
@@ -150,9 +255,9 @@ class services::nginx::www (
                     'name'    => $name,
                     'project' => $project,
                     'domain'  => $domain,
-                    'gzip'    => $configTpl != 'proxy' and $configTpl != 'docker',
-                    'perf'    => $configTpl != 'proxy' and $configTpl != 'docker',
-                    'static'  => $configTpl != 'proxy' and $configTpl != 'docker',
+                    'gzip'    => true,
+                    'perf'    => true,
+                    'static'  => true,
                 }),
                 require => [
                     File["/var/www/$name.$project.$domain"]
@@ -160,82 +265,37 @@ class services::nginx::www (
             }
 
             info("[$project:$name] set host config in /etc/nginx/$project.d/$name.conf")
-            if $configTpl == 'proxy' or $configTpl == 'docker' {
-              $wss = pick($sub['ws'], [])
-
-              file { "/etc/nginx/$project.d/$name.conf":
-                notify  => Service["nginx"],
-                ensure  => file,
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0644',
-                content => epp("services/nginx/project.d/proxy.conf.epp", {
+            file { "/etc/nginx/$project.d/$name.conf":
+              notify  => Service["nginx"],
+              ensure  => file,
+              owner   => 'root',
+              group   => 'root',
+              mode    => '0644',
+              content => epp("services/nginx/project.d/php-$configTpl.conf.epp", {
                   'name'    => $name,
-                  'port'    => $sub['port'],
-                  'docker'  => $configTpl == 'docker',
+                  'php'     => $sub['php'],
                   'project' => $project,
-                  'domain'  => $domain,
-                  'wss'     => $wss,
-                }),
-                require => [
+                  'domain'  => $domain
+              }),
+              require => [
                   File["/etc/nginx/$project.d"],
-                ]
-              }
-            }
-            elsif $configTpl == 'stream' {
-              info("[$project:$name] configured as stream (no project directory required")
-              file { "/etc/nginx/streams/$project.$name.conf":
-                notify  => Service["nginx"],
-                ensure  => file,
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0644',
-                content => epp("services/nginx/project.d/stream.conf.epp", {
-                  'name'   => $name,
-                  'port'   => $sub['port'],
-                  'stream' => $sub['stream'],
-                }),
-                require => [
-                  File["/etc/nginx/streams"],
-                  File["/etc/nginx/$project.d"],
-                ]
-              }
-            }
-            else {
-                file { "/etc/nginx/$project.d/$name.conf":
-                  notify  => Service["nginx"],
-                  ensure  => file,
-                  owner   => 'root',
-                  group   => 'root',
-                  mode    => '0644',
-                  content => epp("services/nginx/project.d/php-$configTpl.conf.epp", {
-                      'name'    => $name,
-                      'php'     => $sub['php'],
-                      'project' => $project,
-                      'domain'  => $domain
-                  }),
-                  require => [
-                      File["/etc/nginx/$project.d"],
-                  ]
-                }
+              ]
             }
 
-            if $configTpl != 'stream' {
-                info("[$project:$name] enable vHost")
-                file { "/etc/nginx/sites-enabled/$name.$project.conf":
-                  ensure  => 'link',
-                  target  => "/etc/nginx/sites-available/$name.$project.conf",
-                  require => [
-                    File["/etc/nginx/sites-available/$name.$project.conf"],
-                  ]
-                }
+            info("[$project:$name] enable vHost")
+            file { "/etc/nginx/sites-enabled/$name.$project.conf":
+              ensure  => 'link',
+              target  => "/etc/nginx/sites-available/$name.$project.conf",
+              require => [
+                File["/etc/nginx/sites-available/$name.$project.conf"],
+              ]
+            }
 
-                info("[$project:$name] add host to /etc/hosts")
-                host { "$name.$project.$domain":
-                  ensure  => 'present',
-                  ip      => '127.0.0.1',
-                  comment => "/var/www/$name.$project.$domain/",
-                }
+            info("[$project:$name] add host to /etc/hosts")
+            host { "$name.$project.$domain":
+              ensure  => 'present',
+              ip      => '127.0.0.1',
+              comment => "/var/www/$name.$project.$domain/",
             }
         }
 
