@@ -143,20 +143,27 @@ class services::nginx::www (
             $streams = pick($sub['streams'], [])
 
             info("[$project:$name] set streams config in /etc/nginx/streams/$project.$name.conf")
-            file { "/etc/nginx/streams/$project.$name.conf":
-              notify  => Service["nginx"],
-              ensure  => file,
-              owner   => 'root',
-              group   => 'root',
-              mode    => '0644',
-              content => epp("services/nginx/project.d/streams.conf.epp", {
-                'name'    => $name,
-                'streams' => $streams,
-              }),
-              require => [
-                File["/etc/nginx/streams"],
-                File["/etc/nginx/$project.d"],
-              ]
+            if empty($streams) {
+              file { "/etc/nginx/streams/$project.$name.conf":
+                notify  => Service["nginx"],
+                ensure  => absent,
+              }
+            } else {
+              file { "/etc/nginx/streams/$project.$name.conf":
+                notify  => Service["nginx"],
+                ensure  => file,
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0644',
+                content => epp("services/nginx/project.d/streams.conf.epp", {
+                  'name'    => $name,
+                  'streams' => $streams,
+                }),
+                require => [
+                  File["/etc/nginx/streams"],
+                  File["/etc/nginx/$project.d"],
+                ]
+              }
             }
 
             info("[$project:$name] enable vHost")
@@ -180,9 +187,6 @@ class services::nginx::www (
             $name = $sub['name'];
             $configTpl = 'stream';
 
-            info("[$project:$name] Sub porject directories /var/www/$name.$project.$domain")
-            info("[$project:$name] configured as stream (no project directory required)")
-
             info("[$project:$name] set stream config in /etc/nginx/streams/$project.$name.conf")
 
             if empty($sub['stream']) {
@@ -200,7 +204,7 @@ class services::nginx::www (
                 content => epp("services/nginx/project.d/stream.conf.epp", {
                   'name'   => $name,
                   'port'   => $sub['port'],
-                  'stream' => $sub['stream'],
+                  'target' => $sub['target'],
                 }),
                 require => [
                   File["/etc/nginx/streams"],

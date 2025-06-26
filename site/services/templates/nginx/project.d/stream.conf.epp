@@ -1,4 +1,4 @@
 server {
-    listen <%= $stream %>;
-    proxy_pass 127.0.0.1:<%= $port %>;
+    listen <%= $target %>;
+    proxy_pass 127.0.0.1:<%= $target %>;
 }
