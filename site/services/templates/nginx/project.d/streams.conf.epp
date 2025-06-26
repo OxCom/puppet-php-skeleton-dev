@@ -1,0 +1,8 @@
+<% if $streams and $streams.size > 0 { -%>
+<% $streams.each |$stream| { -%>
+server {
+    listen <%= $stream['port'] %>;
+    proxy_pass 127.0.0.1:<%= $stream['target'] %>;
+}
+<% } -%>
+<% } -%>
