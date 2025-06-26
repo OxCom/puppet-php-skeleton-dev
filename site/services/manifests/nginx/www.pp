@@ -22,6 +22,17 @@ class services::nginx::www (
       group        => 'root',
     }
 
+    info("Add streams folder")
+    file { "/etc/nginx/streams":
+      ensure  => 'directory',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      require => [
+        Package['nginx-full']
+      ]
+    }
+
     $projects.each |String $project, Array $list| {
         info("Initialize project $project")
         file { "/etc/nginx/$project.d":
@@ -110,6 +121,9 @@ class services::nginx::www (
             if $configTpl == 'proxy' {
                 info("[$project:$name] configured as proxy (no project directory required")
             }
+            elsif $configTpl == 'stream' {
+                info("[$project:$name] configured as stream (no project directory required")
+            }
             else {
                 if $root != "/var/www/$name.$project.$domain" {
                     info("[$project:$name] add root directory: $root")
@@ -162,6 +176,24 @@ class services::nginx::www (
                   'project' => $project,
                   'domain'  => $domain,
                   'wss'     => $wss,
+                }),
+                require => [
+                  File["/etc/nginx/$project.d"],
+                ]
+              }
+            }
+            elsif $configTpl == 'stream' {
+              info("[$project:$name] configured as stream (no project directory required")
+              file { "/etc/nginx/streams/$project.$name.conf":
+                notify  => Service["nginx"],
+                ensure  => file,
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0644',
+                content => epp("services/nginx/project.d/stream.conf.epp", {
+                  'name'   => $name,
+                  'port'   => $sub['port'],
+                  'stream' => $sub['stream'],
                 }),
                 require => [
                   File["/etc/nginx/$project.d"],

@@ -9,7 +9,7 @@ $ vagraunt up
 
 #### Provision result
     - PHP 
-        - versions 5.6, 7.x
+        - versions 5.6, 7.x, 8.x
         - pools for projects and sub-projects
         - extensions
         - composer

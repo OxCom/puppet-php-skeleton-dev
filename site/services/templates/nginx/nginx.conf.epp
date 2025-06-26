@@ -10,6 +10,10 @@ events {
     use epoll;
 }
 
+stream {
+    include /etc/nginx/streams/*.conf;
+}
+
 http {
     default_type application/octet-stream;
 
@@ -44,4 +48,3 @@ http {
     include /etc/nginx/conf.d/*.conf;
     include /etc/nginx/sites-enabled/*;
 }
-
