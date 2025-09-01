@@ -12,7 +12,6 @@ projects:
         - { name: conv, tpl: 'proxy', port: 8901 }
         - { name: reports, tpl: 'docker', port: 8904 }
         - { name: amqp, tpl: 'proxy', port: 8901 }
-        - { name: mq, tpl: 'proxy', port: 8901 }
         - { name: emails, tpl: 'docker', port: 8902 }
         - { name: styleguide, tpl: 'docker', port: 8903, ws: ['/ws', '/storybook-server-channel'] }
         
@@ -26,7 +25,6 @@ projects:
         - { name: s3, tpl: 'proxy', port: 8705, ws: [ '/ws' ] }
         - { name: s3-cli, tpl: 'proxy', port: 8705, ws: [ '/ws' ] }
         - { name: amqp, tpl: 'proxy', port: 8705 }
-        - { name: mq, tpl: 'proxy', port: 8705 }
         
     oxcom:
         - { name: www, php: php7.4, tpl: 'symfony' }
