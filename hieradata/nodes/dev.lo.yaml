@@ -4,31 +4,32 @@ classes:
 
 projects:
     cem:
-        - { name: www, tpl: 'docker', port: 8900, ws: [ '/build' ] }
-        - { name: s3, tpl: 'proxy', port: 8901, ws: [ '/ws' ] }
-        - { name: s3-cli, tpl: 'proxy', port: 8901, ws: [ '/ws' ] }
-        - { name: conv, tpl: 'proxy', port: 8901 }
+        - { name: www, tpl: 'docker', port: 8900, ws: [ '/build' ] }        
         - { name: countries, tpl: 'proxy', port: 8901 }
         - { name: holidays, tpl: 'proxy', port: 8901 }
-        - { name: emails, tpl: 'docker', port: 8902 }
-        - { name: styleguide, tpl: 'docker', port: 8903, ws: ['/ws', '/storybook-server-channel'] }        
+        - { name: s3, tpl: 'proxy', port: 8901, ws: [ '/ws' ] }        
+        - { name: s3-cli, tpl: 'proxy', port: 8901, ws: [ '/ws' ] }
+        - { name: conv, tpl: 'proxy', port: 8901 }
         - { name: reports, tpl: 'docker', port: 8904 }
         - { name: amqp, tpl: 'proxy', port: 8901 }
+        - { name: emails, tpl: 'docker', port: 8902 }
+        - { name: styleguide, tpl: 'docker', port: 8903, ws: ['/ws', '/storybook-server-channel'] }
+        
     cryengine:
-        - { name: www, php: php8.1, tpl: 'symfony' }
-        - { name: forum, php: php8.1, tpl: 'phpbb' }
-        - { name: cuas, php: php8.1, tpl: 'symfony' }
+        - { name: www, tpl: 'docker', port: 8700, ws: [ '/build' ] }        
+        - { name: cuas, tpl: 'docker', port: 8701, ws: [ '/build' ] }
         - { name: mage, php: php8.1, tpl: 'magento' }
-        - { name: gs, php: php8.1, tpl: 'symfony' }
-        - { name: docs, php: php8.3, tpl: 'symfony' }
+        - { name: gs, php: php8.1, tpl: 'symfony' }        
         - { name: styleguide, php: ph8.1, tpl: 'default' }
-        - { name: conv, tpl: 'proxy', port: 9400 }
-        - { name: s3, tpl: 'proxy', port: 8080, ws: [ '/ws' ] }
-        - { name: s3-cli, tpl: 'proxy', port: 8081, ws: [ '/ws' ] }
+        - { name: conv, tpl: 'proxy', port: 8705 }
+        - { name: s3, tpl: 'proxy', port: 8705, ws: [ '/ws' ] }
+        - { name: s3-cli, tpl: 'proxy', port: 8705, ws: [ '/ws' ] }
+        
     oxcom:
         - { name: www, php: php7.4, tpl: 'symfony' }
         - { name: pg, php: php7.4, tpl: 'symfony' }
         - { name: auto, php: php7.4, tpl: 'symfony' }
+        
     arthustle:
         - { name: www, tpl: 'docker', port: 3000, ws: [ '/ws', '/storybook-server-channel' ] }
         - { name: api, tpl: 'proxy', port: 3000, ws: [ '/ws', '/storybook-server-channel' ] }
@@ -36,11 +37,13 @@ projects:
         - { name: s3-cli, tpl: 'proxy', port: 3000, ws: [ '/ws', '/storybook-server-channel' ] }
         - { name: conv, tpl: 'proxy', port: 3000 }
         - { name: storybook, tpl: 'docker', port: 6006, ws: [ '/ws', '/storybook-server-channel' ] }
+        
     sushi:
         - { name: www, tpl: 'docker', port: 8940, ws: [ '/ws' ] }
         - { name: s3, tpl: 'proxy', port: 8940 }
         - { name: s3-cli, tpl: 'proxy', port: 8940, ws: [ '/ws' ] }
         - { name: conv, tpl: 'proxy', port: 8940 }
+        
     space42:
         - {name: www, tpl: 'docker', port: 8950, ws: [ '/ws' ]}
         - { name: s3, tpl: 'proxy', port: 8940 }
