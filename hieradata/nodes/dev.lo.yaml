@@ -25,8 +25,8 @@ projects:
         - { name: conv, tpl: 'proxy', port: 8705 }
         - { name: s3, tpl: 'proxy', port: 8705, ws: [ '/ws' ] }
         - { name: s3-cli, tpl: 'proxy', port: 8705, ws: [ '/ws' ] }
-        - { name: amqp, tpl: 'proxy', port: 8901 }
-
+        - { name: amqp, tpl: 'proxy', port: 8705 }
+        - { name: mq, tpl: 'proxy', port: 8705 }
         
     oxcom:
         - { name: www, php: php7.4, tpl: 'symfony' }
