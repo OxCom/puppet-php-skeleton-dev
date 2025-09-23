@@ -7,7 +7,7 @@ defaults:
 
 hierarchy:
   - name: "Development"
-    path: "nodes/%{::fqdn}.yaml"
+    path: "nodes/%{facts.fqdn}.yaml"
 
   - name: "Common data"
     path: "common.yaml"
