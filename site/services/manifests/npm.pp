@@ -2,10 +2,6 @@ class services::npm {
     info("Initialize")
 
     class { 'nodejs':
-      repo_version => '20',
+      repo_version => '22',
     }
-    
-    class { 'yarn': }
-
-    Package['nodejs'] -> Package['yarn']
 }
