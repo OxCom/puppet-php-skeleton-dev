@@ -8,9 +8,9 @@ echo "[DPKG]: Checking for: puppet6-release"
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' puppet6-release|grep "install ok installed")
 if [ "" == "$PKG_OK" ]; then
     echo "Installing puppet6-release"
-    wget --no-verbose https://apt.puppetlabs.com/puppet6-release-xenial.deb
-    dpkg -i --force-confdef puppet6-release-xenial.deb
-    rm -f puppet6-release-xenial.deb
+    wget --no-verbose https://apt.puppetlabs.com/puppet8-release-noble.deb
+    dpkg -i --force-confdef puppet8-release-noble.deb
+    rm -f puppet8-release-noble.deb
 fi
 
 if [ ! -L "/usr/bin/puppet" ] || [ ! -e "/usr/bin/puppet" ]; then
