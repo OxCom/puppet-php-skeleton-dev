@@ -4,13 +4,13 @@ echo "[APT]: Update"
 apt-get update
 apt-get upgrade -y
 
-echo "[DPKG]: Checking for: puppet6-release"
-PKG_OK=$(dpkg-query -W --showformat='${Status}\n' puppet6-release|grep "install ok installed")
+echo "[DPKG]: Checking for: puppet release"
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' puppet8-release|grep "install ok installed")
 if [ "" == "$PKG_OK" ]; then
-    echo "Installing puppet6-release"
-    wget --no-verbose https://apt.puppetlabs.com/puppet8-release-noble.deb
-    dpkg -i --force-confdef puppet8-release-noble.deb
-    rm -f puppet8-release-noble.deb
+    echo "Installing puppet"
+    wget --no-verbose https://apt.puppetlabs.com/pool/noble/puppet8/p/puppet8-release/puppet8-release_1.0.0-10noble_all.deb
+    dpkg -i --force-confdef puppet8-release_1.0.0-10noble_all.deb
+    rm -f puppet8-release_1.0.0-10noble_all.deb
 fi
 
 if [ ! -L "/usr/bin/puppet" ] || [ ! -e "/usr/bin/puppet" ]; then
@@ -21,8 +21,9 @@ echo "Checking for: puppet-agent"
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' puppet-agent|grep "install ok installed")
 if [ "" == "$PKG_OK" ]; then
     echo "Installing puppet-agent"
-    apt-get update
-    apt-get install -y puppet-agent
+    wget --no-verbose https://apt.puppetlabs.com/pool/noble/puppet8/p/puppet-agent/puppet-agent_8.10.0-1noble_amd64.deb
+    dpkg -i --force-confdef puppet-agent_8.10.0-1noble_amd64.deb
+    rm -f puppet-agent_8.10.0-1noble_amd64.deb
 fi
 
 echo "Checking for: git"
