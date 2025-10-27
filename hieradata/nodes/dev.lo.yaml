@@ -26,6 +26,9 @@ projects:
         - { name: s3-cli, tpl: 'proxy', port: 8705, ws: [ '/ws' ] }
         - { name: amqp, tpl: 'proxy', port: 8705 }
         - { name: search, tpl: 'proxy', port: 8705 }
+
+    crysis:
+        - { name: www, tpl: 'docker', port: 8800, ws: [ '/build' ] }
         
     oxcom:
         - { name: www, php: php7.4, tpl: 'symfony' }
