@@ -1,5 +1,7 @@
 server {
     listen 443 ssl;
+    http2 on;
+
     server_name <%= $name %>.<%= $project %>.<%= $domain %> <% if $name == 'www' { -%><%= $project %>.<%= $domain %><% } -%>;
 
     error_log  /var/log/nginx/<%= $name %>.<%= $project %>.<%= $domain %>_error.log error;
