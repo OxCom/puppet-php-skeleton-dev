@@ -7,4 +7,11 @@ class services::wezterm::package {
     ensure  => present,
     require => Class['services::wezterm::ppa'],
   }
+
+  exec { 'wezterm-fc-cache':
+    command => 'fc-cache -fv',
+    path    => '/bin:/usr/bin',
+    timeout => 0,
+    require => Package['wezterm'],
+  }
 }

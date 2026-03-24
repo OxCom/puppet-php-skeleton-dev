@@ -17,7 +17,7 @@ projects:
         - { name: mage, php: php8.1, tpl: 'magento' }
         - { name: gs, php: php8.1, tpl: 'symfony' }
         - { name: docs, php: php8.1, tpl: 'symfony' }
-        - { name: styleguide, php: ph8.1, tpl: 'default' }
+        - { name: styleguide, php: php8.1, tpl: 'default' }
 
 php:
     composer: true

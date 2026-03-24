@@ -16,7 +16,7 @@ class services::wezterm::ppa {
   }
 
   exec { 'wezterm-add-key':
-    command => 'curl -fsSL https://apt.fury.io/wez/gpg.key | gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg',
+    command => "/bin/bash -o pipefail -c 'curl -fsSL https://apt.fury.io/wez/gpg.key | gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg'",
     path    => '/bin:/usr/bin',
     creates => '/usr/share/keyrings/wezterm-fury.gpg',
     require => [
@@ -42,6 +42,10 @@ class services::wezterm::ppa {
     command => 'apt-get update',
     path    => '/bin:/usr/bin',
     timeout => 0,
-    require => File['/etc/apt/sources.list.d/wezterm.list'],
+    refreshonly => true,
+    subscribe   => [
+      File['/usr/share/keyrings/wezterm-fury.gpg'],
+      File['/etc/apt/sources.list.d/wezterm.list'],
+    ],
   }
 }
