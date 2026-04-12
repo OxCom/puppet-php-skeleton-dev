@@ -45,7 +45,7 @@ projects:
         - { name: storybook, tpl: 'docker', port: 6006, ws: [ '/ws', '/storybook-server-channel' ] }
         
     sushi:
-        - { name: www, tpl: 'docker', port: 8940, ws: [ '/ws' ] }
+        - { name: www, tpl: 'docker', port: 8940, ws: [ '/build' ] }
         - { name: s3, tpl: 'proxy', port: 8940 }
         - { name: s3-cli, tpl: 'proxy', port: 8940, ws: [ '/ws' ] }
         - { name: conv, tpl: 'proxy', port: 8940 }
