@@ -1,3 +1,5 @@
+require 'etc'
+
 Facter.add(:user_home_dirs) do
     setcode do
         home_dirs = {}
