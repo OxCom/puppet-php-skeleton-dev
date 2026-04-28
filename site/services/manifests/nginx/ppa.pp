@@ -9,7 +9,13 @@ class services::nginx::ppa {
     timeout => 0
   }
 
-  apt::ppa { 'ppa:ondrej/nginx':
-    before => Exec['apt-update-nginx']
+  apt::source { 'nginx':
+    location => 'https://nginx.org/packages/ubuntu',
+    repos    => 'nginx',
+    key      => {
+      id     => '8540A6F18833A80E9C1653A42FD21310B49F6B46',
+      source => 'https://nginx.org/keys/nginx_signing.key',
+    },
+    before   => Exec['apt-update-nginx'],
   }
 }
