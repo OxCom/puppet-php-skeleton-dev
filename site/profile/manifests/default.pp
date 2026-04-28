@@ -23,6 +23,7 @@ class profile::default {
 
     include services::openssl
     include services::wezterm
+    include services::mc
 
     # extend FS watch limit with max_user_watches
     sysctl { "fs.inotify.max_user_watches":
