@@ -4,10 +4,10 @@ classes:
 
 projects:
     cem:
-        - { name: www, tpl: 'docker', port: 8900, ws: [ '/build' ] }        
+        - { name: www, tpl: 'docker', port: 8900, ws: [ '/build' ] }
         - { name: countries, tpl: 'proxy', port: 8901 }
         - { name: holidays, tpl: 'proxy', port: 8901 }
-        - { name: s3, tpl: 'proxy', port: 8901, ws: [ '/ws' ] }        
+        - { name: s3, tpl: 'proxy', port: 8901, ws: [ '/ws' ] }
         - { name: s3-cli, tpl: 'proxy', port: 8901, ws: [ '/ws' ] }
         - { name: conv, tpl: 'proxy', port: 8901 }
         - { name: mailer, tpl: 'proxy', port: 8901 }
@@ -15,9 +15,9 @@ projects:
         - { name: amqp, tpl: 'proxy', port: 8901 }
         - { name: msg, tpl: 'docker', port: 8902 }
         - { name: styleguide, tpl: 'docker', port: 8903, ws: ['/ws', '/storybook-server-channel'] }
-        
+
     cryengine:
-        - { name: www, tpl: 'docker', port: 8700, ws: [ '/build' ] }        
+        - { name: www, tpl: 'docker', port: 8700, ws: [ '/build' ] }
         - { name: cuas, tpl: 'docker', port: 8701, ws: [ '/build' ] }
         - { name: mage, php: php8.1, tpl: 'magento' }
         - { name: gs, tpl: 'docker', port: 8702, ws: [ '/build' ] }
@@ -30,12 +30,12 @@ projects:
 
     crysis:
         - { name: www, tpl: 'docker', port: 8800, ws: [ '/build' ] }
-        
+
     oxcom:
         - { name: www, php: php7.4, tpl: 'symfony' }
         - { name: pg, php: php7.4, tpl: 'symfony' }
         - { name: auto, php: php7.4, tpl: 'symfony' }
-        
+
     arthustle:
         - { name: www, tpl: 'docker', port: 3000, ws: [ '/ws', '/storybook-server-channel' ] }
         - { name: api, tpl: 'proxy', port: 3000, ws: [ '/ws', '/storybook-server-channel' ] }
@@ -43,13 +43,13 @@ projects:
         - { name: s3-cli, tpl: 'proxy', port: 3000, ws: [ '/ws', '/storybook-server-channel' ] }
         - { name: conv, tpl: 'proxy', port: 3000 }
         - { name: storybook, tpl: 'docker', port: 6006, ws: [ '/ws', '/storybook-server-channel' ] }
-        
+
     sushi:
         - { name: www, tpl: 'docker', port: 8940, ws: [ '/build' ] }
         - { name: s3, tpl: 'proxy', port: 8940 }
         - { name: s3-cli, tpl: 'proxy', port: 8940, ws: [ '/ws' ] }
         - { name: conv, tpl: 'proxy', port: 8940 }
-        
+
     space42:
         - {name: www, tpl: 'docker', port: 8950, ws: [ '/ws' ]}
         - { name: s3, tpl: 'proxy', port: 8940 }
@@ -58,7 +58,7 @@ projects:
 
 php:
     composer: true
-    versions: [ php7.3, php7.4, php8.1, php8.3, php8.4 ]
+    versions: [ php7.3, php7.4, php8.1, php8.3, php8.4, php8.5 ]
     packages: [
         opcache, gd, intl, mbstring, curl,
         mysql, readline, soap, sqlite3, tidy, xml, zip,
@@ -91,7 +91,7 @@ db:
                 innodb_log_buffer_size: 256M
                 # larger log file reduces checkpointing and write I/O
                 innodb_log_file_size: 1G
-                # service write operations to .ibd files. 
+                # service write operations to .ibd files.
                 innodb_write_io_threads: 8
                 # flushes the InnoDB Log Buffer to the Transaction Logs (ib_logfile0, ib_logfile1) once per second
                 innodb_flush_log_at_trx_commit: 0
