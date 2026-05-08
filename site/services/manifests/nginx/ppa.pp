@@ -15,14 +15,16 @@ class services::nginx::ppa {
     default    => $facts['os']['distro']['codename'],
   }
 
+  apt::keyring { 'nginx.asc':
+    source => 'https://nginx.org/keys/nginx_signing.key',
+  }
+
   apt::source { 'nginx':
     location => 'https://nginx.org/packages/ubuntu',
     release  => $nginx_release,
     repos    => 'nginx',
-    key      => {
-      id     => '8540A6F18833A80E9C1653A42FD21310B49F6B46',
-      source => 'https://nginx.org/keys/nginx_signing.key',
-    },
+    keyring  => '/etc/apt/keyrings/nginx.asc',
     before   => Exec['apt-update-nginx'],
+    require  => Apt::Keyring['nginx.asc'],
   }
 }

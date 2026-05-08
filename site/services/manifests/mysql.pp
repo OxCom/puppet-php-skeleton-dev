@@ -14,19 +14,21 @@ class services::mysql {
         default    => $facts['os']['distro']['codename'],
     }
 
+    apt::keyring { 'mariadb.asc':
+        source => 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x177F4010FE56CA3336300305F1656F24C74CD1D8',
+    }
+
     apt::source { 'mariadb':
         location     => "https://mirror.mariadb.org/repo/$version/ubuntu",
         release      => $mariadb_release,
         repos        => 'main',
         architecture => 'amd64',
-        key      => {
-            id     => '177F4010FE56CA3336300305F1656F24C74CD1D8',
-            server => 'hkp://keyserver.ubuntu.com:80',
-        },
-        include  => {
+        keyring      => '/etc/apt/keyrings/mariadb.asc',
+        include      => {
             src => false,
             deb => true,
-        }
+        },
+        require      => Apt::Keyring['mariadb.asc'],
     }
 
     class { '::mysql::server':
