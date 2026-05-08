@@ -7,10 +7,17 @@ class services::mysql {
     $version = lookup('db.mariadb.mariadb_version', String, 'first', '11.4')
 
     include apt
+
+    # MariaDB repo may lag behind new Ubuntu releases; fall back to noble until supported
+    $mariadb_release = $facts['os']['distro']['codename'] ? {
+        'resolute' => 'noble',
+        default    => $facts['os']['distro']['codename'],
+    }
+
     apt::source { 'mariadb':
-        location => "https://mirror.mariadb.org/repo/$version/ubuntu",
-        # release  => 'impish',
-        repos    => 'main',
+        location     => "https://mirror.mariadb.org/repo/$version/ubuntu",
+        release      => $mariadb_release,
+        repos        => 'main',
         architecture => 'amd64',
         key      => {
             id     => '177F4010FE56CA3336300305F1656F24C74CD1D8',
