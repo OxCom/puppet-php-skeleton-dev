@@ -30,15 +30,16 @@ class services::php::ppa {
     }
 
     apt::keyring { 'ondrej-php.asc':
-        source => 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x14AA40EC0831756756D7F66C4F4EA0AAE5267A6C',
+        source => 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x71DAEAAB4AD4CAB6',
     }
 
     apt::source { 'ondrej-php':
-        location => 'https://ppa.launchpadcontent.net/ondrej/php/ubuntu',
-        release  => $php_ppa_dist,
-        repos    => 'main',
-        keyring  => '/etc/apt/keyrings/ondrej-php.asc',
-        before   => Exec['apt-update-php'],
-        require  => Apt::Keyring['ondrej-php.asc'],
+        location     => 'https://ppa.launchpadcontent.net/ondrej/php/ubuntu',
+        release      => $php_ppa_dist,
+        repos        => 'main',
+        architecture => 'amd64',
+        keyring      => '/etc/apt/keyrings/ondrej-php.asc',
+        before       => Exec['apt-update-php'],
+        require      => Apt::Keyring['ondrej-php.asc'],
     }
 }

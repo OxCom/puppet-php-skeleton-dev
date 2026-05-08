@@ -20,11 +20,12 @@ class services::nginx::ppa {
   }
 
   apt::source { 'nginx':
-    location => 'https://nginx.org/packages/ubuntu',
-    release  => $nginx_release,
-    repos    => 'nginx',
-    keyring  => '/etc/apt/keyrings/nginx.asc',
-    before   => Exec['apt-update-nginx'],
-    require  => Apt::Keyring['nginx.asc'],
+    location     => 'https://nginx.org/packages/ubuntu',
+    release      => $nginx_release,
+    repos        => 'nginx',
+    architecture => 'amd64',
+    keyring      => '/etc/apt/keyrings/nginx.asc',
+    before       => Exec['apt-update-nginx'],
+    require      => Apt::Keyring['nginx.asc'],
   }
 }
