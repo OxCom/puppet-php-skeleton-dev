@@ -8,7 +8,7 @@ class services::nginx::package {
         ensure => 'purged',
     }
 
-    package { 'nginx-full':
+    package { 'nginx':
         ensure  => present,
         require => [
             Package['apache2'],
@@ -19,13 +19,13 @@ class services::nginx::package {
     service { "nginx":
         ensure  => "running",
         enable  => "true",
-        require => Package["nginx-full"],
+        require => Package["nginx"],
     }
 
     user { 'vagrant':
         ensure  => present,
         groups  => ['www-data'],
-        require => Package["nginx-full"],
+        require => Package["nginx"],
     }
 
     file { '/etc/nginx/snippets':
@@ -33,7 +33,7 @@ class services::nginx::package {
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        require => Package['nginx-full']
+        require => Package['nginx']
     }
 
     file { '/etc/nginx/conf.d':
@@ -41,7 +41,7 @@ class services::nginx::package {
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        require => Package['nginx-full']
+        require => Package['nginx']
     }
 
     file { "/etc/nginx/ssl":
@@ -49,7 +49,7 @@ class services::nginx::package {
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        require => Package['nginx-full']
+        require => Package['nginx']
     }
 
     file { "/etc/nginx/nginx.conf":
@@ -59,7 +59,7 @@ class services::nginx::package {
         group   => 'root',
         mode    => '0644',
         content => epp("services/nginx/nginx.conf.epp"),
-        require => Package['nginx-full']
+        require => Package['nginx']
     }
 
     info("Generate snippets")
