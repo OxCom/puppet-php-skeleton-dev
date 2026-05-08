@@ -29,7 +29,7 @@ class services::nginx::www (
       group   => 'root',
       mode    => '0644',
       require => [
-        Package['nginx-full']
+        Package['nginx']
       ]
     }
 
@@ -41,7 +41,7 @@ class services::nginx::www (
             group   => 'root',
             mode    => '0644',
             require => [
-                Package['nginx-full']
+                Package['nginx']
             ]
         }
 
@@ -114,7 +114,7 @@ class services::nginx::www (
                     'static'  => false,
                 }),
                 require => [
-                    Package['nginx-full']
+                    Package['nginx']
                 ]
             }
 
@@ -238,7 +238,7 @@ class services::nginx::www (
                 group   => 'www-data',
                 mode    => '0777',
                 require => [
-                    Package['nginx-full']
+                    Package['nginx']
                 ]
             }
 
