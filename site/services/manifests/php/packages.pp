@@ -1,6 +1,7 @@
 class services::php::packages (
     Array $versions = $services::php::params::versions,
-    Array $packages = $services::php::params::packages
+    Array $packages = $services::php::params::packages,
+    Hash  $exclude_packages = $services::php::params::exclude_packages
 ) inherits services::php::params {
     info("Initialize")
 
@@ -25,6 +26,12 @@ class services::php::packages (
             }
         }
 
+        # Packages excluded for this specific version
+        $excluded = $exclude_packages[$version] ? {
+            undef   => [],
+            default => $exclude_packages[$version]
+        }
+
         # List of required packages
         unique($packages).each |Integer $index, String $package| {
             # List of packages has not version prefix and should be installed as 'php-${package}'
@@ -39,7 +46,12 @@ class services::php::packages (
                     require => Class['services::php::ppa']
                 }
             } else {
-                if defined(Package["php-$package"]) {
+                if member($excluded, $package) {
+                    info("Skipping package '$version-$package' (excluded for $version).")
+                    next()
+                }
+
+                if defined(Package["$version-$package"]) {
                     next()
                 }
 

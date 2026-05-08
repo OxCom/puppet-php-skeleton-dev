@@ -65,6 +65,9 @@ php:
         codecoverage, codesniffer, igbinary, imagick,
         redis, xdebug, ssh2, bcmath, apcu, amqp
     ]
+    # Packages bundled into PHP itself for specific versions (no separate apt package exists)
+    exclude_packages:
+        php8.5: [ opcache ]
 
 tools: [
     firefox, chromium-codecs-ffmpeg-extra, chromium-browser,
