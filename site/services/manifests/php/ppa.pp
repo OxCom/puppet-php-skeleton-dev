@@ -15,6 +15,15 @@ class services::php::ppa {
         default    => $facts['os']['distro']['codename'],
     }
 
+    # Remove stale PPA list files left from previous runs with a different dist
+    $stale_dists = ['resolute']
+    $stale_dists.each |String $stale| {
+        file { "/etc/apt/sources.list.d/ondrej-ubuntu-php-${stale}.list":
+            ensure => absent,
+            before => Apt::Ppa['ppa:ondrej/php'],
+        }
+    }
+
     apt::ppa { 'ppa:ondrej/php':
         dist   => $php_ppa_dist,
         before => Exec['apt-update-php'],
