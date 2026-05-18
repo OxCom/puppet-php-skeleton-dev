@@ -29,8 +29,12 @@ class services::php::ppa {
         }
     }
 
-    apt::keyring { 'ondrej-php.asc':
-        source => 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x71DAEAAB4AD4CAB6',
+    # Use wget (system tool / OS CA bundle) instead of Puppet's file provider so the
+    # corporate self-signed proxy CA is trusted without needing to rebuild Puppet's CA store.
+    exec { 'apt-keyring-ondrej-php':
+        command => '/usr/bin/wget -q "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x71DAEAAB4AD4CAB6" -O /etc/apt/keyrings/ondrej-php.asc',
+        creates => '/etc/apt/keyrings/ondrej-php.asc',
+        require => Class['apt'],
     }
 
     apt::source { 'ondrej-php':
@@ -40,6 +44,6 @@ class services::php::ppa {
         architecture => 'amd64',
         keyring      => '/etc/apt/keyrings/ondrej-php.asc',
         before       => Exec['apt-update-php'],
-        require      => Apt::Keyring['ondrej-php.asc'],
+        require      => Exec['apt-keyring-ondrej-php'],
     }
 }

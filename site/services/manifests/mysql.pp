@@ -14,8 +14,12 @@ class services::mysql {
         default    => $facts['os']['distro']['codename'],
     }
 
-    apt::keyring { 'mariadb.asc':
-        source => 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x177F4010FE56CA3336300305F1656F24C74CD1D8',
+    # Use wget (system tool / OS CA bundle) instead of Puppet's file provider so the
+    # corporate self-signed proxy CA is trusted without needing to rebuild Puppet's CA store.
+    exec { 'apt-keyring-mariadb':
+        command => '/usr/bin/wget -q "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x177F4010FE56CA3336300305F1656F24C74CD1D8" -O /etc/apt/keyrings/mariadb.asc',
+        creates => '/etc/apt/keyrings/mariadb.asc',
+        require => Class['apt'],
     }
 
     apt::source { 'mariadb':
@@ -28,7 +32,7 @@ class services::mysql {
             src => false,
             deb => true,
         },
-        require      => Apt::Keyring['mariadb.asc'],
+        require      => Exec['apt-keyring-mariadb'],
     }
 
     class { '::mysql::server':
@@ -38,14 +42,14 @@ class services::mysql {
         override_options        => $options
     }
 
-    Apt::Source['mariadb'] 
-        ~> Class['apt::update'] 
+    Apt::Source['mariadb']
+        ~> Class['apt::update']
         -> Class['::mysql::server']
         -> file { '/etc/mysql/mariadb.conf.d/50-server.cnf':
             ensure => present,
-        } 
+        }
         -> file_line { 'Expose mariadb on all interfaces':
-            path => '/etc/mysql/mariadb.conf.d/50-server.cnf',  
+            path => '/etc/mysql/mariadb.conf.d/50-server.cnf',
             line => '# bind-address            = 127.0.0.1',
             match   => "^bind-address.*$",
         }

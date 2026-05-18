@@ -15,8 +15,12 @@ class services::nginx::ppa {
     default    => $facts['os']['distro']['codename'],
   }
 
-  apt::keyring { 'nginx.asc':
-    source => 'https://nginx.org/keys/nginx_signing.key',
+  # Use wget (system tool / OS CA bundle) instead of Puppet's file provider so the
+  # corporate self-signed proxy CA is trusted without needing to rebuild Puppet's CA store.
+  exec { 'apt-keyring-nginx':
+    command => '/usr/bin/wget -q "https://nginx.org/keys/nginx_signing.key" -O /etc/apt/keyrings/nginx.asc',
+    creates => '/etc/apt/keyrings/nginx.asc',
+    require => Class['apt'],
   }
 
   apt::source { 'nginx':
@@ -26,6 +30,6 @@ class services::nginx::ppa {
     architecture => 'amd64',
     keyring      => '/etc/apt/keyrings/nginx.asc',
     before       => Exec['apt-update-nginx'],
-    require      => Apt::Keyring['nginx.asc'],
+    require      => Exec['apt-keyring-nginx'],
   }
 }
