@@ -212,6 +212,13 @@ class services::nginx::www (
                 ]
               }
             }
+
+            info("[$project:$name] add host to /etc/hosts")
+            host { "$name.$project.$domain":
+              ensure  => 'present',
+              ip      => '127.0.0.1',
+              comment => "/var/www/$name.$project.$domain/",
+            }
         }
 
         $list.filter |$item| { $item['tpl'] != 'proxy' and $item['tpl'] != 'docker' and $item['tpl'] != 'stream' }.each |Integer $index, Hash $sub| {
