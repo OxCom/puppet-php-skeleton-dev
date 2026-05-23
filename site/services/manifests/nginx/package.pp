@@ -17,12 +17,9 @@ class services::nginx::package {
     }
 
     # Required for the stream {} block in nginx.conf.
-    # nginx.org packages ship this as a separate dynamic module.
-    package { 'nginx-module-stream':
-        ensure  => present,
-        require => Package['nginx'],
-        notify  => Service['nginx'],
-    }
+    # nginx.org's nginx package already ships ngx_stream_module.so in
+    # /usr/lib/nginx/modules/ — no extra package required; we only need
+    # to emit a load_module directive picked up by the modules-enabled include.
 
     # nginx.org packages don't create modules-enabled; create it explicitly
     file { '/etc/nginx/modules-enabled':
@@ -41,7 +38,7 @@ class services::nginx::package {
         mode    => '0644',
         content => "load_module modules/ngx_stream_module.so;\n",
         require => [
-            Package['nginx-module-stream'],
+            Package['nginx'],
             File['/etc/nginx/modules-enabled'],
         ],
         notify  => Service['nginx'],
