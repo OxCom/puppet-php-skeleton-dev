@@ -52,6 +52,22 @@ class services::nginx::package {
         require => Package['nginx']
     }
 
+    file { '/etc/nginx/sites-available':
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => Package['nginx']
+    }
+
+    file { '/etc/nginx/sites-enabled':
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => Package['nginx']
+    }
+
     file { "/etc/nginx/nginx.conf":
         notify  => Service["nginx"],
         ensure  => file,

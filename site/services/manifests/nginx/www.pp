@@ -126,7 +126,8 @@ class services::nginx::www (
                     'static'  => false,
                 }),
                 require => [
-                    Package['nginx']
+                    Package['nginx'],
+                    File['/etc/nginx/sites-available'],
                 ]
             }
 
