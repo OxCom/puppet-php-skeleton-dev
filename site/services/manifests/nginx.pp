@@ -1,7 +1,8 @@
 class services::nginx (
-    Array $versions = $services::nginx::params::versions,
-    Hash $projects  = $services::nginx::params::projects,
-    String $domain  = $services::nginx::params::domain
+    Array   $versions = $services::nginx::params::versions,
+    Hash    $projects = $services::nginx::params::projects,
+    String  $domain   = $services::nginx::params::domain,
+    Boolean $certbot  = $services::nginx::params::certbot
 ) inherits services::nginx::params {
     info("Initialize")
 
@@ -16,5 +17,6 @@ class services::nginx (
         versions => $versions,
         projects => $projects,
         domain   => $domain,
+        certbot  => $certbot,
     }
 }

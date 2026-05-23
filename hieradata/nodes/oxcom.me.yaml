@@ -2,6 +2,8 @@
 classes:
     - role::vps
 
+certbot: true
+
 projects:
     sushi:
         - { name: www, tpl: 'docker', port: 8940, ws: [ '/build' ] }
