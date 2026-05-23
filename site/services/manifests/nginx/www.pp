@@ -291,7 +291,8 @@ class services::nginx::www (
                     'static'  => true,
                 }),
                 require => [
-                    File["/var/www/$name.$project.$domain"]
+                    File["/var/www/$name.$project.$domain"],
+                    File['/etc/nginx/sites-available'],
                 ]
             }
 
