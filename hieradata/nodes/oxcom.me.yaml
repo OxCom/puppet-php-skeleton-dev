@@ -37,6 +37,7 @@ db:
             client:
                 ssl: false
             mysqld:
+                bind-address: '127.0.0.1'
                 skip_ssl: 1
                 ssl-disable: true
                 wait_timeout: 28800
