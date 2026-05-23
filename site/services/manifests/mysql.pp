@@ -60,17 +60,22 @@ class services::mysql {
     $extra_hosts   = unique($all_bind_hosts).filter |$h| { !($h in $default_hosts) }
 
     $extra_hosts.each |$host| {
-        mysql_user { "root@${host}":
+        # Derive subnet wildcard from the gateway IP: 172.18.0.1 → 172.18.0.%
+        # MariaDB listens on the exact gateway IP, but containers connect from
+        # any address in that subnet, so the grant must cover the whole range.
+        $grant_host = regsubst($host, '\.\d+$', '.%')
+
+        mysql_user { "root@${grant_host}":
             ensure        => present,
             password_hash => mysql::password($password),
             require       => Class['::mysql::server'],
         }
-        -> mysql_grant { "root@${host}/*.*":
+        -> mysql_grant { "root@${grant_host}/*.*":
             ensure     => present,
             options    => ['GRANT'],
             privileges => ['ALL'],
             table      => '*.*',
-            user       => "root@${host}",
+            user       => "root@${grant_host}",
         }
     }
 }
