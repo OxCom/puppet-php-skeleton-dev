@@ -45,4 +45,32 @@ class services::mysql {
     Apt::Source['mariadb']
         ~> Class['apt::update']
         -> Class['::mysql::server']
+
+    # --- Root grants for every bind-address host ---
+    # ::mysql::server already manages root@localhost and root@127.0.0.1.
+    # Parse the bind-address option and create root user + ALL PRIVILEGES for
+    # each additional IP so containers / services on those interfaces can connect.
+    $bind_address_raw = dig($options, 'mysqld', 'bind-address')
+    $all_bind_hosts = $bind_address_raw ? {
+        undef   => [],
+        default => $bind_address_raw.split(',').map |$h| { strip($h) },
+    }
+    # Deduplicate and skip hosts that ::mysql::server already handles
+    $default_hosts = ['127.0.0.1', 'localhost', '::1']
+    $extra_hosts   = unique($all_bind_hosts).filter |$h| { !($h in $default_hosts) }
+
+    $extra_hosts.each |$host| {
+        mysql_user { "root@${host}":
+            ensure        => present,
+            password_hash => mysql_password($password),
+            require       => Class['::mysql::server'],
+        }
+        -> mysql_grant { "root@${host}/*.*":
+            ensure     => present,
+            options    => ['GRANT'],
+            privileges => ['ALL'],
+            table      => '*.*',
+            user       => "root@${host}",
+        }
+    }
 }
