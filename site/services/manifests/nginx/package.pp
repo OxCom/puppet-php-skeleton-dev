@@ -16,34 +16,6 @@ class services::nginx::package {
         ]
     }
 
-    # Required for the stream {} block in nginx.conf.
-    # nginx.org's nginx package already ships ngx_stream_module.so in
-    # /usr/lib/nginx/modules/ — no extra package required; we only need
-    # to emit a load_module directive picked up by the modules-enabled include.
-
-    # nginx.org packages don't create modules-enabled; create it explicitly
-    file { '/etc/nginx/modules-enabled':
-        ensure  => 'directory',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        require => Package['nginx'],
-    }
-
-    # Activate the stream dynamic module via the include already in nginx.conf
-    file { '/etc/nginx/modules-enabled/50-mod-stream.conf':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => "load_module modules/ngx_stream_module.so;\n",
-        require => [
-            Package['nginx'],
-            File['/etc/nginx/modules-enabled'],
-        ],
-        notify  => Service['nginx'],
-    }
-
     service { "nginx":
         ensure  => "running",
         enable  => "true",
