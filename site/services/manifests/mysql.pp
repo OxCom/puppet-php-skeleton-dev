@@ -62,7 +62,7 @@ class services::mysql {
     $extra_hosts.each |$host| {
         mysql_user { "root@${host}":
             ensure        => present,
-            password_hash => mysql_password($password),
+            password_hash => mysql::password($password),
             require       => Class['::mysql::server'],
         }
         -> mysql_grant { "root@${host}/*.*":
