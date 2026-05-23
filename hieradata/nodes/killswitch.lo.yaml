@@ -1,7 +1,0 @@
----
-classes:
-    - role::default
-
-tools: [
-    mc, htop, wget, tree, curl, vim, terminator
-]

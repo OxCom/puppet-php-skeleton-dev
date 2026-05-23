@@ -1,8 +1,0 @@
----
-# Node with all in one
-
-classes:
-    - role::default
-
-#bind9:
-#  dns: ['8.8.8.8', '8.8.4.4']
