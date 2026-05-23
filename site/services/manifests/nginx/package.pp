@@ -16,13 +16,6 @@ class services::nginx::package {
         ]
     }
 
-    # Required for the stream {} block in nginx.conf
-    package { 'libnginx-mod-stream':
-        ensure  => present,
-        require => Package['nginx'],
-        notify  => Service['nginx'],
-    }
-
     service { "nginx":
         ensure  => "running",
         enable  => "true",
