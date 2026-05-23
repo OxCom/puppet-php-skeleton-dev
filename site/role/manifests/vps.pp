@@ -1,4 +1,4 @@
-class role::work inherits role::default {
+class role::vps inherits role::default {
   include profile::database
   include profile::webapp
 }

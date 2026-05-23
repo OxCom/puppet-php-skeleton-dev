@@ -1,3 +1,3 @@
-class role::vps {
+class role::default {
   include profile::default
 }
