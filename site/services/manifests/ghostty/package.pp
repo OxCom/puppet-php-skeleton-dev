@@ -13,9 +13,9 @@ class services::ghostty::package {
   }
 
   exec { 'install-ghostty-terminfo':
-    command => '/bin/bash -o pipefail -c "find /snap/ghostty/current/share/terminfo -name \"xterm-ghostty\" | xargs -I{} tic -x {}"',
+    command => '/bin/bash -o pipefail -c "mkdir -p /usr/share/terminfo/x && cp /snap/ghostty/current/share/terminfo/x/xterm-ghostty /usr/share/terminfo/x/xterm-ghostty"',
     path    => '/bin:/usr/bin',
-    unless  => '/bin/bash -o pipefail -c "infocmp xterm-ghostty >/dev/null 2>&1"',
+    creates => '/usr/share/terminfo/x/xterm-ghostty',
     require => Exec['install-ghostty-snap'],
   }
 

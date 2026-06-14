@@ -44,12 +44,22 @@ class services::nginx::package {
         require => Package["nginx"],
     }
 
+    # Explicitly manage the base directory so all subdirectory resources have a
+    # guaranteed parent, even after purging Ubuntu's nginx-common (which owned it).
+    file { '/etc/nginx':
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => Package['nginx'],
+    }
+
     file { '/etc/nginx/snippets':
         ensure  => 'directory',
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        require => Package['nginx']
+        require => File['/etc/nginx'],
     }
 
     file { '/etc/nginx/conf.d':
@@ -57,15 +67,15 @@ class services::nginx::package {
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        require => Package['nginx']
+        require => File['/etc/nginx'],
     }
 
-    file { "/etc/nginx/ssl":
+    file { '/etc/nginx/ssl':
         ensure  => 'directory',
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        require => Package['nginx']
+        require => File['/etc/nginx'],
     }
 
     file { '/etc/nginx/sites-available':
@@ -73,7 +83,7 @@ class services::nginx::package {
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        require => Package['nginx']
+        require => File['/etc/nginx'],
     }
 
     file { '/etc/nginx/sites-enabled':
@@ -81,17 +91,17 @@ class services::nginx::package {
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        require => Package['nginx']
+        require => File['/etc/nginx'],
     }
 
-    file { "/etc/nginx/nginx.conf":
+    file { '/etc/nginx/nginx.conf':
         notify  => Service["nginx"],
         ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
         content => epp("services/nginx/nginx.conf.epp"),
-        require => Package['nginx']
+        require => File['/etc/nginx'],
     }
 
     info("Generate snippets")
