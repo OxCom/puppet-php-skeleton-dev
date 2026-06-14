@@ -12,6 +12,13 @@ class services::ghostty::package {
     require => Package['snapd'],
   }
 
+  exec { 'install-ghostty-terminfo':
+    command => '/bin/bash -o pipefail -c "find /snap/ghostty/current/share/terminfo -name \"xterm-ghostty\" | xargs -I{} tic -x {}"',
+    path    => '/bin:/usr/bin',
+    unless  => '/bin/bash -o pipefail -c "infocmp xterm-ghostty >/dev/null 2>&1"',
+    require => Exec['install-ghostty-snap'],
+  }
+
   exec { 'set-default-terminal-ghostty':
     command => '/bin/bash -o pipefail -c "update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /snap/bin/ghostty 70 && update-alternatives --set x-terminal-emulator /snap/bin/ghostty"',
     path    => '/bin:/usr/bin',

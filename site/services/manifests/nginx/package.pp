@@ -8,11 +8,27 @@ class services::nginx::package {
         ensure => 'purged',
     }
 
+    # Purge Ubuntu-repo nginx packages before installing from nginx.org official repo.
+    # The Ubuntu packages split stream support into libnginx-mod-stream; the official
+    # nginx.org package ships as a monolithic build with stream included.
+    $ubuntu_nginx_packages = [
+        'nginx-common',
+        'nginx-core',
+        'nginx-full',
+        'nginx-light',
+        'nginx-extras',
+    ]
+    package { $ubuntu_nginx_packages:
+        ensure => 'purged',
+        before => Package['nginx'],
+    }
+
     package { 'nginx':
         ensure  => present,
         require => [
             Package['apache2'],
-            Class['services::nginx::ppa']
+            Package[$ubuntu_nginx_packages],
+            Class['services::nginx::ppa'],
         ]
     }
 
