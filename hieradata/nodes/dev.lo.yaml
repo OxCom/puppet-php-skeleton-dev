@@ -32,9 +32,11 @@ projects:
         - { name: www, tpl: 'docker', port: 8800, ws: [ '/build' ] }
 
     oxcom:
-        - { name: www, php: php7.4, tpl: 'symfony' }
-        - { name: pg, php: php7.4, tpl: 'symfony' }
-        - { name: auto, php: php7.4, tpl: 'symfony' }
+        - { name: www, tpl: 'docker', port: 8950, ws: [ '/build' ] }
+        - { name: auto, tpl: 'docker', port: 8950, ws: [ '/build' ] }
+        - { name: s3, tpl: 'proxy', port: 8950 }
+        - { name: s3-cli, tpl: 'proxy', port: 8950, ws: [ '/ws' ] }
+        - { name: conv, tpl: 'proxy', port: 8950 }
 
     arthustle:
         - { name: www, tpl: 'docker', port: 3000, ws: [ '/ws', '/storybook-server-channel' ] }
