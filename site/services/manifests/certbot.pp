@@ -2,21 +2,12 @@ class services::certbot {
     info("Initialize certbot")
 
     # Use Snap-installed Certbot (official recommended distribution) to get
-    # the latest releases. This installs snapd, ensures the core snap is
-    # available, installs certbot as a classic snap, and creates a
-    # convenient /usr/bin/certbot symlink. We also refresh all snaps to ensure
-    # we're running the latest version (e.g., 5.6.0 or later).
+    # the latest releases. The snapd service is already included globally via the
+    # default profile. We install certbot as a classic snap and create a convenient
+    # /usr/bin/certbot symlink. We also refresh all snaps to ensure we're running
+    # the latest version (e.g., 5.6.0 or later).
 
-    package { 'snapd':
-      ensure => present,
-    }
-
-    exec { 'ensure-snap-core':
-      command => '/usr/bin/snap install core',
-      path    => ['/usr/bin','/bin','/usr/sbin','/sbin'],
-      unless  => '/usr/bin/snap list core >/dev/null 2>&1',
-      require => Package['snapd'],
-    }
+    require services::snapd
 
     exec { 'install-certbot-snap':
       command => '/usr/bin/snap install --classic certbot',

@@ -1,15 +1,13 @@
 class services::ghostty::package {
   info("Initialize")
 
-  package { 'snapd':
-    ensure => present,
-  }
+  require services::snapd
 
   exec { 'install-ghostty-snap':
     command => '/usr/bin/snap install ghostty --classic',
     path    => '/bin:/usr/bin:/snap/bin',
     unless  => '/bin/bash -o pipefail -c "snap list ghostty >/dev/null 2>&1"',
-    require => Package['snapd'],
+    require => Exec['ensure-snap-core'],
   }
 
   exec { 'install-ghostty-terminfo':
