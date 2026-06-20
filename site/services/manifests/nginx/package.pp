@@ -127,6 +127,16 @@ class services::nginx::package {
         require => File['/etc/nginx/snippets']
     }
 
+    info("[Snippet]: Block dotfiles/VCS folders")
+    file { '/etc/nginx/snippets/block-dotfiles.conf':
+        ensure  => file,
+        content => template('services/nginx/snippet/block-dotfiles.conf.erb'),
+        notify  => Service["nginx"],
+        owner   => 'root',
+        group   => 'root',
+        require => File['/etc/nginx/snippets']
+    }
+
     info("[conf.d]: GZip")
     file { '/etc/nginx/conf.d/01-gzip.conf':
         ensure  => file,
