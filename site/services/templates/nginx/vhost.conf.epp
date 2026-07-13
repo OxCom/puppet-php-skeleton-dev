@@ -10,6 +10,9 @@ server {
     include <%= $project %>.d/<%= $name %>.conf;
     include <%= $project %>.d/ssl.conf;
 
+    # Block access to sensitive dot-files and VCS folders (global rule applied to every vhost)
+    include snippets/block-dotfiles.conf;
+
     <% if $gzip == true { -%>
     include conf.d/01-gzip.conf;
     <% } -%>

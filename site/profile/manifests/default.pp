@@ -21,6 +21,7 @@ class profile::default {
         }
     }
 
+    include services::snapd
     include services::openssl
     include services::ghostty
     include services::mc

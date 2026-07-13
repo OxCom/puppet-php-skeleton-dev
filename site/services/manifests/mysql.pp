@@ -45,12 +45,37 @@ class services::mysql {
     Apt::Source['mariadb']
         ~> Class['apt::update']
         -> Class['::mysql::server']
-        -> file { '/etc/mysql/mariadb.conf.d/50-server.cnf':
-            ensure => present,
+
+    # --- Root grants for every bind-address host ---
+    # ::mysql::server already manages root@localhost and root@127.0.0.1.
+    # Parse the bind-address option and create root user + ALL PRIVILEGES for
+    # each additional IP so containers / services on those interfaces can connect.
+    $bind_address_raw = dig($options, 'mysqld', 'bind-address')
+    $all_bind_hosts = $bind_address_raw ? {
+        undef   => [],
+        default => $bind_address_raw.split(',').map |$h| { strip($h) },
+    }
+    # Deduplicate and skip hosts that ::mysql::server already handles
+    $default_hosts = ['127.0.0.1', 'localhost', '::1']
+    $extra_hosts   = unique($all_bind_hosts).filter |$h| { !($h in $default_hosts) }
+
+    $extra_hosts.each |$host| {
+        # Derive subnet wildcard from the gateway IP: 172.18.0.1 → 172.18.0.%
+        # MariaDB listens on the exact gateway IP, but containers connect from
+        # any address in that subnet, so the grant must cover the whole range.
+        $grant_host = regsubst($host, '\.\d+$', '.%')
+
+        mysql_user { "root@${grant_host}":
+            ensure        => present,
+            password_hash => mysql::password($password),
+            require       => Class['::mysql::server'],
         }
-        -> file_line { 'Expose mariadb on all interfaces':
-            path => '/etc/mysql/mariadb.conf.d/50-server.cnf',
-            line => '# bind-address            = 127.0.0.1',
-            match   => "^bind-address.*$",
+        -> mysql_grant { "root@${grant_host}/*.*":
+            ensure     => present,
+            options    => ['GRANT'],
+            privileges => ['ALL'],
+            table      => '*.*',
+            user       => "root@${grant_host}",
         }
+    }
 }

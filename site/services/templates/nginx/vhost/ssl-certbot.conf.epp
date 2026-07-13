@@ -1,0 +1,4 @@
+<%- | String $project, String $domain | -%>
+ssl_certificate     /etc/letsencrypt/live/<%= $project %>.<%= $domain %>/fullchain.pem;
+ssl_certificate_key /etc/letsencrypt/live/<%= $project %>.<%= $domain %>/privkey.pem;
+

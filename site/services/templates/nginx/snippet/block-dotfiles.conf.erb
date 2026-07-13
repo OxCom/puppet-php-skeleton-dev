@@ -1,0 +1,17 @@
+## Block access to .git and other VCS/dot-folders
+# This snippet is included into every vhost from `vhost.conf.epp` so it applies
+# to all domains/sites managed by this module.
+
+## Deny direct access to common VCS and sensitive folders/files
+# Matches examples at any path depth: /.git, /.svn, /.hg, /.bzr, /CVS, /_darcs,
+# and files starting with .env (e.g. .env, .env.local, .env.test, .env.local.php)
+location ~ (?:^|/)(?:\.git|\.svn|\.hg|\.bzr|CVS|_darcs|\.env(?:[^/]*?)|\.npmrc|\.nmprc|auth\.json|\.git-credentials|\.htaccess|\.htpasswd)(?:/|$) {
+    deny all;
+    # Return 418 I'm a teapot per request (short, non-revealing response)
+    return 418 "I'm a teapot";
+    access_log off;
+    log_not_found off;
+}
+
+
+

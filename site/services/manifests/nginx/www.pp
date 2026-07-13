@@ -1,25 +1,31 @@
 class services::nginx::www (
-    Array $versions = $services::nginx::params::versions,
-    Hash $projects  = $services::nginx::params::projects,
-    String $domain  = $services::nginx::params::domain
+    Array   $versions = $services::nginx::params::versions,
+    Hash    $projects = $services::nginx::params::projects,
+    String  $domain   = $services::nginx::params::domain,
+    Boolean $certbot  = $services::nginx::params::certbot
 ) {
     info("Initialize")
 
-    info("[domain] Generate self signed certificate - $domain")
-    openssl::certificate::x509 { "$domain":
-      ensure       => present,
-      country      => 'DE',
-      organization => "*.$domain Inc",
-      commonname   => "*.$domain",
-      state        => 'Localhost',
-      locality     => 'VM',
-      unit         => 'Developer instance',
-      altnames     => ["*.$domain", "www.$domain", "$domain"],
-      email        => "admin@$domain",
-      days         => 3650,
-      base_dir     => '/etc/nginx/ssl',
-      owner        => 'root',
-      group        => 'root',
+    if $certbot {
+        info("certbot mode enabled — skipping self-signed root certificate for $domain")
+        require services::certbot
+    } else {
+        info("[domain] Generate self signed certificate - $domain")
+        openssl::certificate::x509 { "$domain":
+          ensure       => present,
+          country      => 'DE',
+          organization => "*.$domain Inc",
+          commonname   => "*.$domain",
+          state        => 'Localhost',
+          locality     => 'VM',
+          unit         => 'Developer instance',
+          altnames     => ["*.$domain", "www.$domain", "$domain"],
+          email        => "admin@$domain",
+          days         => 3650,
+          base_dir     => '/etc/nginx/ssl',
+          owner        => 'root',
+          group        => 'root',
+        }
     }
 
     info("Add streams folder")
@@ -63,31 +69,37 @@ class services::nginx::www (
         }
 
         info("[domain] Generate self signed certificate - $project.$domain")
-        openssl::certificate::x509 { "$project.$domain":
-          ensure       => present,
-          country      => 'DE',
-          organization => "*.$project.$domain Inc",
-          commonname   => "*.$project.$domain",
-          state        => 'Localhost',
-          locality     => 'VM',
-          unit         => 'Developer instance',
-          altnames     => ["*.$project.$domain", "$project.$domain"],
-          email        => "admin@$project.$domain",
-          days         => 3650,
-          base_dir     => '/etc/nginx/ssl',
-          owner        => 'root',
-          group        => 'root',
-        }
+        if $certbot {
+            info("certbot mode enabled — wildcard cert for *.$project.$domain is managed manually via DNS-01 challenge")
+            # Cert is obtained manually:
+            # certbot certonly --manual --rsa-key-size 4096 -d *.$project.$domain -d $project.$domain --agree-tos --preferred-challenges dns-01
+        } else {
+            openssl::certificate::x509 { "$project.$domain":
+              ensure       => present,
+              country      => 'DE',
+              organization => "*.$project.$domain Inc",
+              commonname   => "*.$project.$domain",
+              state        => 'Localhost',
+              locality     => 'VM',
+              unit         => 'Developer instance',
+              altnames     => ["*.$project.$domain", "$project.$domain"],
+              email        => "admin@$project.$domain",
+              days         => 3650,
+              base_dir     => '/etc/nginx/ssl',
+              owner        => 'root',
+              group        => 'root',
+            }
 
-        file { "/usr/local/share/ca-certificates/$project.$domain.crt":
-          ensure  => present,
-          source  => "/etc/nginx/ssl/$project.$domain.crt",
-          owner   => 'root',
-          group   => 'root',
-          mode    => '0644',
-          require => [
-              Openssl::Certificate::X509["$project.$domain"]
-          ]
+            file { "/usr/local/share/ca-certificates/$project.$domain.crt":
+              ensure  => present,
+              source  => "/etc/nginx/ssl/$project.$domain.crt",
+              owner   => 'root',
+              group   => 'root',
+              mode    => '0644',
+              require => [
+                  Openssl::Certificate::X509["$project.$domain"]
+              ]
+            }
         }
 
         # Handle proxy and docker templates
@@ -114,7 +126,8 @@ class services::nginx::www (
                     'static'  => false,
                 }),
                 require => [
-                    Package['nginx']
+                    Package['nginx'],
+                    File['/etc/nginx/sites-available'],
                 ]
             }
 
@@ -278,7 +291,8 @@ class services::nginx::www (
                     'static'  => true,
                 }),
                 require => [
-                    File["/var/www/$name.$project.$domain"]
+                    File["/var/www/$name.$project.$domain"],
+                    File['/etc/nginx/sites-available'],
                 ]
             }
 
@@ -317,17 +331,34 @@ class services::nginx::www (
             }
         }
 
-        file { "/etc/nginx/$project.d/ssl.conf":
-            ensure  => file,
-            content => template('services/nginx/vhost/ssl.conf.erb'),
-            notify  => Service["nginx"],
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            require => [
-                File["/etc/nginx/$project.d"],
-                Openssl::Certificate::X509["$project.$domain"]
-            ]
+        if $certbot {
+            file { "/etc/nginx/$project.d/ssl.conf":
+                ensure  => file,
+                content => epp('services/nginx/vhost/ssl-certbot.conf.epp', {
+                    'project' => $project,
+                    'domain'  => $domain,
+                }),
+                notify  => Service["nginx"],
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0644',
+                require => [
+                    File["/etc/nginx/$project.d"],
+                ]
+            }
+        } else {
+            file { "/etc/nginx/$project.d/ssl.conf":
+                ensure  => file,
+                content => template('services/nginx/vhost/ssl.conf.erb'),
+                notify  => Service["nginx"],
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0644',
+                require => [
+                    File["/etc/nginx/$project.d"],
+                    Openssl::Certificate::X509["$project.$domain"]
+                ]
+            }
         }
     }
 }
