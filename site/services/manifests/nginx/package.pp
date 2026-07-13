@@ -52,6 +52,25 @@ class services::nginx::package {
         require => Package['nginx']
     }
 
+    file { '/var/log/nginx':
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'adm',
+        mode    => '0755',
+        require => Package['nginx'],
+        before  => Service['nginx'],
+    }
+
+    file { '/etc/nginx/mime.types':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        source  => 'puppet:///modules/services/nginx/mime.types',
+        notify  => Service['nginx'],
+        require => Package['nginx'],
+    }
+
     file { "/etc/nginx/nginx.conf":
         notify  => Service["nginx"],
         ensure  => file,
