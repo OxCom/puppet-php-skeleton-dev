@@ -6,9 +6,14 @@ class services::nginx::www (
 ) {
     info("Initialize")
 
+    # Validity of existing certs in /etc/nginx/ssl (custom fact, 30-day margin)
+    $ssl_certs = pick($facts['nginx_ssl_certs'], {})
+
     if $certbot {
         info("certbot mode enabled — skipping self-signed root certificate for $domain")
         require services::certbot
+    } elsif $ssl_certs[$domain] {
+        info("[domain] Certificate for $domain is still valid - skipping generation")
     } else {
         info("[domain] Generate self signed certificate - $domain")
         openssl::certificate::x509 { "$domain":
@@ -74,20 +79,26 @@ class services::nginx::www (
             # Cert is obtained manually:
             # certbot certonly --manual --rsa-key-size 4096 -d *.$project.$domain -d $project.$domain --agree-tos --preferred-challenges dns-01
         } else {
-            openssl::certificate::x509 { "$project.$domain":
-              ensure       => present,
-              country      => 'DE',
-              organization => "*.$project.$domain Inc",
-              commonname   => "*.$project.$domain",
-              state        => 'Localhost',
-              locality     => 'VM',
-              unit         => 'Developer instance',
-              altnames     => ["*.$project.$domain", "$project.$domain"],
-              email        => "admin@$project.$domain",
-              days         => 3650,
-              base_dir     => '/etc/nginx/ssl',
-              owner        => 'root',
-              group        => 'root',
+            if $ssl_certs["$project.$domain"] {
+                info("[domain] Certificate for $project.$domain is still valid - skipping generation")
+                $cert_require = []
+            } else {
+                openssl::certificate::x509 { "$project.$domain":
+                  ensure       => present,
+                  country      => 'DE',
+                  organization => "*.$project.$domain Inc",
+                  commonname   => "*.$project.$domain",
+                  state        => 'Localhost',
+                  locality     => 'VM',
+                  unit         => 'Developer instance',
+                  altnames     => ["*.$project.$domain", "$project.$domain"],
+                  email        => "admin@$project.$domain",
+                  days         => 3650,
+                  base_dir     => '/etc/nginx/ssl',
+                  owner        => 'root',
+                  group        => 'root',
+                }
+                $cert_require = [Openssl::Certificate::X509["$project.$domain"]]
             }
 
             file { "/usr/local/share/ca-certificates/$project.$domain.crt":
@@ -96,9 +107,7 @@ class services::nginx::www (
               owner   => 'root',
               group   => 'root',
               mode    => '0644',
-              require => [
-                  Openssl::Certificate::X509["$project.$domain"]
-              ]
+              require => $cert_require,
             }
         }
 
@@ -354,10 +363,7 @@ class services::nginx::www (
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
-                require => [
-                    File["/etc/nginx/$project.d"],
-                    Openssl::Certificate::X509["$project.$domain"]
-                ]
+                require => [File["/etc/nginx/$project.d"]] + $cert_require,
             }
         }
     }
