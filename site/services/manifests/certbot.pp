@@ -23,10 +23,8 @@ class services::certbot {
       command => '/usr/bin/snap refresh certbot',
       path    => ['/usr/bin','/bin','/usr/sbin','/sbin'],
       require => Exec['install-certbot-snap'],
-      # Run refresh every Puppet apply to ensure latest version
     }
 
-    # Verify certbot version is updated
     exec { 'verify-certbot-version':
       command => '/bin/bash -c "/usr/bin/certbot --version | grep -E \"(5\.[6-9]|[6-9]\.[0-9])\" || (/usr/bin/certbot --version && exit 1)"',
       path    => ['/usr/bin','/bin','/usr/sbin','/sbin'],

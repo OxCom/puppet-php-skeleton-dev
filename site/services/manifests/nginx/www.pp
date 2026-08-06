@@ -111,7 +111,6 @@ class services::nginx::www (
             }
         }
 
-        # Handle proxy and docker templates
         $list.filter |$item| { $item['tpl'] == 'proxy' or $item['tpl'] == 'docker' }.each |Integer $index, Hash $sub| {
             $name = $sub['name'];
             $configTpl = $sub['tpl'];

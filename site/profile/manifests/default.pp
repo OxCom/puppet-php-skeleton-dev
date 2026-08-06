@@ -21,24 +21,22 @@ class profile::default {
         }
     }
 
+    include services::git
     include services::snapd
     include services::openssl
     include services::ghostty
     include services::mc
 
-    # extend FS watch limit with max_user_watches
     sysctl { "fs.inotify.max_user_watches":
       ensure => present,
       value  => "524288",
     }
 
-    # This file contains the maximum number of memory map areas a process may have.
     sysctl { "vm.max_map_count":
       ensure => present,
       value  => "1048576",
     }
 
-    # update max open files (ulimit -n)
     sysctl { "fs.file-max":
       ensure => present,
       value  => "65535",

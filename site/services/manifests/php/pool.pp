@@ -2,9 +2,9 @@ class services::php::pool (
     Array $versions = [],
     Hash $pools     = {}
 ) {
-    # Вуафгде pool named 'www'
+    # Default pool named 'www'
     # Additional pools will be created per projects for all versions
-    # Each array with string key thatcontains nesting array will be converted to folder
+    # Each array with string key that contains nesting array will be converted to folder
     info("Initialize")
 
     $versions.each |Integer $index, String $version| {

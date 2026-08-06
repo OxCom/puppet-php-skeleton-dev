@@ -34,7 +34,6 @@ class services::bind9::zone (
     ]
   }
 
-  # zone
   file { "/etc/bind/zone.d/":
     ensure  => 'directory',
     owner   => 'root',

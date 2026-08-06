@@ -26,13 +26,11 @@ class services::php::packages (
             }
         }
 
-        # Packages excluded for this specific version
         $excluded = $exclude_packages[$version] ? {
             undef   => [],
             default => $exclude_packages[$version]
         }
 
-        # List of required packages
         unique($packages).each |Integer $index, String $package| {
             # List of packages has not version prefix and should be installed as 'php-${package}'
             if member($services::php::params::common, $package) {
