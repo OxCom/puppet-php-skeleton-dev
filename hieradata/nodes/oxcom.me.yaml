@@ -5,11 +5,18 @@ classes:
 certbot: true
 
 projects:
-    sushi:
+    www:
         - { name: www, tpl: 'docker', port: 8940, ws: [ '/build' ] }
         - { name: s3, tpl: 'proxy', port: 8940 }
         - { name: s3-cli, tpl: 'proxy', port: 8940, ws: [ '/ws' ] }
         - { name: conv, tpl: 'proxy', port: 8940 }
+    sushi:
+        - { name: www, tpl: 'docker', port: 8941, ws: [ '/build' ] }
+        - { name: s3, tpl: 'proxy', port: 8941 }
+        - { name: s3-cli, tpl: 'proxy', port: 8941, ws: [ '/ws' ] }
+        - { name: conv, tpl: 'proxy', port: 8941 }
+    sev-auto:
+        - { name: www, tpl: 'docker', port: 8942, ws: [ '/build' ] }
 
 php:
     composer: true
