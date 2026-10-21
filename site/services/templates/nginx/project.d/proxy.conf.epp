@@ -2,7 +2,7 @@
 client_max_body_size 0;
 
 <% if $docker == true { -%>
-root /var/www/<%= $name %>.<%= $project %>.<%= $domain %>/public;
+root /var/www/<%= $name %>.<%= $base %>/public;
 <% } -%>
 
 <% $wss.each -%>

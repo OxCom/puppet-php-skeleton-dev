@@ -1,7 +1,7 @@
 # only for DEV
 client_max_body_size 0;
 
-root /var/www/<%= $name %>.<%= $project %>.<%= $domain %>/public;
+root /var/www/<%= $name %>.<%= $base %>/public;
 index index.php index.html;
 
 location / {

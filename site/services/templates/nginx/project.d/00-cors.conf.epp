@@ -1,11 +1,11 @@
 # Allow CORS request from Hub to Forum
-map $http_origin <%= $project %>_cors_orig {
-    default                                     "https://<%= $project %>.<%= $domain %>";
-    "~^https:\/\/([^.]+)\.<%= $project %>\.<%= $domain %>" $http_origin;
+map $http_origin $<%= $cors %>_cors_orig {
+    default                                     "https://<%= $base %>";
+    "~^https:\/\/([^.]+)\.<%= regsubst($base, '\.', '\\.', 'G') %>$" $http_origin;
 }
 
 # Allow to pass cookies in CORS from Hub to Forum
-map $http_origin <%= $project %>_cors_cred {
+map $http_origin $<%= $cors %>_cors_cred {
     default                                    false;
-    "~^https:\/\/([^.]+)\.<%= $project %>\.<%= $domain %>" true;
+    "~^https:\/\/([^.]+)\.<%= regsubst($base, '\.', '\\.', 'G') %>$" true;
 }
