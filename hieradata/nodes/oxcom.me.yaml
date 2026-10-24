@@ -15,8 +15,8 @@ projects:
         - { name: s3, tpl: 'proxy', port: 8941 }
         - { name: s3-cli, tpl: 'proxy', port: 8941, ws: [ '/ws' ] }
         - { name: conv, tpl: 'proxy', port: 8941 }
-    # sev-auto:
-    #    - { name: www, tpl: 'docker', port: 8942, ws: [ '/build' ] }
+    sev-auto:
+        - { name: www, tpl: 'docker', port: 8942, ws: [ '/build' ] }
 
 php:
     composer: true
