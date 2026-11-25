@@ -46,6 +46,16 @@ class services::nginx::www (
 
     $projects.each |String $project, Array $list| {
         info("Initialize project $project")
+
+        # Project "www" is served from the root domain: <name>.<domain> instead of <name>.www.<domain>
+        $base = $project ? {
+            'www'   => $domain,
+            default => "$project.$domain",
+        }
+
+        # nginx variable names allow only [A-Za-z0-9_]: sev-auto -> $sev_auto_cors_orig
+        $cors = regsubst($project, '[^A-Za-z0-9_]', '_', 'G')
+
         file { "/etc/nginx/$project.d":
             ensure  => 'directory',
             owner   => 'root',
@@ -56,54 +66,61 @@ class services::nginx::www (
             ]
         }
 
-        info("[$project:$name] add CORS for subdomains in /etc/nginx/$project.d/00-cors.conf")
-        file { "/etc/nginx/$project.d/00-cors.conf":
+        # map is valid only in http context, which includes conf.d/*.conf
+        info("[$project:$name] add CORS for subdomains in /etc/nginx/conf.d/cors-$project.conf")
+        file { "/etc/nginx/conf.d/cors-$project.conf":
             notify  => Service["nginx"],
             ensure  => file,
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
             content => epp("services/nginx/project.d/00-cors.conf.epp", {
-                'name'    => $name,
-                'project' => $project,
-                'domain'  => $domain
+                'cors'    => $cors,
+                'base'    => $base
             }),
             require => [
-                File["/etc/nginx/$project.d"]
+                File["/etc/nginx/conf.d"]
             ]
         }
 
-        info("[domain] Generate self signed certificate - $project.$domain")
+        file { "/etc/nginx/$project.d/00-cors.conf":
+            ensure  => absent,
+        }
+
+        info("[domain] Generate self signed certificate - $base")
         if $certbot {
-            info("certbot mode enabled — wildcard cert for *.$project.$domain is managed manually via DNS-01 challenge")
+            info("certbot mode enabled — wildcard cert for *.$base is managed manually via DNS-01 challenge")
             # Cert is obtained manually:
-            # certbot certonly --manual --rsa-key-size 4096 -d *.$project.$domain -d $project.$domain --agree-tos --preferred-challenges dns-01
+            # certbot certonly --manual --rsa-key-size 4096 -d *.$base -d $base --agree-tos --preferred-challenges dns-01
         } else {
-            if $ssl_certs["$project.$domain"] {
-                info("[domain] Certificate for $project.$domain is still valid - skipping generation")
+            if $ssl_certs["$base"] {
+                info("[domain] Certificate for $base is still valid - skipping generation")
                 $cert_require = []
+            } elsif $base == $domain {
+                info("[domain] Project $project uses root certificate $domain")
+                $cert_require = [Openssl::Certificate::X509[$domain]]
             } else {
-                openssl::certificate::x509 { "$project.$domain":
+                openssl::certificate::x509 { "$base":
                   ensure       => present,
                   country      => 'DE',
-                  organization => "*.$project.$domain Inc",
-                  commonname   => "*.$project.$domain",
+                  organization => "*.$base Inc",
+                  commonname   => "*.$base",
                   state        => 'Localhost',
                   locality     => 'VM',
                   unit         => 'Developer instance',
-                  altnames     => ["*.$project.$domain", "$project.$domain"],
-                  email        => "admin@$project.$domain",
+                  altnames     => ["*.$base", "$base"],
+                  email        => "admin@$base",
                   days         => 3650,
                   base_dir     => '/etc/nginx/ssl',
                   owner        => 'root',
                   group        => 'root',
                 }
-                $cert_require = [Openssl::Certificate::X509["$project.$domain"]]
+                $cert_require = [Openssl::Certificate::X509["$base"]]
             }
 
-            file { "/usr/local/share/ca-certificates/$project.$domain.crt":
+            file { "/usr/local/share/ca-certificates/$base.crt":
               ensure  => present,
-              source  => "/etc/nginx/ssl/$project.$domain.crt",
+              source  => "/etc/nginx/ssl/$base.crt",
               owner   => 'root',
               group   => 'root',
               mode    => '0644',
@@ -115,7 +132,7 @@ class services::nginx::www (
             $name = $sub['name'];
             $configTpl = $sub['tpl'];
 
-            info("[$project:$name] Sub porject directories /var/www/$name.$project.$domain")
+            info("[$project:$name] Sub porject directories /var/www/$name.$base")
             info("[$project:$name] configured as $configTpl (no project directory required)")
 
             info("[$project:$name] set vHost config in /etc/nginx/sites-available/$name.$project.conf")
@@ -128,7 +145,7 @@ class services::nginx::www (
                 content => epp('services/nginx/vhost.conf.epp', {
                     'name'    => $name,
                     'project' => $project,
-                    'domain'  => $domain,
+                    'base'    => $base,
                     'gzip'    => false,
                     'perf'    => false,
                     'static'  => false,
@@ -153,7 +170,7 @@ class services::nginx::www (
                   'port'    => $sub['port'],
                   'docker'  => $configTpl == 'docker',
                   'project' => $project,
-                  'domain'  => $domain,
+                  'base'    => $base,
                   'wss'     => $wss,
                 }),
                 require => [
@@ -197,10 +214,10 @@ class services::nginx::www (
             }
 
             info("[$project:$name] add host to /etc/hosts")
-            host { "$name.$project.$domain":
+            host { "$name.$base":
               ensure  => 'present',
               ip      => '127.0.0.1',
-              comment => "/var/www/$name.$project.$domain/",
+              comment => "/var/www/$name.$base/",
             }
         }
 
@@ -235,10 +252,10 @@ class services::nginx::www (
             }
 
             info("[$project:$name] add host to /etc/hosts")
-            host { "$name.$project.$domain":
+            host { "$name.$base":
               ensure  => 'present',
               ip      => '127.0.0.1',
-              comment => "/var/www/$name.$project.$domain/",
+              comment => "/var/www/$name.$base/",
             }
         }
 
@@ -246,21 +263,21 @@ class services::nginx::www (
             $name = $sub['name'];
             $configTpl = $sub['tpl'];
 
-            info("[$project:$name] Sub porject directories /var/www/$name.$project.$domain")
+            info("[$project:$name] Sub porject directories /var/www/$name.$base")
             if $configTpl == 'magento' {
-                $root = "/var/www/$name.$project.$domain/pub"
+                $root = "/var/www/$name.$base/pub"
             }
             elsif $configTpl == 'symfony' {
-                $root = "/var/www/$name.$project.$domain/public"
+                $root = "/var/www/$name.$base/public"
             }
             elsif $configTpl == 'phpbb' {
-                $root = "/var/www/$name.$project.$domain"
+                $root = "/var/www/$name.$base"
             }
             else {
-                $root = "/var/www/$name.$project.$domain/public"
+                $root = "/var/www/$name.$base/public"
             }
 
-            file { "/var/www/$name.$project.$domain" :
+            file { "/var/www/$name.$base" :
                 ensure  => 'directory',
                 owner   => 'www-data',
                 group   => 'www-data',
@@ -270,7 +287,7 @@ class services::nginx::www (
                 ]
             }
 
-            if $root != "/var/www/$name.$project.$domain" {
+            if $root != "/var/www/$name.$base" {
                 info("[$project:$name] add root directory: $root")
                 file { "$root":
                   ensure  => 'directory',
@@ -278,7 +295,7 @@ class services::nginx::www (
                   group   => 'www-data',
                   mode    => '0777',
                   require => [
-                      File["/var/www/$name.$project.$domain"]
+                      File["/var/www/$name.$base"]
                   ]
                 }
             }
@@ -293,13 +310,13 @@ class services::nginx::www (
                 content => epp('services/nginx/vhost.conf.epp', {
                     'name'    => $name,
                     'project' => $project,
-                    'domain'  => $domain,
+                    'base'    => $base,
                     'gzip'    => true,
                     'perf'    => true,
                     'static'  => true,
                 }),
                 require => [
-                    File["/var/www/$name.$project.$domain"],
+                    File["/var/www/$name.$base"],
                     File['/etc/nginx/sites-available'],
                 ]
             }
@@ -315,7 +332,8 @@ class services::nginx::www (
                   'name'    => $name,
                   'php'     => $sub['php'],
                   'project' => $project,
-                  'domain'  => $domain
+                  'base'    => $base,
+                  'cors'    => $cors
               }),
               require => [
                   File["/etc/nginx/$project.d"],
@@ -332,10 +350,10 @@ class services::nginx::www (
             }
 
             info("[$project:$name] add host to /etc/hosts")
-            host { "$name.$project.$domain":
+            host { "$name.$base":
               ensure  => 'present',
               ip      => '127.0.0.1',
-              comment => "/var/www/$name.$project.$domain/",
+              comment => "/var/www/$name.$base/",
             }
         }
 
@@ -343,8 +361,7 @@ class services::nginx::www (
             file { "/etc/nginx/$project.d/ssl.conf":
                 ensure  => file,
                 content => epp('services/nginx/vhost/ssl-certbot.conf.epp', {
-                    'project' => $project,
-                    'domain'  => $domain,
+                    'base'    => $base,
                 }),
                 notify  => Service["nginx"],
                 owner   => 'root',

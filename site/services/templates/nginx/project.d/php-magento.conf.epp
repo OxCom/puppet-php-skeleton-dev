@@ -2,7 +2,7 @@
 client_max_body_size 0;
 
 set $MAGE_MODE developer;
-set $MAGE_ROOT /var/www/<%= $name %>.<%= $project %>.<%= $domain %>;
+set $MAGE_ROOT /var/www/<%= $name %>.<%= $base %>;
 
 root $MAGE_ROOT/pub;
 
@@ -142,8 +142,8 @@ location ~ cron\.php {
 }
 
 location ~ (index|get|static|report|404|503)\.php$ {
-    add_header "Access-Control-Allow-Origin"      <%= $project %>_cors_orig;
-    add_header "Access-Control-Allow-Credentials" <%= $project %>_cors_cred;
+    add_header "Access-Control-Allow-Origin"      $<%= $cors %>_cors_orig;
+    add_header "Access-Control-Allow-Credentials" $<%= $cors %>_cors_cred;
 
     try_files $uri =404;
     fastcgi_pass   <%= $php %>-<%= $project %>-<%= $name %>-fpm;
