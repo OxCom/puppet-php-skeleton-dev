@@ -11,12 +11,15 @@ class profile::default {
 
         if ($tool == 'imagemagick') {
             info("Fix: slow webp convert in Imagick and Webp.")
-            tidy { 'webp-fix':
-                path    => '/usr/lib/',
-                recurse => true,
-                age => '0',
-                matches => ['webp.so', 'webp.la'],
-                require => Package[$tool]
+            # Remove only ImageMagick's webp coder modules. A recursive tidy over
+            # /usr/lib scans ~70k entries every run and triggers the max_files warning.
+            $webp_coders = '/usr/lib/*/ImageMagick-*/modules-*/coders/webp.so /usr/lib/*/ImageMagick-*/modules-*/coders/webp.la'
+            exec { 'webp-fix':
+                command  => "rm -f ${webp_coders}",
+                onlyif   => "test -n \"\$(ls ${webp_coders} 2>/dev/null)\"",
+                provider => shell,
+                path     => '/bin:/usr/bin',
+                require  => Package[$tool]
             }
         }
     }
