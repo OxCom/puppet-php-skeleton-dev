@@ -9,11 +9,7 @@ class services::nginx::ppa {
     timeout => 0
   }
 
-  # nginx repo lags behind new Ubuntu releases; fall back to noble until supported
-  $nginx_release = $facts['os']['distro']['codename'] ? {
-    'resolute' => 'noble',
-    default    => $facts['os']['distro']['codename'],
-  }
+  $nginx_release = $facts['os']['distro']['codename']
 
   # Use wget (system tool / OS CA bundle) instead of Puppet's file provider so the
   # corporate self-signed proxy CA is trusted without needing to rebuild Puppet's CA store.

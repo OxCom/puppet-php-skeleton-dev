@@ -9,41 +9,49 @@ class services::php::ppa {
         timeout => 0
     }
 
-    # ondrej/php PPA lags behind new Ubuntu releases; fall back to noble until supported.
-    # Uses apt::source instead of apt::ppa — add-apt-repository always uses the system
-    # codename from /etc/os-release and ignores any dist override passed by Puppet.
-    $php_ppa_dist = $facts['os']['distro']['codename'] ? {
-        'resolute' => 'noble',
-        default    => $facts['os']['distro']['codename'],
-    }
+    # ppa:ondrej/php is frozen ("PPA for PHP (deprecated)"); packages moved to
+    # packages.sury.org/php, which publishes native builds for jammy, noble and resolute.
+    $php_repo_dist = $facts['os']['distro']['codename']
 
-    # Clean up stale files left by add-apt-repository from previous apt::ppa runs
+    # Remove the frozen Launchpad PPA: stale add-apt-repository files and the old apt::source
     ['resolute', 'noble'].each |String $dist| {
         file { "/etc/apt/sources.list.d/ondrej-ubuntu-php-${dist}.list":
             ensure => absent,
-            before => Apt::Source['ondrej-php'],
+            before => Exec['apt-update-php'],
         }
         file { "/etc/apt/sources.list.d/ondrej-ubuntu-php-${dist}.sources":
             ensure => absent,
-            before => Apt::Source['ondrej-php'],
+            before => Exec['apt-update-php'],
         }
+    }
+
+    apt::source { 'ondrej-php':
+        ensure => absent,
+        before => Exec['apt-update-php'],
+    }
+
+    file { '/etc/apt/keyrings/ondrej-php.asc':
+        ensure => absent,
     }
 
     # Use wget (system tool / OS CA bundle) instead of Puppet's file provider so the
     # corporate self-signed proxy CA is trusted without needing to rebuild Puppet's CA store.
-    exec { 'apt-keyring-ondrej-php':
-        command => '/usr/bin/wget -q "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x71DAEAAB4AD4CAB6" -O /etc/apt/keyrings/ondrej-php.asc',
-        creates => '/etc/apt/keyrings/ondrej-php.asc',
-        require => Class['apt'],
+    # The keyring package installs /usr/share/keyrings/debsuryorg-archive-keyring.gpg.
+    exec { 'apt-keyring-sury-php':
+        command  => '/usr/bin/wget -q https://packages.sury.org/debsuryorg-archive-keyring.deb -O /tmp/debsuryorg-archive-keyring.deb && /usr/bin/dpkg -i /tmp/debsuryorg-archive-keyring.deb',
+        provider => shell,
+        path     => '/bin:/usr/bin:/sbin:/usr/sbin',
+        creates  => '/usr/share/keyrings/debsuryorg-archive-keyring.gpg',
+        require  => Class['apt'],
     }
 
-    apt::source { 'ondrej-php':
-        location     => 'https://ppa.launchpadcontent.net/ondrej/php/ubuntu',
-        release      => $php_ppa_dist,
+    apt::source { 'sury-php':
+        location     => 'https://packages.sury.org/php/',
+        release      => $php_repo_dist,
         repos        => 'main',
         architecture => 'amd64',
-        keyring      => '/etc/apt/keyrings/ondrej-php.asc',
+        keyring      => '/usr/share/keyrings/debsuryorg-archive-keyring.gpg',
         before       => Exec['apt-update-php'],
-        require      => Exec['apt-keyring-ondrej-php'],
+        require      => Exec['apt-keyring-sury-php'],
     }
 }
