@@ -38,7 +38,9 @@ class services::php::ppa {
     # corporate self-signed proxy CA is trusted without needing to rebuild Puppet's CA store.
     # The keyring package installs /usr/share/keyrings/debsuryorg-archive-keyring.gpg.
     exec { 'apt-keyring-sury-php':
-        command  => '/usr/bin/wget -q https://packages.sury.org/debsuryorg-archive-keyring.deb -O /tmp/debsuryorg-archive-keyring.deb && /usr/bin/dpkg -i /tmp/debsuryorg-archive-keyring.deb',
+        # Download to root-owned /var/cache, not /tmp: with fs.protected_regular=2 root
+        # cannot overwrite a file another user left in sticky /tmp, and wget fails.
+        command  => '/usr/bin/wget -q https://packages.sury.org/debsuryorg-archive-keyring.deb -O /var/cache/debsuryorg-archive-keyring.deb && DEBIAN_FRONTEND=noninteractive /usr/bin/dpkg -i /var/cache/debsuryorg-archive-keyring.deb',
         provider => shell,
         path     => '/bin:/usr/bin:/sbin:/usr/sbin',
         creates  => '/usr/share/keyrings/debsuryorg-archive-keyring.gpg',

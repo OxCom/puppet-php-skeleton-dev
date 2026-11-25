@@ -14,3 +14,5 @@ modules/stdlib/
 
 etckeeper-commit-post
 etckeeper-commit-pre
+
+.serena
